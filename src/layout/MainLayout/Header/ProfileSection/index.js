@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // material-ui
@@ -117,6 +117,7 @@ const useStyles = makeStyles((theme) => ({
 //-----------------------|| PROFILE MENU ||-----------------------//
 
 const ProfileSection = () => {
+    const history = useHistory();
     const classes = useStyles();
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
@@ -131,6 +132,7 @@ const ProfileSection = () => {
     const handleLogout = async () => {
         try {
             await logout();
+            history.push('/');
         } catch (err) {
             console.error(err);
         }

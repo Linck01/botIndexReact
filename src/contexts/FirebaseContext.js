@@ -59,6 +59,7 @@ export const FirebaseProvider = ({ children }) => {
         return firebase.auth().signInWithEmailAndPassword(email, password);
     };
 
+
     const firebaseGoogleSignIn = () => {
         const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -76,6 +77,7 @@ export const FirebaseProvider = ({ children }) => {
     useEffect(() => {
         return firebase.auth().onAuthStateChanged((user) => {
             if (user) {
+                console.log('LOGIN');
                 dispatch({
                     type: FIREBASE_STATE_CHANGED,
                     payload: {
@@ -87,6 +89,7 @@ export const FirebaseProvider = ({ children }) => {
                     }
                 });
             } else {
+                console.log('LOGOUT');
                 dispatch({
                     type: FIREBASE_STATE_CHANGED,
                     payload: {

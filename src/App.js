@@ -30,8 +30,6 @@ const App = () => {
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme(customization)}>
                 <CssBaseline />
-                {/* RTL layout */}
-                {/* <RTLLayout> */}
                 <Locales>
                     <NavigationScroll>
                         <FirebaseProvider>
@@ -40,7 +38,6 @@ const App = () => {
                         </FirebaseProvider>
                     </NavigationScroll>
                 </Locales>
-                {/* </RTLLayout> */}
             </ThemeProvider>
         </StyledEngineProvider>
     );
