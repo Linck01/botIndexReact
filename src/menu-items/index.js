@@ -1,9 +1,10 @@
 import { other } from './other';
+import { platforms } from './platforms';
 
 //-----------------------|| MENU ITEMS ||-----------------------//
 
 const menuItems = {
-    items: [other]
+    items: [platforms,other]
 };
 
 export default menuItems;

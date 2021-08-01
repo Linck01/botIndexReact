@@ -35,21 +35,21 @@ const Routes = () => {
         <Switch>
             {/* MainLayout routes */}
 
-            <Route exact path={['/'].concat(config.platforms.map(platform => {return '/' + platform + '/'}))
-                                    .concat(config.platforms.map(platform => {return '/' + platform + '/:id'}))
-                                    .concat(config.platforms.map(platform => {return '/' + platform + '/:id/edit'}))}>
+            <Route exact path={['/'].concat(config.platforms.map(platform => {return '/bots/' + platform + '/'}))
+                                    .concat(config.platforms.map(platform => {return '/bot/' + platform + '/:id'}))
+                                    .concat(config.platforms.map(platform => {return '/bot/' + platform + '/:id/edit'}))}>
                 <MainLayout>
                     <Switch>
                         <Route exact path="/" component={SamplePage} />
                        
                         {config.platforms.map(platform => {
-                            return (<Route exact path={'/' + platform + '/'} component={botIndexPage} />)
+                            return (<Route exact path={'/bots/' + platform + '/'} component={botIndexPage} key={platform} />)
                         })}
                         
-                        {config.platforms.map(platform => {return (<Route exact path={'/' + platform + '/:id/'} component={botIndexPage} />)})}
+                        {config.platforms.map(platform => {return (<Route exact path={'/bot/' + platform + '/:id/'} component={botIndexPage} key={platform} />)})}
 
                         <AuthGuard>
-                            {config.platforms.map(platform => {return (<Route exact path={'/' + platform + '/:id/edit/'} component={SamplePage} />)})}
+                            {config.platforms.map(platform => {return (<Route exact path={'/bot/' + platform + '/:id/edit/'} component={SamplePage} key={platform} />)})}
                         </AuthGuard>
                     </Switch>
                 </MainLayout>

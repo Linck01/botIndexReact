@@ -172,9 +172,9 @@ const FirebaseRegister = ({ ...others }) => {
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
-                        await firebaseEmailPasswordNewUser(values.email, values.password);
-                        await firebaseEmailPasswordCodeVerification(values.email);
-                        
+                        const newUserCredential = await firebaseEmailPasswordNewUser(values.email, values.password);
+
+                        await newUserCredential.user.sendEmailVerification();
 
                         if (scriptedRef.current) {
                             setStatus({ success: true });
