@@ -11,6 +11,8 @@ import menuItem from './../../../../menu-items';
 
 const MenuList = () => {
     const navItems = menuItem.items.map((item) => {
+        if (item.requiresAuth)
+            return (<></>);
         switch (item.type) {
             case 'group':
                 return <NavGroup key={item.id} item={item} />;

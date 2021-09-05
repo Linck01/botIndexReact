@@ -118,7 +118,10 @@ const MainLayout = ({ children }) => {
                 ])}
             >
                 {/* breadcrumb */}
+                { /* }
                 <Breadcrumbs separator={IconChevronRight} navigation={navigation} icon title rightAlign />
+                { */ }
+
                 <div>{children}</div>
             </main>
             <Customization />

@@ -14,10 +14,11 @@ import NavMotion from './../layout/NavMotion';
 
 
 // sample page routing
-const SamplePage = Loadable(lazy(() => import('../views/sample-page')));
-const botIndexPage = Loadable(lazy(() => import('../views/botIndexPage')));
+const HomePage = Loadable(lazy(() => import('../views/homePage')));
+const botMultiPage = Loadable(lazy(() => import('../views/botMultiPage')));
 const botSinglePage = Loadable(lazy(() => import('../views/botSinglePage')));
 const botEditPage = Loadable(lazy(() => import('../views/botEditPage')));
+const myBotsPage = Loadable(lazy(() => import('../views/myBotsPage')));
 const ErrorPage = Loadable(lazy(() => import('../views/pages/maintenance/Error.js')));
 
 const AuthLogin = Loadable(lazy(() => import('../views/pages/authentication/Login')));
@@ -35,21 +36,18 @@ const Routes = () => {
         <Switch>
             {/* MainLayout routes */}
 
-            <Route exact path={['/'].concat(config.platforms.map(platform => {return '/bots/' + platform + '/'}))
-                                    .concat(config.platforms.map(platform => {return '/bot/' + platform + '/:id'}))
-                                    .concat(config.platforms.map(platform => {return '/bot/' + platform + '/:id/edit'}))}>
+            <Route exact path={['/','/bot/:platform/:id/','/bot/:platform/:id/edit/','/bots/:platform/','/bots/:platform/:sorting/','/mybots/']}>
                 <MainLayout>
                     <Switch>
-                        <Route exact path="/" component={SamplePage} />
+                        <Route exact path="/" component={HomePage} />
                        
-                        {config.platforms.map(platform => {
-                            return (<Route exact path={'/bots/' + platform + '/'} component={botIndexPage} key={platform} />)
-                        })}
-                        
-                        {config.platforms.map(platform => {return (<Route exact path={'/bot/' + platform + '/:id/'} component={botIndexPage} key={platform} />)})}
+                        <Route exact path={'/bots/:platform/'} component={botMultiPage}  />
+                        <Route exact path={'/bots/:platform/:sorting/'} component={botMultiPage}  />
+                        <Route exact path={'/bot/:platform/:id/'} component={botSinglePage} />
 
                         <AuthGuard>
-                            {config.platforms.map(platform => {return (<Route exact path={'/bot/' + platform + '/:id/edit/'} component={SamplePage} key={platform} />)})}
+                            <Route exact path={'/bot/:platform/:id/edit/'} component={botEditPage} />
+                            <Route exact path={'/mybots/'} component={myBotsPage} />
                         </AuthGuard>
                     </Switch>
                 </MainLayout>

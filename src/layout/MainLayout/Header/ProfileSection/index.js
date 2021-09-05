@@ -126,7 +126,7 @@ const ProfileSection = () => {
     const [value, setValue] = React.useState('');
     const [notification, setNotification] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
-    const { logout } = useAuth();
+    const { logout, user, isLoggedIn } = useAuth();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const handleLogout = async () => {
@@ -161,18 +161,19 @@ const ProfileSection = () => {
     }, [open]);
     return (
         <React.Fragment>
+           
             <Chip
                 classes={{ label: classes.profileLabel }}
                 className={classes.profileChip}
-                icon={
-                    <Avatar
+                icon={ <></> /*
+                     <Avatar
                         src={User1}
                         className={classes.headerAvatar}
                         ref={anchorRef}
                         aria-controls={open ? 'menu-list-grow' : undefined}
                         aria-haspopup="true"
                         color="inherit"
-                    />
+                    */
                 }
                 label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
                 variant="outlined"
@@ -182,6 +183,7 @@ const ProfileSection = () => {
                 onClick={handleToggle}
                 color="primary"
             />
+           
             <Popper
                 placement="bottom-end"
                 open={open}
@@ -208,15 +210,16 @@ const ProfileSection = () => {
                                     <CardContent className={classes.cardContent}>
                                         <Grid container direction="column" spacing={0}>
                                             <Grid item className={classes.flex}>
-                                                <Typography variant="h4">Good Morning,</Typography>
-                                                <Typography component="span" variant="h4" className={classes.name}>
-                                                    John
+                                                <Typography variant="h4">Good day! </Typography>
+                                                <Typography component="span" variant="h5" className={classes.name}>
+                                                 
                                                 </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="subtitle2">Project Admin</Typography>
+                                                <Typography variant="subtitle2">Logged in as: {user ? user.email : ''}</Typography>
                                             </Grid>
                                         </Grid>
+                                        { /* }
                                         <OutlinedInput
                                             className={classes.searchControl}
                                             id="input-search-profile"
@@ -233,8 +236,10 @@ const ProfileSection = () => {
                                                 'aria-label': 'weight'
                                             }}
                                         />
+                                        { */ } 
                                         <Divider />
-                                        <PerfectScrollbar className={classes.ScrollHeight}>
+                                        { /* }<PerfectScrollbar className={classes.ScrollHeight}>{ */ } 
+                                            { /* }
                                             <UpgradePlanCard />
                                             <Divider />
                                             <Card className={classes.card}>
@@ -274,6 +279,7 @@ const ProfileSection = () => {
                                                     </Grid>
                                                 </CardContent>
                                             </Card>
+                                            { */ }
                                             <Divider />
                                             <List component="nav" className={classes.navContainer}>
                                                 <ListItem
@@ -295,32 +301,6 @@ const ProfileSection = () => {
                                                     className={classes.listItem}
                                                     sx={{ borderRadius: customization.borderRadius + 'px' }}
                                                     button
-                                                    selected={selectedIndex === 1}
-                                                    onClick={(event) => handleListItemClick(event, 1)}
-                                                    component={React.forwardRef((props, ref) => (
-                                                        <RouterLink {...props} to="/user/social-profile/posts" />
-                                                    ))}
-                                                >
-                                                    <ListItemIcon>
-                                                        <IconUser stroke={1.5} size="1.3rem" />
-                                                    </ListItemIcon>
-                                                    <ListItemText
-                                                        primary={
-                                                            <Grid container spacing={1} justifyContent="space-between">
-                                                                <Grid item>
-                                                                    <Typography variant="body2">Social Profile</Typography>
-                                                                </Grid>
-                                                                <Grid item>
-                                                                    <Chip label="02" size="small" className={classes.badgeWarning} />
-                                                                </Grid>
-                                                            </Grid>
-                                                        }
-                                                    />
-                                                </ListItem>
-                                                <ListItem
-                                                    className={classes.listItem}
-                                                    sx={{ borderRadius: customization.borderRadius + 'px' }}
-                                                    button
                                                     selected={selectedIndex === 4}
                                                     onClick={handleLogout}
                                                 >
@@ -330,7 +310,7 @@ const ProfileSection = () => {
                                                     <ListItemText primary={<Typography variant="body2">Logout</Typography>} />
                                                 </ListItem>
                                             </List>
-                                        </PerfectScrollbar>
+                                        { /* }</PerfectScrollbar>{ */ }
                                     </CardContent>
                                 </MainCard>
                             </ClickAwayListener>

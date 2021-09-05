@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // material-ui
 import { makeStyles } from '@material-ui/core/styles';
-import { Avatar, Box, ButtonBase } from '@material-ui/core';
+import { Avatar, Box, ButtonBase, Typography } from '@material-ui/core';
 
 // project imports
 import LogoSection from '../LogoSection';
@@ -12,9 +13,11 @@ import LocalizationSection from './LocalizationSection';
 import MobileSection from './MobileSection';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
+import useAuth from '../../../hooks/useAuth';
 
 // assets
 import { IconMenu2 } from '@tabler/icons';
+import { IconLogin } from '@tabler/icons';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -45,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
 
 const Header = ({ handleLeftDrawerToggle }) => {
     const classes = useStyles();
+    const { isLoggedIn } = useAuth();
+    
 
     return (
         <React.Fragment>
@@ -70,9 +75,26 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 <LocalizationSection />
             </Box>
 
+            
+            {!isLoggedIn ? 
+                <Box component="span" className={classes.box} style={{'margin-left':'1em'}}>
+                    <ButtonBase sx={{ borderRadius: '12px' }}>
+                        <Link to="/login">
+                        <Avatar
+                            variant="rounded"
+                            className={classes.headerAvatar}
+                            color="inherit" >
+                            
+                            <IconLogin stroke={1.5} size="1.6rem" />
+                        </Avatar>
+                        </Link>
+                    </ButtonBase>
+                </Box> 
+            : <></>}
+            
+
             {/* notification & profile */}
-            <NotificationSection />
-            <ProfileSection />
+            {isLoggedIn ? <><NotificationSection /><ProfileSection /></> : <></>}
 
             {/* mobile header */}
             <Box sx={{ display: { xs: 'block', sm: 'none' } }}>

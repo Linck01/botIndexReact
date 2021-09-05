@@ -1,10 +1,11 @@
 import { other } from './other';
-import { platforms } from './platforms';
+import { bots } from './bots';
+import { userspace } from './userspace';
 
 //-----------------------|| MENU ITEMS ||-----------------------//
 
 const menuItems = {
-    items: [platforms,other]
+    items: [userspace,bots,other]
 };
 
 export default menuItems;
