@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { Button, FormHelperText, Grid } from '@material-ui/core';
 
 // project imports
-import AnimateButton from './../../../../ui-component/extended/AnimateButton';
+import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 import useAuth from '../../../../hooks/useAuth';
 import useScriptRef from '../../../../hooks/useScriptRef';
 

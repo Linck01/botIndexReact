@@ -8,7 +8,7 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@material-ui/co
 // project imports
 import AuthWrapper1 from './AuthWrapper1';
 import AuthCardWrapper from './AuthCardWrapper';
-import FirebaseLogin from './login/FirebaseLogin';
+import JWTLogin from './jwt-forms/JWTLogin';
 import Logo from './../../../ui-component/Logo';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
 
@@ -57,7 +57,7 @@ const Login = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <FirebaseLogin login={3} />
+                                        <JWTLogin login={3} />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />
@@ -66,7 +66,7 @@ const Login = () => {
                                         <Grid item container direction="column" alignItems="center" xs={12}>
                                             <Typography
                                                 component={RouterLink}
-                                                to="/pages/register/register3"
+                                                to="/register"
                                                 variant="subtitle1"
                                                 sx={{ textDecoration: 'none' }}
                                             >

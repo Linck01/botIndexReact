@@ -14,7 +14,7 @@ const useFetch = (url) => {
     }
 
     useEffect(() =>{
-        getData();
+        this.getData();
     }, [url]);
 
     return { isLoading, data, getData };

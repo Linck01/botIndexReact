@@ -23,13 +23,16 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
-import AnimateButton from './../../../../ui-component/extended/AnimateButton';
+import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 import useAuth from '../../../../hooks/useAuth';
 import useScriptRef from '../../../../hooks/useScriptRef';
 
 // assets
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
+
+const util = require('util');
+
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -68,7 +71,7 @@ const JWTLogin = (props, { ...others }) => {
                 password: Yup.string().max(255).required('Password is required')
             })}
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
-                try {
+                try { 
                     await login(values.email, values.password);
 
                     if (scriptedRef.current) {
@@ -76,10 +79,10 @@ const JWTLogin = (props, { ...others }) => {
                         setSubmitting(false);
                     }
                 } catch (err) {
-                    console.error(err);
+                    console.error(util.inspect(err));
                     if (scriptedRef.current) {
                         setStatus({ success: false });
-                        setErrors({ submit: err.message });
+                        setErrors({ submit: err.response.data.message || err.message });
                         setSubmitting(false);
                     }
                 }

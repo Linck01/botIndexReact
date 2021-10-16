@@ -48,7 +48,9 @@ export const JWTProvider = ({ children }) => {
     const [state, dispatch] = useReducer(accountReducer, initialState);
 
     const login = async (email, password) => {
-        const response = await axios.post('/api/account/login', { email, password });
+        const response = await axios.post('http://localhost:3005/v1/auth/login', { email, password });
+ 
+        console.log(response);
         const { serviceToken, user } = response.data;
         setSession(serviceToken);
         dispatch({

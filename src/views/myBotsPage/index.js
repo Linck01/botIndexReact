@@ -72,6 +72,7 @@ const MyBotsPage = () => {
                 alertSeverity: 'success',
                 close: true
             });
+            addBotNameRef.current.childNodes[0].value = '';
             
             getMyBots();
         } else {
@@ -83,13 +84,11 @@ const MyBotsPage = () => {
                 alertSeverity: 'error',
                 close: true
             });
-
-            addBotNameRef.current.childNodes[0].value = '';
         }
     };
 
-    useEffect(async () => {
-        await getMyBots();
+    useEffect(() => {
+        getMyBots();
     }, []);
 
     return (

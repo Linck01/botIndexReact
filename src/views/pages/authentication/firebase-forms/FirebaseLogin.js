@@ -28,7 +28,7 @@ import { Formik } from 'formik';
 // project imports
 import useAuth from '../../../../hooks/useAuth';
 import useScriptRef from '../../../../hooks/useScriptRef';
-import AnimateButton from './../../../../ui-component/extended/AnimateButton';
+import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 
 // assets
 import Visibility from '@material-ui/icons/Visibility';

@@ -7,7 +7,7 @@ import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 
 // load mock apis
-import './_mockApis';
+//import './_mockApis';
 
 // project imports
 import * as serviceWorker from './serviceWorker';
