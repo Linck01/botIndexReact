@@ -9,12 +9,12 @@ import { Divider, Grid, Stack, Typography, useMediaQuery } from '@material-ui/co
 import AuthWrapper1 from './AuthWrapper1';
 import AuthCardWrapper from './AuthCardWrapper';
 import Logo from './../../../ui-component/Logo';
-import FirebaseRegister from './firebase-forms/FirebaseRegister';
+import JWTRegister from './jwt-forms/JWTRegister';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
 
 // assets
 
-//===============================|| AUTH3 - REGISTER ||===============================//
+// ===============================|| AUTH3 - REGISTER ||=============================== //
 
 const Register = () => {
     const theme = useTheme();
@@ -57,7 +57,7 @@ const Register = () => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <FirebaseRegister />
+                                        <JWTRegister />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />

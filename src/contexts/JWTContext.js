@@ -4,12 +4,13 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 // reducer - state management
-import { ACCOUNT_INITIALIZE, LOGIN, LOGOUT } from '../store/actions';
+import { ACCOUNT_INITIALIZE, LOGIN, LOGOUT, REGISTER } from '../store/actions';
 import accountReducer from '../store/accountReducer';
 
 // project imports
 import axios from '../utils/axios';
 import Loader from '../ui-component/Loader';
+import config from '../config';
 
 // constant
 const initialState = {
@@ -26,12 +27,14 @@ const verifyToken = (serviceToken) => {
     return decoded.exp > Date.now() / 1000;
 };
 
-const setSession = (serviceToken) => {
-    if (serviceToken) {
-        localStorage.setItem('serviceToken', serviceToken);
-        axios.defaults.headers.common.Authorization = `Bearer ${serviceToken}`;
+const setSession = (userId, accessToken) => {
+    if (userId && accessToken) {
+        localStorage.setItem('accessToken', accessToken);
+        localStorage.setItem('userId', userId);
+        axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
     } else {
-        localStorage.removeItem('serviceToken');
+        localStorage.removeItem('accessToken');
+        localStorage.removeItem('userId');
         delete axios.defaults.headers.common.Authorization;
     }
 };
@@ -48,11 +51,11 @@ export const JWTProvider = ({ children }) => {
     const [state, dispatch] = useReducer(accountReducer, initialState);
 
     const login = async (email, password) => {
-        const response = await axios.post('http://localhost:3005/v1/auth/login', { email, password });
+        const response = await axios.post(config.apiHost + '/v1/auth/login', { email, password });
  
         console.log(response);
-        const { serviceToken, user } = response.data;
-        setSession(serviceToken);
+        const { tokens, user } = response.data;
+        setSession(user.id, tokens.access.token);
         dispatch({
             type: LOGIN,
             payload: {
@@ -66,14 +69,31 @@ export const JWTProvider = ({ children }) => {
         dispatch({ type: LOGOUT });
     };
 
+    const register = async (username, email, password) => {
+        const response = await axios.post(config.apiHost + '/v1/auth/register', { username, email, password });
+ 
+        console.log(response);
+        const { tokens, user } = response.data;
+        setSession(user.id, tokens.access.token);
+        dispatch({
+            type: REGISTER,
+            payload: {
+                user
+            }
+        });
+    };
+
     useEffect(() => {
         const init = async () => {
             try {
-                const serviceToken = window.localStorage.getItem('serviceToken');
-                if (serviceToken && verifyToken(serviceToken)) {
-                    setSession(serviceToken);
-                    const response = await axios.get('/api/account/me');
-                    const { user } = response.data;
+                const accessToken = window.localStorage.getItem('accessToken');
+                const userId = window.localStorage.getItem('userId');
+
+                if (userId && accessToken && verifyToken(accessToken)) {
+                    setSession(userId, accessToken);
+                    const response = await axios.get(config.apiHost + '/v1/users/' + userId);
+
+                    const user = response.data;
                     dispatch({
                         type: ACCOUNT_INITIALIZE,
                         payload: {
@@ -109,7 +129,7 @@ export const JWTProvider = ({ children }) => {
         return <Loader />;
     }
 
-    return <JWTContext.Provider value={{ ...state, login, logout }}>{children}</JWTContext.Provider>;
+    return <JWTContext.Provider value={{ ...state, login, logout, register }}>{children}</JWTContext.Provider>;
 };
 
 export default JWTContext;
