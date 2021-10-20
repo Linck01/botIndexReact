@@ -163,5 +163,14 @@
     "byTag": "By Tag",
     "allTags": "All Tags...",
     "allPlatforms": "All Platforms ...",
-    "tags": "Tags"
+    "tags": "Tags",
+    "publicGames":"Public Games",
+    "bigGames": "Big Games",
+    "newGames": "New Games",
+    "oldGames": "Old Games",
+    "info": "Info",
+    "termsAndService": "Terms and Service",
+    "about": "About",
+    "hostedGames": "Hosted Games",
+    "joinedGames":"Joined Games"
 }

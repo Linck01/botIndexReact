@@ -1,11 +1,11 @@
 import { other } from './other';
-import { bots } from './bots';
+import { games } from './games';
 import { userspace } from './userspace';
 
 //-----------------------|| MENU ITEMS ||-----------------------//
 
 const menuItems = {
-    items: [userspace,bots,other]
+    items: [userspace,games,other]
 };
 
 export default menuItems;

@@ -51,7 +51,7 @@ export const JWTProvider = ({ children }) => {
     const [state, dispatch] = useReducer(accountReducer, initialState);
 
     const login = async (email, password) => {
-        const response = await axios.post(config.apiHost + '/v1/auth/login', { email, password });
+        const response = await axios.post(config.authHost + '/v1/auth/login', { email, password });
  
         console.log(response);
         const { tokens, user } = response.data;
@@ -70,7 +70,7 @@ export const JWTProvider = ({ children }) => {
     };
 
     const register = async (username, email, password) => {
-        const response = await axios.post(config.apiHost + '/v1/auth/register', { username, email, password });
+        const response = await axios.post(config.authHost + '/v1/auth/register', { username, email, password });
  
         console.log(response);
         const { tokens, user } = response.data;
@@ -91,7 +91,7 @@ export const JWTProvider = ({ children }) => {
 
                 if (userId && accessToken && verifyToken(accessToken)) {
                     setSession(userId, accessToken);
-                    const response = await axios.get(config.apiHost + '/v1/users/' + userId);
+                    const response = await axios.get(config.authHost + '/v1/users/' + userId);
 
                     const user = response.data;
                     dispatch({
@@ -133,3 +133,5 @@ export const JWTProvider = ({ children }) => {
 };
 
 export default JWTContext;
+
+

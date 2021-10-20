@@ -15,12 +15,17 @@ import NavMotion from './../layout/NavMotion';
 
 // sample page routing
 const HomePage = Loadable(lazy(() => import('../views/homePage')));
-const botMultiPage = Loadable(lazy(() => import('../views/botMultiPage')));
-const botSinglePage = Loadable(lazy(() => import('../views/botSinglePage')));
-const botEditPage = Loadable(lazy(() => import('../views/botEditPage')));
-const myBotsPage = Loadable(lazy(() => import('../views/myBotsPage')));
-const ErrorPage = Loadable(lazy(() => import('../views/pages/maintenance/Error.js')));
+const bigGamesPage = Loadable(lazy(() => import('../views/bigGamesPage')));
+const newGamesPage = Loadable(lazy(() => import('../views/newGamesPage')));
+const oldGamesPage = Loadable(lazy(() => import('../views/oldGamesPage')));
+const gameSinglePage = Loadable(lazy(() => import('../views/gameSinglePage')));
+const hostedGames = Loadable(lazy(() => import('../views/hostedGames')));
+const joinedGames = Loadable(lazy(() => import('../views/joinedGames')));
+const infoPage = Loadable(lazy(() => import('../views/infoPage')));
+const termsAndServicePage = Loadable(lazy(() => import('../views/termsAndServicePage')));
+const aboutPage = Loadable(lazy(() => import('../views/aboutPage')));
 
+const ErrorPage = Loadable(lazy(() => import('../views/pages/maintenance/Error.js')));
 const AuthLogin = Loadable(lazy(() => import('../views/pages/authentication/Login')));
 const AuthRegister = Loadable(lazy(() => import('../views/pages/authentication/Register')));
 const AuthForgotPassword = Loadable(lazy(() => import('../views/pages/authentication/ForgotPassword')));
@@ -36,18 +41,23 @@ const Routes = () => {
         <Switch>
             {/* MainLayout routes */}
 
-            <Route exact path={['/','/bot/:platform/:id/','/bot/:platform/:id/edit/','/bots/:platform/','/bots/:platform/:sorting/','/mybots/']}>
+            <Route exact path={['/','/game/:id/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/joined/','/mybots/','/info/','/termsAndService/','/about/']}>
                 <MainLayout>
                     <Switch>
                         <Route exact path="/" component={HomePage} />
                        
-                        <Route exact path={'/bots/:platform/'} component={botMultiPage}  />
-                        <Route exact path={'/bots/:platform/:sorting/'} component={botMultiPage}  />
-                        <Route exact path={'/bot/:platform/:id/'} component={botSinglePage} />
+                        <Route exact path={'/games/big/'} component={bigGamesPage}  />
+                        <Route exact path={'/games/new/'} component={newGamesPage}  />
+                        <Route exact path={'/games/old/'} component={oldGamesPage}  />
+                        <Route exact path={'/game/:id/'} component={gameSinglePage} />
+
+                        <Route exact path={'/info/'} component={infoPage}  />
+                        <Route exact path={'/termsAndService/'} component={termsAndServicePage}  />
+                        <Route exact path={'/about/'} component={aboutPage}  />
 
                         <AuthGuard>
-                            <Route exact path={'/bot/:platform/:id/edit/'} component={botEditPage} />
-                            <Route exact path={'/mybots/'} component={myBotsPage} />
+                            <Route exact path={'/games/hosted'} component={hostedGames} />
+                            <Route exact path={'/games/joined'} component={joinedGames} />
                         </AuthGuard>
                     </Switch>
                 </MainLayout>

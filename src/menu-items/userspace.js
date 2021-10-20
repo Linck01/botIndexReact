@@ -4,14 +4,8 @@ import config from '../config.js';
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { IconBrandChrome, IconHelp, IconSitemap } from '@tabler/icons';
+import { IconServer, IconDeviceGamepad } from '@tabler/icons';
 
-// constant
-const icons = {
-    IconBrandChrome: IconBrandChrome,
-    IconHelp: IconHelp,
-    IconSitemap: IconSitemap
-};
 
 //-----------------------|| APPLICATION MENU ITEMS ||-----------------------//
 
@@ -22,18 +16,18 @@ export const userspace = {
     children: [  
         {
             id: 'favoritebots',
-            title: <FormattedMessage id="favoritebots" />,
+            title: <FormattedMessage id="hostedGames" />,
             type: 'item',
-            url: '/favoritebots',
-            icon: icons['IconBrandChrome'],
+            url: '/games/hosted',
+            icon: IconServer,
             breadcrumbs: false
         },
         {
             id: 'mybots',
-            title: <FormattedMessage id="mybots" />,
+            title: <FormattedMessage id="joinedGames" />,
             type: 'item',
-            url: '/mybots',
-            icon: icons['IconBrandChrome'],
+            url: '/games/joined',
+            icon: IconDeviceGamepad,
             breadcrumbs: false
         }
     ]

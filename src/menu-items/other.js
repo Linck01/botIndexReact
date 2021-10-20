@@ -2,46 +2,36 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { IconBrandChrome, IconHelp, IconSitemap } from '@tabler/icons';
-
-// constant
-const icons = {
-    IconBrandChrome: IconBrandChrome,
-    IconHelp: IconHelp,
-    IconSitemap: IconSitemap
-};
+import { IconMail, IconNotebook, IconInfoCircle } from '@tabler/icons';
 
 //-----------------------|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||-----------------------//
 
 export const other = {
     id: 'sample-docs-roadmap',
     type: 'group',
+    title: <FormattedMessage id="info" />,
     children: [
         {
-            id: 'sample-page',
-            title: <FormattedMessage id="sample-page" />,
+            id: 'info',
+            title: <FormattedMessage id="info" />,
             type: 'item',
-            url: '/sample-page',
-            icon: icons['IconBrandChrome'],
+            url: '/info',
+            icon: IconInfoCircle,
             breadcrumbs: false
         },
         {
-            id: 'documentation',
-            title: <FormattedMessage id="documentation" />,
+            id: 'termsAndService',
+            title: <FormattedMessage id="termsAndService" />,
             type: 'item',
-            url: 'https://codedthemes.gitbook.io/berry/',
-            icon: icons['IconHelp'],
-            external: true,
-            target: true
+            url: '/termsAndService',
+            icon: IconNotebook,
         },
         {
-            id: 'roadmap',
-            title: <FormattedMessage id="roadmap" />,
+            id: 'About',
+            title: <FormattedMessage id="about" />,
             type: 'item',
-            url: 'https://codedthemes.gitbook.io/berry/roadmap',
-            icon: icons['IconSitemap'],
-            external: true,
-            target: true
+            url: '/about',
+            icon: IconMail,
         }
     ]
 };

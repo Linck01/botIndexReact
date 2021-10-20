@@ -16,15 +16,17 @@ import MuiTypography from '@material-ui/core/Typography';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
+import axios from '../../utils/axios';
+import config from '../../config';
 
 //==============================|| SAMPLE PAGE ||==============================//
 
 
-const MyBotsPage = () => {
-    const [isLoadingMyBots, setIsLoadingMyBots] = useState(true);
-    const [myBots, setMyBots] = useState([]);
-    const [isLoadingAddBot, setIsLoadingAddBot] = useState(false);
-    const addBotNameRef = useRef(null);
+const HostedGamesPage = () => {
+    const [isLoadingHostedGames, setIsLoadingHostedGames] = useState(true);
+    const [hostedGames, setHostedGames] = useState([]);
+    const [isLoadingAddGame, setIsLoadingAddGame] = useState(false);
+    const addGameNameRef = useRef(null);
     const auth = useAuth();
     console.log(auth);
 
@@ -39,27 +41,46 @@ const MyBotsPage = () => {
         status: 'Active'
     };
 
-    const getMyBots = async () => {
-        setIsLoadingMyBots(true);
-        const res = await fetch('google.com');
-        //await botModel.getBotsByUser();
-        await fct.sleep(1000);
-        setMyBots([{id:1},{id:2},{id:3}]);
-        setIsLoadingMyBots(false);
+    const getHostedGames = async () => {
+        setIsLoadingHostedGames(true);
+
+        try {
+            const response = await axios.get(config.apiHost + '/v1/games/', { params: { name: '', userId: auth.user.id, sortBy: 'createdAt', limit: 10 , page: 0 } });
+
+            await fct.sleep(1000);
+            setHostedGames(response.data.results); // [{id:1},{id:2},{id:3}]
+        } catch (e) {
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: e.response.data.message,
+                variant: 'alert',
+                alertSeverity: 'error',
+                close: true
+            });
+        }
+
+        setIsLoadingHostedGames(false);
     }
 
-    const addBot = async () => {
+    const createGame = async () => {
         let err = null;
 
-        if (!addBotNameRef.current.childNodes[0].value)
-            err = 'The name of your new bot is too short.';
+        const name = addGameNameRef.current.childNodes[0].value;
 
-        setIsLoadingAddBot(true);
+        setIsLoadingAddGame(true);
  
-        const res = await fetch('google.com');
-        await fct.sleep(2000);
+        try {
+            const response = await axios.post(config.apiHost + '/v1/games/', { name: addGameNameRef.current.childNodes[0].value });
+            
+            await fct.sleep(1000);
+            
+        } catch (e) {
+            err = e.response.data.message;
+        }
+
         
-        setIsLoadingAddBot(false);
+        setIsLoadingAddGame(false);
 
         if(!err) {
             //await botModel.addBot();
@@ -67,14 +88,14 @@ const MyBotsPage = () => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Successfully added Bot',
+                message: 'Successfully added Game',
                 variant: 'alert',
                 alertSeverity: 'success',
                 close: true
             });
-            addBotNameRef.current.childNodes[0].value = '';
+            addGameNameRef.current.childNodes[0].value = '';
             
-            getMyBots();
+            getHostedGames();
         } else {
             dispatch({
                 type: SNACKBAR_OPEN,
@@ -88,7 +109,7 @@ const MyBotsPage = () => {
     };
 
     useEffect(() => {
-        getMyBots();
+        getHostedGames();
     }, []);
 
     return (
@@ -103,7 +124,7 @@ const MyBotsPage = () => {
                                 id="input-search-card-style1"
                                 placeholder="Title"
                                 fullWidth
-                                ref={addBotNameRef}
+                                ref={addGameNameRef}
                             />
                         </Grid>
                         <Grid item>
@@ -111,21 +132,19 @@ const MyBotsPage = () => {
                                 variant="contained"
                                 size="large"
                                 color="success"
-                                startIcon={isLoadingAddBot ? (<CircularProgress color="secondary" size="1em" />) : (<AddCircleOutlineOutlinedIcon />)}
+                                startIcon={isLoadingAddGame ? (<CircularProgress color="secondary" size="1em" />) : (<AddCircleOutlineOutlinedIcon />)}
                                 sx={{ p: '12px 22px' }}
-                                onClick={addBot}>
+                                onClick={createGame}>
                                 Add
                             </Button>
                         </Grid>
-                         
                     </Grid>
-                </Grid>
-                
+                </Grid>       
             </Grid>
         </MainCard>
         <br />
         <Grid container spacing={gridSpacing}>
-            {isLoadingMyBots ? (
+            {isLoadingHostedGames ? (
                 <>
                     <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>
                         <br /><br /><br />
@@ -137,7 +156,7 @@ const MyBotsPage = () => {
                 </>
             ) : ''}
 
-            {!isLoadingMyBots ? myBots.map( (bot) => {
+            {!isLoadingHostedGames ? hostedGames.map( (bot) => {
                 return (
                     <Grid item xs={12} lg={4} key={bot.id}>
                     
@@ -155,4 +174,4 @@ const MyBotsPage = () => {
     );
 };
 
-export default MyBotsPage;
+export default HostedGamesPage;

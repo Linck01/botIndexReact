@@ -7,7 +7,7 @@ const useFetch = (url) => {
 
     const getData = async () => {
         setIsLoading(true);
-        const res = await fetch(url);
+        //const res = await fetch(url);
         await fct.sleep(400);
         setData([{id:1},{id:2},{id:3}]);
         setIsLoading(false);

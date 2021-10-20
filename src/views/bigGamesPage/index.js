@@ -12,7 +12,7 @@ const SamplePage = () => {
     return (
         <MainCard title="Sample Card">
             <Typography variant="body2">
-                BotEditPage
+                bigGamesPage
             </Typography>
         </MainCard>
     );
