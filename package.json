@@ -72,7 +72,9 @@
         "redux": "^4.0.5",
         "remark-gfm": "^1.0.0",
         "stylis-plugin-rtl": "^2.0.2",
-        "yup": "^0.32.9"
+        "yup": "^0.32.9",
+        "react-use-websocket": "^2.8.0",
+        "socket.io-client": "*"
     },
     "scripts": {
         "start": "react-scripts start",

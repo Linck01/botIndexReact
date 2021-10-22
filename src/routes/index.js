@@ -11,7 +11,7 @@ import AuthGuard from './../utils/route-guard/AuthGuard';
 import GuestGuard from './../utils/route-guard/GuestGuard';
 import MinimalLayout from './../layout/MinimalLayout';
 import NavMotion from './../layout/NavMotion';
-
+import {GameProvider} from '../contexts/GameContext';
 
 // sample page routing
 const HomePage = Loadable(lazy(() => import('../views/homePage')));
@@ -35,6 +35,7 @@ const AuthCodeVerification = Loadable(lazy(() => import('../views/pages/authenti
 
 //-----------------------|| ROUTING RENDER ||-----------------------//
 
+
 const Routes = () => {
     const location = useLocation();
     return (
@@ -49,8 +50,9 @@ const Routes = () => {
                         <Route exact path={'/games/big/'} component={bigGamesPage}  />
                         <Route exact path={'/games/new/'} component={newGamesPage}  />
                         <Route exact path={'/games/old/'} component={oldGamesPage}  />
+                     
                         <Route exact path={'/game/:id/'} component={gameSinglePage} />
-
+                        
                         <Route exact path={'/info/'} component={infoPage}  />
                         <Route exact path={'/termsAndService/'} component={termsAndServicePage}  />
                         <Route exact path={'/about/'} component={aboutPage}  />

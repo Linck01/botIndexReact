@@ -1,6 +1,12 @@
 {
 	"folders": [
 		{
+			"path": "..\\betpot-rest"
+		},
+		{
+			"path": "."
+		},
+		{
 			"path": "..\\berryFullTemplateReact"
 		}
 	],

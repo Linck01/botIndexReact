@@ -45,7 +45,7 @@ const HostedGamesPage = () => {
         setIsLoadingHostedGames(true);
 
         try {
-            const response = await axios.get(config.apiHost + '/v1/games/', { params: { name: '', userId: auth.user.id, sortBy: 'createdAt', limit: 10 , page: 0 } });
+            const response = await axios.get(config.apiHost + '/v1/games/', { params: { userId: auth.user.id, sortBy: 'createdAt', limit: 10 , page: 0 } });
 
             await fct.sleep(1000);
             setHostedGames(response.data.results); // [{id:1},{id:2},{id:3}]
@@ -72,7 +72,7 @@ const HostedGamesPage = () => {
  
         try {
             const response = await axios.post(config.apiHost + '/v1/games/', { name: addGameNameRef.current.childNodes[0].value });
-            
+
             await fct.sleep(1000);
             
         } catch (e) {
@@ -156,11 +156,11 @@ const HostedGamesPage = () => {
                 </>
             ) : ''}
 
-            {!isLoadingHostedGames ? hostedGames.map( (bot) => {
+            {!isLoadingHostedGames ? hostedGames.map( (game) => {
                 return (
-                    <Grid item xs={12} lg={4} key={bot.id}>
+                    <Grid item xs={12} lg={4} key={game.id}>
                     
-                            <BotProfileCard {...userProfile} />
+                            <BotProfileCard {...game} />
                         
                     </Grid>
                 );

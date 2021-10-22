@@ -19,3 +19,6 @@ export const SET_OUTLINED_FILLED = '@customization/SET_OUTLINED_FILLED';
 
 // action - snackbar
 export const SNACKBAR_OPEN = '@snackbar/SNACKBAR_OPEN';
+
+// action - game (& websocket)
+export const GAME_INITIALIZE = 'GAME_INITIALIZE';

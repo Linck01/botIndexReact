@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // material-ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -89,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
 
 //-----------------------|| USER PROFILE CARD ||-----------------------//
 
-const UserProfileCard = ({ avatar, name, profile, role, status }) => {
+const UserProfileCard = ({ id, avatar, name, profile, role, status }) => {
     const classes = useStyles();
     let avatarProfile = avatar && avatarImage(`./${avatar}`).default;
     let imageProfile = profile && avatarImage(`./${profile}`).default;
@@ -129,9 +130,11 @@ const UserProfileCard = ({ avatar, name, profile, role, status }) => {
                     </Grid>
                     
                     <Grid item xs={12}>
-                        <Button variant="outlined" color="primary" className={classes.btnProfile} startIcon={<ChatBubbleTwoToneIcon />}>
-                            Details
-                        </Button>
+                        <Link to={'/game/' + id}>
+                            <Button variant="outlined" color="primary" className={classes.btnProfile} startIcon={<ChatBubbleTwoToneIcon />}>
+                                Details
+                            </Button>
+                        </Link>
                     </Grid>
                 </Grid>
             </CardContent>
