@@ -6,6 +6,7 @@ import jwtDecode from 'jwt-decode';
 // reducer - state management
 import { ACCOUNT_INITIALIZE, LOGIN, LOGOUT, REGISTER } from '../store/actions';
 import accountReducer from '../store/accountReducer';
+import io from 'socket.io-client';
 
 // project imports
 import axios from '../utils/axios';
@@ -27,11 +28,13 @@ const verifyToken = (serviceToken) => {
     return decoded.exp > Date.now() / 1000;
 };
 
-const setSession = (userId, accessToken) => {
+const setSessionAndSocket = (userId, accessToken) => {
     if (userId && accessToken) {
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('userId', userId);
         axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+
+        // Set socket for notifications
     } else {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userId');
@@ -55,7 +58,7 @@ export const JWTProvider = ({ children }) => {
  
         console.log(response);
         const { tokens, user } = response.data;
-        setSession(user.id, tokens.access.token);
+        setSessionAndSocket(user.id, tokens.access.token);
         dispatch({
             type: LOGIN,
             payload: {
@@ -65,7 +68,7 @@ export const JWTProvider = ({ children }) => {
     };
 
     const logout = () => {
-        setSession(null);
+        setSessionAndSocket(null);
         dispatch({ type: LOGOUT });
     };
 
@@ -74,7 +77,7 @@ export const JWTProvider = ({ children }) => {
  
         console.log(response);
         const { tokens, user } = response.data;
-        setSession(user.id, tokens.access.token);
+        setSessionAndSocket(user.id, tokens.access.token);
         dispatch({
             type: REGISTER,
             payload: {
@@ -90,7 +93,7 @@ export const JWTProvider = ({ children }) => {
                 const userId = window.localStorage.getItem('userId');
 
                 if (userId && accessToken && verifyToken(accessToken)) {
-                    setSession(userId, accessToken);
+                    setSessionAndSocket(userId, accessToken);
                     const response = await axios.get(config.authHost + '/v1/users/' + userId);
 
                     const user = response.data;

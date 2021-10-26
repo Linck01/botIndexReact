@@ -16,9 +16,9 @@ import { gridSpacing } from '../../store/constant';
 
 // project imports
 import MainCard from '../../ui-component/cards/MainCard';
-import ChatMainPage from './chat';
-import GameInfo from './GameInfo';
-import {GameProvider} from '../../contexts/GameContext';
+//import BetList from './BetList';
+import GameTabs from './GameTabs';
+import { GameProvider } from '../../contexts/GameContext';
 
 //==============================|| SAMPLE PAGE ||==============================//
 
@@ -27,7 +27,7 @@ import {GameProvider} from '../../contexts/GameContext';
 const SamplePage = () => {
     //let { id } = useParams();
     //const [isLoading, setIsLoading] = useState(true);
-    const auth = useAuth();
+    const game = useGame();
     //const [game, setGame] = useState({});
     //const [socket, setSocket] = useState();
 
@@ -54,22 +54,14 @@ const SamplePage = () => {
     }*/
 
     useEffect(() => {
-        //initGameAndWebSocket(); 
+        //initGameAndWebSocket() ; 
     }, []);
 
 
 
     return (
         <GameProvider>
-        <Grid container spacing={gridSpacing}>
-            <Grid item xs={12} lg={7} key={'betArea'}>
-                <GameInfo></GameInfo>         
-            </Grid>
-            <Grid item xs={12} lg={5} key='chat'>
-                 <ChatMainPage></ChatMainPage>   
-                 <br /> <br /> <br /> <br /> <br /> <br />                 
-            </Grid>
-        </Grid>
+            <GameTabs></GameTabs>
         </GameProvider>
     );
 };

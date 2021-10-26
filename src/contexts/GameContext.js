@@ -51,10 +51,17 @@ export const GameProvider = ({ children }) => {
     const initSocket = async (gameId, url) => {
         if (!state.socket) {
             const socket = io(url,{ transports: ['websocket','polling']});
-            console.log('NEW CONN');
+            socket.on('connect', function() {
+                socket.emit('room', gameId);
+            });
+            socket.on('message', function(data) {
+                console.log('Incoming message:', data);
+             });
+             
+            console.log('New connection to websocket.');
             return socket;
         } else if (!state.socket.connected)
-            console.log('RECONNECT PLS');
+            console.log('Please reconnect to websocket.');
 
     };
 
