@@ -93,8 +93,8 @@ const GameTabs = () => {
     };
 
     return (
-        <Grid container spacing={gridSpacing}>
-            <Grid item xs={8}>
+      
+  
             <MainCard>
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12}>
@@ -113,7 +113,7 @@ const GameTabs = () => {
                             variant="scrollable"
                         >
                             <Tab key={0} component={Link} to="#" icon={<AccountCircleTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label={'Bets'} {...a11yProps(0)} />
-                            <Tab key={2} component={Link} to="#" icon={<LibraryBooksTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label={'Members'} {...a11yProps(1)} />
+                            <Tab key={1} component={Link} to="#" icon={<LibraryBooksTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label={'Members'} {...a11yProps(1)} />
                             <Tab key={2} component={Link} to="#" icon={<LibraryBooksTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label={'Log'} {...a11yProps(2)} />
                             <Tab key={3} component={Link} to="#" icon={<LockTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label={'Info'} {...a11yProps(3)} />
                             <Tab key={4} component={Link} to="#" icon={<MailTwoToneIcon sx={{ fontSize: '1.3rem' }} />} label={'Settings'} {...a11yProps(4)} />
@@ -138,13 +138,10 @@ const GameTabs = () => {
                     </Grid>
                 </Grid>
                 </MainCard>
-            </Grid>
-            <Grid item xs={4}>
-                <GameChat></GameChat>
-            </Grid>
-               
+         
            
-         </Grid>
+               
+       
     );
 };
 

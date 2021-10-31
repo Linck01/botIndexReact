@@ -1,6 +1,8 @@
 import React, { useState, useContext } from 'react';
 import { useDispatch } from 'react-redux';
 import useGame from '../../../hooks/useGame';
+import fct from '../../../utils/fct.js';
+
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
@@ -17,7 +19,7 @@ import {
 } from '@material-ui/core';
 
 import MoreHorizTwoToneIcon from '@material-ui/icons/MoreHorizTwoTone';
-
+import { SNACKBAR_OPEN } from '../../../store/actions';
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Picker, { SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react';
@@ -34,6 +36,7 @@ import GameContext from '../../../contexts/GameContext';
 import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone';
 import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
 import MoodTwoToneIcon from '@material-ui/icons/MoodTwoTone';
+import utils from 'util';
 
 const avatarImage = require.context('../../../assets/images/users', true);
 
@@ -54,66 +57,74 @@ const GameChat = (props) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { user } = useAuth();
-    const game = useGame();
-
-    //const { game, socket } = useContext(GameContext);
+    const { game } = useContext(GameContext);
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
 
-    // handle right sidebar dropdown menu
-    const [anchorEl, setAnchorEl] = React.useState(null);
-    const handleClickSort = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleCloseSort = () => {
-        setAnchorEl(null);
-    };
-
-    // set chat details page open when user is selected from sidebar
-    const [emailDetails, setEmailDetails] = React.useState(false);
-    const handleUserChange = (event, newValue) => {
-        setEmailDetails((prev) => !prev);
-    };
-
-    // toggle sidebar
-    const [openChatDrawer, setOpenChatDrawer] = React.useState(true);
-    const handleDrawerOpen = () => {
-        setOpenChatDrawer((prevState) => !prevState);
-    };
-
-    // close sidebar when widow size below 'md' breakpoint
-    React.useEffect(() => {
-        setOpenChatDrawer(!matchDownSM);
-    }, [matchDownSM]);
-
-    
- 
     // fetch chat history for selected user
     const [data, setData] = React.useState([]);
-    const getData = async (user) => {
+    const getData = async () => {
+        try {
+            const res = await axios.get('http://' + game.server + '/v1/messages/', 
+                { params: { gameId: game.id, sortBy: 'createdAt', limit: 10 , page: 0 } });
+            
+            await fct.sleep(1000);
 
-        //setData(game.chatHistory || []);
+            console.log(res);
+            
+            setData(res.data.results || []);
+
+        } catch (e) {
+            console.log(e);
+            
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Error while loading the chat.' ,
+                variant: 'alert',
+                alertSeverity: 'error',
+                close: true
+            });
+        }  
     };
 
     React.useEffect(() => {
-        getData(user);
+        getData();
     }, []);
 
     // handle new message form
     const [message, setMessage] = useState('');
-    const handleOnSend = () => {
-        const d = new Date();
-        setMessage('');
-        const newMessage = {
-            from: 'User1',
-            to: user.name,
-            text: message,
-            time: d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        };
-        setData((prevState) => [...prevState, newMessage]);
-        axios.post('/api/chat/insert', {
-            ...newMessage
-        });
+    const handleOnSend = async () => {
+        try {
+            if (!user) {
+                dispatch({
+                    type: SNACKBAR_OPEN,
+                    open: true,
+                    message: 'You need to be logged in to write messages.' ,
+                    variant: 'alert',
+                    alertSeverity: 'error',
+                    close: true
+                });
+                return;
+            }
+
+            const res = await axios.post('http://' + game.server + '/v1/messages/', {
+                userId: user.id,
+                gameId: game.id,
+                message: message
+            });
+
+        } catch (e) {
+            console.log(e);
+            
+            dispatch({
+                type: SNACKBAR_OPEN,
+                open: true,
+                message: 'Error while sending a message.' ,
+                variant: 'alert',
+                alertSeverity: 'error',
+                close: true
+            });
+        }
     };
 
     const handleEnter = (event) => {
@@ -145,7 +156,7 @@ const GameChat = (props) => {
             bgcolor: theme.palette.mode === 'dark' ? 'dark.main' : 'grey.50'
         }}>
 
-            <Grid container spacing={0.5}>
+            {/*}<Grid container spacing={0.5}>
                 <Grid item xs={12} align='right'>
                     <IconButton onClick={handleClickSort}>
                         <MoreHorizTwoToneIcon />
@@ -168,17 +179,11 @@ const GameChat = (props) => {
                     </Menu>
                 </Grid>
             </Grid>
-            <Divider sx={{ mt: theme.spacing(2) }} />
+            <Divider sx={{ mt: theme.spacing(2) }} />{*/}
             
             <PerfectScrollbar className={classes.ScrollHeight}>
                 <CardContent>
-                    <ChartHistory
-                        theme={theme}
-                        handleUserDetails={handleUserChange}
-                        handleDrawerOpen={handleDrawerOpen}
-                        user={user}
-                        data={data}
-                    />
+                    <ChartHistory theme={theme} data={data} />
                 </CardContent>
             </PerfectScrollbar>
             <Grid item xs={12}>

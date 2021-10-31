@@ -18,6 +18,7 @@ import { gridSpacing } from '../../store/constant';
 import MainCard from '../../ui-component/cards/MainCard';
 //import BetList from './BetList';
 import GameTabs from './GameTabs';
+import GameChat from './GameChat';
 import { GameProvider } from '../../contexts/GameContext';
 
 //==============================|| SAMPLE PAGE ||==============================//
@@ -37,14 +38,14 @@ const SamplePage = () => {
         await fct.sleep(1000);
 
         if (process.env.NODE_ENV != 'production') 
-            response.data.gameServer = 'localhost:3005';
+            response.data.server = 'localhost:3005';
 
         setGame(response.data);
         setIsLoading(false);
 
         console.log(socket);
         if (!socket) {
-            setSocket(io(response.data.gameServer,{ transports: ['websocket','polling']}));
+            setSocket(io(response.data.server,{ transports: ['websocket','polling']}));
             console.log('NEW CONN');
         } else if (!socket.connected)
             console.log('RECONNECT PLS');
@@ -61,7 +62,15 @@ const SamplePage = () => {
 
     return (
         <GameProvider>
-            <GameTabs></GameTabs>
+            <Grid container spacing={gridSpacing}>
+            <Grid item xs={8}>
+                <GameTabs></GameTabs>
+            </Grid>
+            <Grid item xs={4}>
+                <GameChat></GameChat>
+            </Grid>
+         </Grid>
+           
         </GameProvider>
     );
 };

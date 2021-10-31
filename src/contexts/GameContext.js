@@ -39,8 +39,9 @@ export const GameProvider = ({ children }) => {
             const response = await axios.get(config.authHost + '/v1/games/' + id);
             
             if (process.env.NODE_ENV != 'production') 
-                response.data.gameServer = 'localhost:3005';
+                response.data.server = 'localhost:3005';
 
+            response.data.server = response.data.server;
             return response.data;
         } catch (err) {
             console.error(err);
@@ -76,7 +77,7 @@ export const GameProvider = ({ children }) => {
     useEffect(() => {
         const init = async () => {
             const game = await initGame();
-            const socket = await initSocket(game.id,game.gameServer);
+            const socket = await initSocket(game.id,game.server);
             dispatch({ type: GAME_INITIALIZE, payload: { game, socket } });
         };
 

@@ -28,7 +28,6 @@ const HostedGamesPage = () => {
     const [isLoadingAddGame, setIsLoadingAddGame] = useState(false);
     const addGameNameRef = useRef(null);
     const auth = useAuth();
-    console.log(auth);
 
     const dispatch = useDispatch();
 
@@ -158,10 +157,8 @@ const HostedGamesPage = () => {
 
             {!isLoadingHostedGames ? hostedGames.map( (game) => {
                 return (
-                    <Grid item xs={12} lg={4} key={game.id}>
-                    
-                            <BotProfileCard {...game} />
-                        
+                    <Grid item xs={12} lg={4} key={game.id}>              
+                        <BotProfileCard {...game} />     
                     </Grid>
                 );
             }) : ''}
