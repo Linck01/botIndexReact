@@ -6,20 +6,14 @@ import { GAME_INITIALIZE, LOGIN } from './actions';
 const accountReducer = (state, action) => {
     switch (action.type) {
         case GAME_INITIALIZE: {
-            const { game, socket } = action.payload;
+            const { game, socket, amIAdmin, amIMod } = action.payload;
             return {
                 ...state,
+                amIAdmin,
+                amIMod,
                 game,
                 socket,
                 isInitialized: true
-            };
-        }
-        case LOGIN: {
-            const { user } = action.payload;
-            return {
-                ...state,
-                isLoggedIn: true,
-                user
             };
         }
         default: {

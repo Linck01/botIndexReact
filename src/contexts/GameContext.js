@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
+import useAuth from '../hooks/useAuth';
 
 // third-party
 import jwtDecode from 'jwt-decode';
@@ -18,6 +19,8 @@ import config from '../config';
 const initialState = {
     game: null,
     socket: null,
+    amIAdmin: false,
+    amIMod: false,
     isInitialized: false
 };
 
@@ -33,6 +36,7 @@ const GameContext = createContext({
 export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
     let { id } = useParams();
+    const { user } = useAuth();
 
     const initGame = async () => {
         try {
@@ -52,14 +56,12 @@ export const GameProvider = ({ children }) => {
     const initSocket = async (gameId, url) => {
         if (!state.socket) {
             const socket = io(url,{ transports: ['websocket','polling']});
+            console.log('Connecting to websocket.');
             socket.on('connect', function() {
                 socket.emit('room', gameId);
+                console.log('Joining room ' + gameId);
             });
-            socket.on('message', function(data) {
-                console.log('Incoming message:', data);
-             });
-             
-            console.log('New connection to websocket.');
+            
             return socket;
         } else if (!state.socket.connected)
             console.log('Please reconnect to websocket.');
@@ -78,7 +80,17 @@ export const GameProvider = ({ children }) => {
         const init = async () => {
             const game = await initGame();
             const socket = await initSocket(game.id,game.server);
-            dispatch({ type: GAME_INITIALIZE, payload: { game, socket } });
+
+            let amIAdmin = false, amIMod = false;
+            if (user) {
+
+                if (game.userId == user.id)
+                    amIAdmin = true;
+                if (game.moderators.includes(user.id))
+                    amIMod = true;
+            }
+
+            dispatch({ type: GAME_INITIALIZE, payload: { game, socket, amIAdmin, amIMod } });
         };
 
         init();

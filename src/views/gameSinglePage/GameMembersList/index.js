@@ -1,51 +1,18 @@
-import * as React from 'react';
-
-// material-ui
-import { makeStyles } from '@material-ui/core/styles';
+import React from 'react'
+import styled from 'styled-components'
+import { useTable, usePagination } from 'react-table'
 import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import { makeStyles } from '@material-ui/core/styles';
 
-// project imports
-import MainCard from '../../../ui-component/cards/MainCard';
+import SubCard from '../../../ui-component/cards/SubCard';
 import SecondaryAction from '../../../ui-component/cards/CardSecondaryAction';
 
-// table columns
-const columns = [
-    { id: 'name', label: 'Name', minWidth: 170 },
-    { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-];
+import makeData from './makeData'
+const data = makeData(25);
 
-// table data
-function createData(name, code) {
-    return { name, code };
-}
 
-const rows = [
-    createData('Indiaf', 1324665171354),
-    createData('Indiag', 13241556571354),
-    createData('Indiah', 1324156671354),
-    createData('Indiagf', 132455556171354),
-    createData('Indiabcv', 13245556171354),
-    createData('Indiacv', 132456171354),
-    createData('Indiabv', 1324556556171354),
-    createData('Indiasdd', 132554556171354),
-    createData('Indiacbv', 1325465171354),
-    createData('Indiavbn', 13255456171354),
-    createData('Indiagbv', 13254171354),
-    createData('India', 1325545171354),
-    createData('Indiaxsd', 132546171354),
-    createData('Indiaert', 132554671354),
-    createData('Indiaz', 1325416571354),
-    createData('Indiat5u', 132554176561354),
-    createData('Indiaii', 1325541761354),
-    createData('Indiao', 13241761354),
-    createData('Indiapo', 1325416671354),
-    createData('Indiauzt', 1324651671354),
-    createData('Indiaew', 13241671354),
-];
-
-// style constant
-const useStyles = makeStyles({
+  // style constant
+  const useStyles = makeStyles({
     root: {
         width: '100%',
         overflow: 'hidden'
@@ -55,71 +22,152 @@ const useStyles = makeStyles({
     }
 });
 
-//-----------------------|| TABLE - STICKY HEADER ||-----------------------//
 
-export default function StickyHeadTable() {
-    const classes = useStyles();
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
 
-    const handleChangePage = (event, newPage) => {
-        setPage(newPage);
-    };
+const columns = 
+     [
+      {
+        Header: 'Username',
+        columns: [
+            {
+                Header: 'First Name',
+                accessor: 'firstName',
+            }
+        ]
+      },
+      {
+        Header: 'Honor',
+        columns: [
+            {
+                Header: 'Last Name',
+                accessor: 'lastName',
+            }
+        ]
+      },
+    ];
 
-    const handleChangeRowsPerPage = (event) => {
-        setRowsPerPage(+event.target.value);
-        setPage(0);
-    };
+function StickyHeadTable({}) {
+  // Use the state and functions returned from useTable to build your UI
+  const {
+    getTableProps,
+    getTableBodyProps,
+    headerGroups,
+    prepareRow,
+    page, // Instead of using 'rows', we'll use page,
+    // which has only the rows for the active page
 
-    return (
-        <MainCard
-            content={false}
-            title="Members"
-            secondary={<SecondaryAction link="https://next.material-ui.com/components/tables/" />}
-        >
-            {/* table */}
+    // The rest of these things are super handy, too ;)
+    canPreviousPage,
+    canNextPage,
+    pageOptions,
+    pageCount,
+    gotoPage,
+    nextPage,
+    previousPage,
+    setPageSize,
+    state: { pageIndex, pageSize },
+  } = useTable(
+    {
+      columns,
+      data,
+      initialState: { pageIndex: 0 },
+    },
+    usePagination
+  )
+
+  const classes = useStyles();
+
+
+  // Render the UI for your table
+  return (
+    <>
+        <SubCard content={false}>
             <TableContainer className={classes.container}>
-                <Table stickyHeader aria-label="sticky table">
-                
+                <Table  stickyHeader aria-label="sticky table">
                     <TableHead>
+                       
                         <TableRow>
-                            {columns.map((column) => (
-                                <TableCell sx={{ py: 1.5 }} key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                                    {column.label}
-                                </TableCell>
-                            ))}
+                                {columns.map((column) => (
+                                    <TableCell sx={{ py: 1.5 }} key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
+                                        {column.Header}
+                                    </TableCell>
+                                ))}
                         </TableRow>
+                      
                     </TableHead>
-                    <TableBody>
-                        {rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                    <TableBody {...getTableBodyProps()}>
+                        {page.map((row, i) => {
+                            console.log(row);
+                            prepareRow(row)
                             return (
-                                <TableRow sx={{ py: 1 }} hover role="checkbox" tabIndex={-1} key={row.code}>
-                                    {columns.map((column) => {
-                                        const value = row[column.id];
-                                        return (
-                                            <TableCell key={column.id} align={column.align}>
-                                                {column.format && typeof value === 'number' ? column.format(value) : value}
-                                            </TableCell>
-                                        );
-                                    })}
-                                </TableRow>
-                            );
+                            <TableRow  sx={{ py: 1 }} hover role="checkbox" tabIndex={-1}>
+                                {row.cells.map(cell => {
+                                    if (cell.value)
+                                        return <TableCell>{cell.render('Cell')}</TableCell>
+                                })}
+                            </TableRow>
+                            )
                         })}
                     </TableBody>
-                
                 </Table>
             </TableContainer>
-
-            {/* table pagination */}
-            <TablePagination
-                rowsPerPageOptions={[10, 25, 100]}
-                component="div"
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                onPageChange={handleChangePage}
-                onRowsPerPageChange={handleChangeRowsPerPage}
-            />
-        </MainCard>
-    );
+        </SubCard>
+        <br />
+      {/* 
+        Pagination can be built however you'd like. 
+        This is just a very basic UI implementation:
+      */}
+      <div className="pagination" style={{width:'100%', textAlign: 'center'}}>
+        <span>
+          Page{' '}
+          <strong>
+            {pageIndex + 1} of {pageOptions.length}
+          </strong>{' '}
+        </span>
+        <br />
+        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
+          {'<<'}
+        </button>{' '}
+        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
+          {'<'}
+        </button>{' '}
+        <button onClick={() => nextPage()} disabled={!canNextPage}>
+          {'>'}
+        </button>{' '}
+        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
+          {'>>'}
+        </button>{' '}
+        
+        
+        {/*}
+        <span>
+          | Go to page:{' '}
+          <input
+            type="number"
+            defaultValue={pageIndex + 1}
+            onChange={e => {
+              const page = e.target.value ? Number(e.target.value) - 1 : 0
+              gotoPage(page)
+            }}
+            style={{ width: '100px' }}
+          />
+        </span>{' '}
+        <select
+          value={pageSize}
+          onChange={e => {
+            setPageSize(Number(e.target.value))
+          }}
+        >
+          {[10, 20, 30, 40, 50].map(pageSize => (
+            <option key={pageSize} value={pageSize}>
+              Show {pageSize}
+            </option>
+          ))}
+        </select>
+          {*/}
+      </div>
+    </>
+  )
 }
+
+export default StickyHeadTable

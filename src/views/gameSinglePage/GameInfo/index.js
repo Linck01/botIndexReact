@@ -1,5 +1,6 @@
 import React from 'react';
-import useGame from '../../../hooks/useGame';
+
+import GameContext from '../../../contexts/GameContext';
 
 // material-ui
 import {
@@ -33,7 +34,7 @@ import Avatar3 from '../../../assets/images/users/avatar-3.png';
 //-----------------------|| PROFILE 1 - PROFILE ||-----------------------//
 
 const GameInfo = () => {
-    const {game, socket} = useGame();
+    const {game, socket} = React.useContext(GameContext);
    
     return (
         <Grid container spacing={gridSpacing}>

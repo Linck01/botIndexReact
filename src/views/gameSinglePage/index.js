@@ -4,7 +4,6 @@ import { useState, useEffect, useContext } from 'react';
 import axios from '../../utils/axios';
 import config from '../../config';
 import useAuth from '../../hooks/useAuth';
-import useGame from '../../hooks/useGame';
 import fct from '../../utils/fct.js';
 import { useSocketIO, ReadyState } from 'react-use-websocket';
 import { useEventSource } from 'react-use-websocket';
@@ -20,6 +19,7 @@ import MainCard from '../../ui-component/cards/MainCard';
 import GameTabs from './GameTabs';
 import GameChat from './GameChat';
 import { GameProvider } from '../../contexts/GameContext';
+import GameContext from '../../contexts/GameContext';
 
 //==============================|| SAMPLE PAGE ||==============================//
 
@@ -28,7 +28,7 @@ import { GameProvider } from '../../contexts/GameContext';
 const SamplePage = () => {
     //let { id } = useParams();
     //const [isLoading, setIsLoading] = useState(true);
-    const game = useGame();
+    const game = useContext(GameContext);
     //const [game, setGame] = useState({});
     //const [socket, setSocket] = useState();
 
@@ -63,10 +63,10 @@ const SamplePage = () => {
     return (
         <GameProvider>
             <Grid container spacing={gridSpacing}>
-            <Grid item xs={8}>
+            <Grid item lg={8} xs={12}>
                 <GameTabs></GameTabs>
             </Grid>
-            <Grid item xs={4}>
+            <Grid item lg={4} xs={12}>
                 <GameChat></GameChat>
             </Grid>
          </Grid>

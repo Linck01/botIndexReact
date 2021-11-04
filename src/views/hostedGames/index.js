@@ -114,7 +114,7 @@ const HostedGamesPage = () => {
     return (
         <>
         
-        <MainCard title="Add a Bot">
+        <MainCard title="Add a Game">
             <Grid container spacing={gridSpacing}>
                 <Grid item xs zeroMinWidth>
                     <Grid container alignItems="center" spacing={gridSpacing}>
@@ -148,9 +148,6 @@ const HostedGamesPage = () => {
                     <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>
                         <br /><br /><br />
                         <CircularProgress color="secondary" size="10em"  />
-                            {/*<MuiTypography variant="h1" gutterBottom>
-                                            Loading
-                            </MuiTypography>*/}
                     </Grid>
                 </>
             ) : ''}

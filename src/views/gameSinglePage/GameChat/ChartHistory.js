@@ -26,37 +26,27 @@ const ChartHistory = ({ data, theme }) => {
     }, [data.length, scrollToBottom]);
 
     return (
-        <Grid item xs={12}>
+   
             <Grid container spacing={gridSpacing} ref={wrapper}>
                 {data.map((history, index) => {
-                    console.log(history);
                     return (
                         <React.Fragment key={index}>
+                            {/*console.log(JSON.stringify(history))*/}
                            <Grid container direction="column" spacing={1}>
-                                <Grid item>
-                                <MuiTypography variant="h6" gutterBottom>
-                                    {/*history.user.name*/}
-                                  
-                                    <MuiTypography variant="subtitle2" gutterBottom>
+                                <Grid item style={{marginBottom: '2%'}}>                
+                                    <Typography variant="title" color="secondary.200" >
+                                        {history.user.username + ': '}
+                                    </Typography>
+                                    <Typography variant="subheading">
                                         {history.message}
-                                    </MuiTypography>
-                                  
-                                </MuiTypography>
+                                    </Typography>
                                 </Grid>
                             </Grid>
-                               
-                                        
-                                          
-                                                         
-                                                        
-                                        
-                                   
-                       
                         </React.Fragment>
                     );
                 })}
             </Grid>
-        </Grid>
+      
     );
 };
 

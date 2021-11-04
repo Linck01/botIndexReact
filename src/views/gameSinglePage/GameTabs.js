@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import { useContext } from 'react';
 // material-ui
 import { makeStyles } from '@material-ui/core/styles';
 import { Box, Grid, Tab, Tabs } from '@material-ui/core';
@@ -15,9 +15,7 @@ import GameLog from './GameLog';
 
 import MainCard from '../../ui-component/cards/MainCard';
 import { gridSpacing } from '../../store/constant';
-import { GameProvider } from '../../contexts/GameContext';
-import useGame from '../../hooks/useGame';
-import GameChat from './GameChat';
+import GameContext from '../../contexts/GameContext';
 
 // assets
 import AccountCircleTwoToneIcon from '@material-ui/icons/AccountCircleTwoTone';
@@ -85,7 +83,9 @@ function a11yProps(index) {
 
 const GameTabs = () => {
     const classes = useStyles();
-    const { game, socket } = useGame();
+    const { game, socket } = useContext(GameContext);
+  
+
     const [ value, setValue ] = React.useState(0);
 
     const handleChange = (event, newValue) => {

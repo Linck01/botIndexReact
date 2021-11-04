@@ -1,6 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import useGame from '../../../hooks/useGame';
 import fct from '../../../utils/fct.js';
 
 // material-ui
@@ -57,21 +56,33 @@ const GameChat = (props) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { user } = useAuth();
-    const { game } = useContext(GameContext);
+    const { game, socket } = useContext(GameContext);
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    const messageInputRef = useRef('messageInput');
+
+    socket.on('chatMessage', function(newMessage) {
+        console.log('Incoming chat message:', newMessage);
+        
+        const tmp = [];
+        for (let d of data) tmp.push(d);
+        tmp.push(newMessage);
+        
+        setData(tmp);
+     });
 
     // fetch chat history for selected user
     const [data, setData] = React.useState([]);
     const getData = async () => {
-        try {
-            const res = await axios.get('http://' + game.server + '/v1/messages/', 
-                { params: { gameId: game.id, sortBy: 'createdAt', limit: 10 , page: 0 } });
-            
-            await fct.sleep(1000);
 
-            console.log(res);
+        try {
+            const res = await axios.get('http://' + game.server + '/v1/messages/',
+                { params: { gameId: game.id, sortBy: '-createdAt', limit: 10 , page: 0 } });
             
-            setData(res.data.results || []);
+            console.log(res);
+
+            await fct.sleep(1000);
+            
+            setData(res.data.results.reverse() || []);
 
         } catch (e) {
             console.log(e);
@@ -92,7 +103,7 @@ const GameChat = (props) => {
     }, []);
 
     // handle new message form
-    const [message, setMessage] = useState('');
+
     const handleOnSend = async () => {
         try {
             if (!user) {
@@ -110,8 +121,10 @@ const GameChat = (props) => {
             const res = await axios.post('http://' + game.server + '/v1/messages/', {
                 userId: user.id,
                 gameId: game.id,
-                message: message
+                message: messageInputRef.current.querySelectorAll('input[type=text]')[0].value
             });
+
+            messageInputRef.current.querySelectorAll('input[type=text]')[0].value = '';
 
         } catch (e) {
             console.log(e);
@@ -119,7 +132,7 @@ const GameChat = (props) => {
             dispatch({
                 type: SNACKBAR_OPEN,
                 open: true,
-                message: 'Error while sending a message.' ,
+                message: 'Error while sending a message. ' ,
                 variant: 'alert',
                 alertSeverity: 'error',
                 close: true
@@ -131,12 +144,14 @@ const GameChat = (props) => {
         if (event.key !== 'Enter') {
             return;
         }
+
         handleOnSend();
     };
 
     // handle emoji
     const onEmojiClick = (event, emojiObject) => {
-        setMessage(message + emojiObject.emoji);
+        messageInputRef.current.querySelectorAll('input[type=text]')[0].value = 
+        messageInputRef.current.querySelectorAll('input[type=text]')[0].value + emojiObject.emoji;
     };
 
     const [anchorElEmoji, setAnchorElEmoji] = React.useState(null);
@@ -231,8 +246,7 @@ const GameChat = (props) => {
                             fullWidth
                             label="Type a Message"
                             variant="outlined"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                            ref={messageInputRef}
                             onKeyPress={handleEnter}
                         />
                     </Grid>
