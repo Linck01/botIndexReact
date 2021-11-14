@@ -1,11 +1,12 @@
 import React, { useState, useContext, useRef } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import fct from '../../../utils/fct.js';
 
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {
     CardContent,
+    Drawer,
     ClickAwayListener,
     Grid,
     IconButton,
@@ -18,7 +19,7 @@ import {
 } from '@material-ui/core';
 
 import MoreHorizTwoToneIcon from '@material-ui/icons/MoreHorizTwoTone';
-import { SNACKBAR_OPEN } from '../../../store/actions';
+import { SNACKBAR_OPEN, NEW_MESSAGES } from '../../../store/actions';
 // third-party
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Picker, { SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react';
@@ -51,56 +52,51 @@ const useStyles = makeStyles((theme) => ({
 
 //-----------------------|| APPLICATION CHAT ||-----------------------//
 
-const GameChat = (props) => {
+const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     const classes = useStyles();
     const theme = useTheme();
     const dispatch = useDispatch();
     const { user } = useAuth();
-    const { game, socket } = useContext(GameContext);
+    const { game, socket, chatHistory, addMessages } = useContext(GameContext);
+    const messageInputRef = useRef();
+    const scrollBarRef = useRef();
+    const customization = useSelector((state) => state.customization);
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-    const messageInputRef = useRef('messageInput');
+    
 
-    socket.on('chatMessage', function(newMessage) {
-        console.log('Incoming chat message:', newMessage);
-        
-        const tmp = [];
-        for (let d of data) tmp.push(d);
-        tmp.push(newMessage);
-        
-        setData(tmp);
-     });
-
-    // fetch chat history for selected user
-    const [data, setData] = React.useState([]);
     const getData = async () => {
 
         try {
             const res = await axios.get('http://' + game.server + '/v1/messages/',
                 { params: { gameId: game.id, sortBy: '-createdAt', limit: 10 , page: 0 } });
             
-            console.log(res);
+         
 
             await fct.sleep(1000);
             
-            setData(res.data.results.reverse() || []);
+            addMessages(res.data.results.reverse());
 
+            socket.on('chatMessage', function(newMessage) {
+                addMessages([newMessage]);
+            });
+            
+            //setData(res.data.results.reverse() || []);
         } catch (e) {
             console.log(e);
-            
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error while loading the chat.' ,
-                variant: 'alert',
-                alertSeverity: 'error',
-                close: true
-            });
+
         }  
     };
 
     React.useEffect(() => {
-        getData();
+        if (chatHistory.length == 0)
+            getData();
+
+        return function cleanup() {
+            socket.off('chatMessage');
+        };
     }, []);
+
+
 
     // handle new message form
 
@@ -165,8 +161,13 @@ const GameChat = (props) => {
         setAnchorElEmoji(null);
     };
 
+    const [scrollBarEl, setScrollBarEl] = React.useState(null);
+    
+
     return (
-     
+        
+       
+
         <MainCard sx={{
             bgcolor: theme.palette.mode === 'dark' ? 'dark.main' : 'grey.50'
         }}>
@@ -196,9 +197,9 @@ const GameChat = (props) => {
             </Grid>
             <Divider sx={{ mt: theme.spacing(2) }} />{*/}
             
-            <PerfectScrollbar className={classes.ScrollHeight}>
+            <PerfectScrollbar className={classes.ScrollHeight} containerRef={ref => {setScrollBarEl(ref);}}>
                 <CardContent>
-                    <ChartHistory theme={theme} data={data} />
+                    <ChartHistory theme={theme} data={chatHistory} scrollBarEl={scrollBarEl} scrollBarRef={scrollBarRef} />
                 </CardContent>
             </PerfectScrollbar>
             <Grid item xs={12}>
@@ -264,11 +265,7 @@ const GameChat = (props) => {
             </Grid>
             
         </MainCard>
-                 
-                    
-            
-            
-     
+
     );
 };
 

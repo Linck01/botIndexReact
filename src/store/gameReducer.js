@@ -1,9 +1,9 @@
 // action - state management
-import { GAME_INITIALIZE, LOGIN } from './actions';
+import { GAME_INITIALIZE, NEW_MESSAGES, LOAD_BETPAGE, LOAD_MEMBERPAGE } from './actions';
 
 //-----------------------|| ACCOUNT REDUCER ||-----------------------//
 
-const accountReducer = (state, action) => {
+const gameReducer = (state, action) => {
     switch (action.type) {
         case GAME_INITIALIZE: {
             const { game, socket, amIAdmin, amIMod } = action.payload;
@@ -16,10 +16,34 @@ const accountReducer = (state, action) => {
                 isInitialized: true
             };
         }
+        case NEW_MESSAGES: {
+            let h;
+
+            if (state.chatHistory)
+                h = state.chatHistory.concat(action.messages);
+            else
+                h = action.messages;
+            return {
+                ...state,
+                chatHistory: h
+            };
+        }
+        case LOAD_BETPAGE: {
+            return {
+                ...state,
+                betPage: action.betPage
+            };
+        }
+        case LOAD_MEMBERPAGE: {
+            return {
+                ...state,
+                memberPage: action.memberPage
+            };
+        }
         default: {
             return { ...state };
         }
     }
 };
 
-export default accountReducer;
+export default gameReducer;

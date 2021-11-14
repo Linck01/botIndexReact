@@ -28,7 +28,15 @@ import GameContext from '../../contexts/GameContext';
 const SamplePage = () => {
     //let { id } = useParams();
     //const [isLoading, setIsLoading] = useState(true);
-    const game = useContext(GameContext);
+    const { game }  = useContext(GameContext);
+    // toggle sidebar
+    const [openChatDrawer, setOpenChatDrawer] = React.useState(true);
+
+    const handleChatDrawerOpen = () => {
+        console.log('handleDrawerOpen');
+        setOpenChatDrawer((prevState) => !prevState);
+    };
+    
     //const [game, setGame] = useState({});
     //const [socket, setSocket] = useState();
 
@@ -63,14 +71,16 @@ const SamplePage = () => {
     return (
         <GameProvider>
             <Grid container spacing={gridSpacing}>
-            <Grid item lg={8} xs={12}>
-                <GameTabs></GameTabs>
+                <Grid item lg={openChatDrawer ? 8 : 12} xs={12}>
+                    <GameTabs handleChatDrawerOpen={handleChatDrawerOpen}></GameTabs>
+                </Grid>
+                { openChatDrawer ? (
+                    <Grid item lg={4} xs={12}>
+                        <GameChat handleChatDrawerOpen={handleChatDrawerOpen} openChatDrawer={openChatDrawer}></GameChat>
+                    </Grid>
+                ) : '' };
+
             </Grid>
-            <Grid item lg={4} xs={12}>
-                <GameChat></GameChat>
-            </Grid>
-         </Grid>
-           
         </GameProvider>
     );
 };

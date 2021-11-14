@@ -22,3 +22,6 @@ export const SNACKBAR_OPEN = '@snackbar/SNACKBAR_OPEN';
 
 // action - game (& websocket)
 export const GAME_INITIALIZE = 'GAME_INITIALIZE';
+export const NEW_MESSAGES = 'NEW_MESSAGES';
+export const LOAD_BETPAGE = 'LOAD_BETPAGE';
+export const LOAD_MEMBERPAGE = 'LOAD_MEMBERPAGE';

@@ -11,14 +11,14 @@ import { gridSpacing } from '../../../store/constant';
 
 //-----------------------|| CHAT MESSAGE HISTORY ||-----------------------//
 
-const ChartHistory = ({ data, theme }) => {
+const ChartHistory = ({ theme, data, scrollBarEl }) => {
     // scroll to bottom when new message is sent or received
     const wrapper = useRef(document.createElement('div'));
     const el = wrapper.current;
     const { user } = useAuth();
 
     const scrollToBottom = useCallback(() => {
-        el.scrollIntoView(false);
+        if (scrollBarEl) scrollBarEl.scrollTop = 100;
     }, [el]);
 
     useEffect(() => {

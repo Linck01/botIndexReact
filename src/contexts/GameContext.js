@@ -7,7 +7,7 @@ import useAuth from '../hooks/useAuth';
 import jwtDecode from 'jwt-decode';
 
 // reducer - state management
-import { GAME_INITIALIZE, LOGIN, LOGOUT, REGISTER } from '../store/actions';
+import { GAME_INITIALIZE, NEW_MESSAGES, LOAD_BETPAGE, LOAD_MEMBERPAGE } from '../store/actions';
 import gameReducer from '../store/gameReducer';
 
 // project imports
@@ -21,7 +21,12 @@ const initialState = {
     socket: null,
     amIAdmin: false,
     amIMod: false,
-    isInitialized: false
+    isInitialized: false,
+    chatHistory: [],
+    betPage: [],
+    betPageIndex: 1,
+    memberPage: [],
+    memberPageIndex: 1
 };
 
 
@@ -30,8 +35,10 @@ const initialState = {
 
 const GameContext = createContext({
     ...initialState,
-    doSomething: () => Promise.resolve()
+    addMessages: () => Promise.resolve(),
+    setPage: () => Promise.resolve()
 });
+
 
 export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
@@ -57,24 +64,34 @@ export const GameProvider = ({ children }) => {
         if (!state.socket) {
             const socket = io(url,{ transports: ['websocket','polling']});
             console.log('Connecting to websocket.');
+
             socket.on('connect', function() {
                 socket.emit('room', gameId);
                 console.log('Joining room ' + gameId);
             });
+
+            
             
             return socket;
         } else if (!state.socket.connected)
             console.log('Please reconnect to websocket.');
 
     };
-
-    const doSomething = async (x) => {
-        try {
-           
-        } catch (err) {
-            console.error(err);
-        }
+    
+    const addMessages = async (messages) => {   
+        dispatch({
+            type: NEW_MESSAGES,
+            messages: messages
+        });
     };
+
+    const setBetPage = async (data) => {
+        dispatch({
+            type: LOAD_BETPAGE,
+            betPage: data
+        });
+    };
+
 
     useEffect(() => {
         const init = async () => {
@@ -100,7 +117,7 @@ export const GameProvider = ({ children }) => {
         return <Loader />;
     }
 
-    return <GameContext.Provider value={{ ...state, doSomething }}>{children}</GameContext.Provider>;
+    return <GameContext.Provider value={{ ...state, addMessages, setBetPage }}>{children}</GameContext.Provider>;
 };
 
 export default GameContext;
