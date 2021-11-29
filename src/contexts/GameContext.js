@@ -14,6 +14,7 @@ import gameReducer from '../store/gameReducer';
 import axios from '../utils/axios';
 import Loader from '../ui-component/Loader';
 import config from '../config';
+import fct from '../utils/fct.js';
 
 // constant
 const initialState = {
@@ -42,16 +43,18 @@ const GameContext = createContext({
 
 export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
-    let { id } = useParams();
+    let { gameId } = useParams();
     const { user } = useAuth();
+    console.log('GAMECONTEXT id' + gameId);
 
     const initGame = async () => {
         try {
-            const response = await axios.get(config.authHost + '/v1/games/' + id);
+            console.log('INITGAME  id' + gameId);
+            const response = await axios.get(config.authHost + '/v1/games/' + gameId);
             
             if (process.env.NODE_ENV != 'production') 
                 response.data.server = 'localhost:3005';
-
+            await fct.sleep(1000);
             response.data.server = response.data.server;
             return response.data;
         } catch (err) {
@@ -60,7 +63,7 @@ export const GameProvider = ({ children }) => {
         }
     };
 
-    const initSocket = async (gameId, url) => {
+    const initSocket = async (url) => {
         if (!state.socket) {
             const socket = io(url,{ transports: ['websocket','polling']});
             console.log('Connecting to websocket.');
@@ -96,26 +99,31 @@ export const GameProvider = ({ children }) => {
     useEffect(() => {
         const init = async () => {
             const game = await initGame();
-            const socket = await initSocket(game.id,game.server);
+            const socket = await initSocket(game.server);
 
             let amIAdmin = false, amIMod = false;
             if (user) {
 
                 if (game.userId == user.id)
                     amIAdmin = true;
-                if (game.moderators.includes(user.id))
-                    amIMod = true;
+                //if (game.moderators.includes(user.id))
+                    //amIMod = true;
             }
 
             dispatch({ type: GAME_INITIALIZE, payload: { game, socket, amIAdmin, amIMod } });
         };
 
         init();
+
+        return function cleanup() {
+            if (state.socket && state.socket.off)
+                state.socket.off('chatMessage');
+        };
     }, []);
 
     if (!state.isInitialized) {
         return <Loader />;
-    }
+    } 
 
     return <GameContext.Provider value={{ ...state, addMessages, setBetPage }}>{children}</GameContext.Provider>;
 };

@@ -1,11 +1,12 @@
 import { other } from './other';
-import { games } from './games';
+import { publicGames } from './publicGames';
 import { userspace } from './userspace';
+import { game } from './game';
 
 //-----------------------|| MENU ITEMS ||-----------------------//
 
 const menuItems = {
-    items: [userspace,games,other]
+    items: [game,userspace,publicGames,other]
 };
 
 export default menuItems;

@@ -7,7 +7,7 @@ import { IconMail, IconNotebook, IconInfoCircle } from '@tabler/icons';
 //-----------------------|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||-----------------------//
 
 export const other = {
-    id: 'sample-docs-roadmap',
+    id: 'other',
     type: 'group',
     title: <FormattedMessage id="info" />,
     children: [

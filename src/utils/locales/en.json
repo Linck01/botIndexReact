@@ -172,5 +172,9 @@
     "termsAndService": "Terms and Service",
     "about": "About",
     "hostedGames": "Hosted Games",
-    "joinedGames":"Joined Games"
+    "joinedGames": "Joined Games",
+    "bets": "Bets",
+    "log": "Log",
+    "members": "Members",
+    "settings": "Settings"
 }

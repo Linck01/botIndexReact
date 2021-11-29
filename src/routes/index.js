@@ -18,7 +18,15 @@ const HomePage = Loadable(lazy(() => import('../views/homePage')));
 const bigGamesPage = Loadable(lazy(() => import('../views/bigGamesPage')));
 const newGamesPage = Loadable(lazy(() => import('../views/newGamesPage')));
 const oldGamesPage = Loadable(lazy(() => import('../views/oldGamesPage')));
-const gameSinglePage = Loadable(lazy(() => import('../views/gameSinglePage')));
+
+const gameBetsPage = Loadable(lazy(() => import('../views/game/Bets')));
+const gameChatPage = Loadable(lazy(() => import('../views/game/Chat')));
+const gameInfoPage = Loadable(lazy(() => import('../views/game/Info')));
+const gameLogPage = Loadable(lazy(() => import('../views/game/Log')));
+const gameMembersPage = Loadable(lazy(() => import('../views/game/Members')));
+const gameSettingsPage = Loadable(lazy(() => import('../views/game/Settings')));
+const gameBetPage = Loadable(lazy(() => import('../views/game/Bet')));
+
 const hostedGames = Loadable(lazy(() => import('../views/hostedGames')));
 const joinedGames = Loadable(lazy(() => import('../views/joinedGames')));
 const infoPage = Loadable(lazy(() => import('../views/infoPage')));
@@ -39,20 +47,37 @@ const AuthCodeVerification = Loadable(lazy(() => import('../views/pages/authenti
 const Routes = () => {
     const location = useLocation();
     return (
+        
         <Switch>
             {/* MainLayout routes */}
+            
+            <Route exact path={['/game/:gameId/', '/game/:gameId/bets', '/game/:gameId/members', '/game/:gameId/log', '/game/:gameId/settings', '/game/:gameId/info', '/game/:gameId/chat', '/game/:gameId/bet/:betId']}>
+                <GameProvider>
+                    <MainLayout>
+                        <Switch>
+                            <Route exact path={'/game/:gameId/bets'} component={gameBetsPage} />
+                            <Route exact path={'/game/:gameId/members'} component={gameMembersPage} />
+                            <Route exact path={'/game/:gameId/log'} component={gameLogPage} />
+                            <Route exact path={'/game/:gameId/settings'} component={gameSettingsPage} />
+                            <Route exact path={'/game/:gameId/info'} component={gameInfoPage} />
+                            <Route exact path={'/game/:gameId/chat'} component={gameChatPage} />
+                            <Route exact path={'/game/:gameId/'} component={gameBetsPage} />
+                            <Route exact path={'/game/:gameId/bet/:betId'} component={gameBetPage} />
+                        </Switch>         
+                    </MainLayout>
+                </GameProvider>
+            </Route>
 
-            <Route exact path={['/','/game/:id/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/joined/','/mybots/','/info/','/termsAndService/','/about/']}>
+            <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/joined/','/mybots/','/info/','/termsAndService/','/about/']}>
                 <MainLayout>
                     <Switch>
                         <Route exact path="/" component={HomePage} />
-                       
+
                         <Route exact path={'/games/big/'} component={bigGamesPage}  />
                         <Route exact path={'/games/new/'} component={newGamesPage}  />
                         <Route exact path={'/games/old/'} component={oldGamesPage}  />
-                     
-                        <Route exact path={'/game/:id/'} component={gameSinglePage} />
-                        
+
+
                         <Route exact path={'/info/'} component={infoPage}  />
                         <Route exact path={'/termsAndService/'} component={termsAndServicePage}  />
                         <Route exact path={'/about/'} component={aboutPage}  />

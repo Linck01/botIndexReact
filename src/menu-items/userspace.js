@@ -10,9 +10,10 @@ import { IconServer, IconDeviceGamepad } from '@tabler/icons';
 //-----------------------|| APPLICATION MENU ITEMS ||-----------------------//
 
 export const userspace = {
-    id: 'Userspace',
+    id: 'userspace',
     title: <FormattedMessage id="userspace" />,
     type: 'group',
+    requiresAuth: true,
     children: [  
         {
             id: 'favoritebots',

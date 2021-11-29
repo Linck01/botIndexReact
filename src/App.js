@@ -20,6 +20,7 @@ import Snackbar from './ui-component/extended/Snackbar';
 //import { FirebaseProvider } from './contexts/FirebaseContext';
 import {JWTProvider} from './contexts/JWTContext';
 // import {Auth0Provider} from '../contexts/Auth0Context';
+import { GameProvider } from './contexts/GameContext';
 
 //-----------------------|| APP ||-----------------------//
 
@@ -32,9 +33,9 @@ const App = () => {
                 <CssBaseline />
                 <Locales>
                     <NavigationScroll>
-                        <JWTProvider>
-                            <Routes />
-                            <Snackbar />
+                        <JWTProvider>               
+                                <Routes />
+                                <Snackbar />
                         </JWTProvider>
                     </NavigationScroll>
                 </Locales>

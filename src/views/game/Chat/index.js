@@ -90,10 +90,6 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     React.useEffect(() => {
         if (chatHistory.length == 0)
             getData();
-
-        return function cleanup() {
-            socket.off('chatMessage');
-        };
     }, []);
 
 

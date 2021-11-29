@@ -14,8 +14,8 @@ const tags = () => {
 
 //-----------------------|| APPLICATION MENU ITEMS ||-----------------------//
 
-export const games = {
-    id: 'games',
+export const publicGames = {
+    id: 'publicGames',
     title: <FormattedMessage id="publicGames" />,
     type: 'group',
     children: [
