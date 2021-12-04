@@ -15,16 +15,17 @@ import GameContext from '../../../../contexts/GameContext';
 const MenuList = () => {
     const location = useLocation();
     const { user } = useAuth();
-    const { game } = useContext(GameContext);
+    //const { game } = useContext(GameContext);
+    const { gameId } = useParams();
 
     const navItems = menuItem.items.map((item) => {
         if (item.id == 'game') {
-            if (!game) {
+            if (!gameId) {
                 return (<></>);
             } else {
-                item.title = 'Game: ' + game.name;
+                item.title = 'Game: ' + gameId;
                 for (let child of item.children)
-                    child.url = '/game/' + game.id + '/' + child.id 
+                    child.url = '/game/' + gameId + '/' + child.id 
                 console.log(item);
             }  
         }

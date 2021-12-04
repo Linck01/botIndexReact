@@ -2,9 +2,9 @@ import React, {useState, useEffect, useRef, useContext} from 'react';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import GameContext from '../../../contexts/GameContext';
 import fct from '../../../utils/fct.js';
-import UserList from './BetList';
+import BetList from './BetList';
 
-import { Link, Divider, Typography, CardMedia, Stack, Switch, Pagination, Grid, Button, InputAdornment, OutlinedInput, CircularProgress, Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import { Divider, Typography, CardMedia, Stack, Switch, Pagination, Grid, Button, InputAdornment, OutlinedInput, CircularProgress, Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 // project imports
@@ -28,26 +28,15 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 //-----------------------|| PROFILE 1 - PROFILE ||-----------------------//
 
 
-const BetList = () => {
+const Bets = () => {
     const { game, socket, amIAdmin, amIMod, betPage, setBetPage } = useContext(GameContext);
     const [isLoadingBets, setIsLoadingBets] = useState(true);
     const { user } = useAuth();
     const dispatch = useDispatch();
     const [page, setPage] = useState(1);
     const [maxPage, setMaxPage] = useState(1);
-    const [bet, setBet] = useState(null);
-    const customization = useSelector((state) => state.customization);
 
-    const openBetDetails = (id) => {
-        console.log('openBet' + id);
-        setBet({});
-    }
 
-    const closeBetDetails = (id) => {
-        console.log('openBet' + id);
- 
-        setBet(null);
-    }
 
     const getBets = async () => {
         setIsLoadingBets(true);
@@ -84,60 +73,47 @@ const BetList = () => {
         getBets();
     }, [page]);
 
-    const [type, setType] = React.useState('grow');
-    const [position, setPosition] = React.useState('top-left');
-    const [direction, setDirection] = React.useState('up');
-
     return (
         <>  
-        <Link to='/game/61a3dbbf085767003bcc49ba/chat'>
-            <Button>
-                My button
-            </Button>
-        </Link>  
+      
 
         {isLoadingBets ? (
-            <>
-            <br /><br /><br />
+           
+        
             <Grid container justifyContent="center">
                 <CircularProgress color="secondary" size="10em"  />
             </Grid>
-            <br />
-            </>
+    
+         
         ) : ''} 
         
         {!isLoadingBets ? (
-            <>  
-                
-                <UserList bets={betPage} openBetDetails={openBetDetails}></UserList>   
-                <br /><br />
+            <>
+                <BetList bets={betPage} />  
+         
                 <Grid container direction="column" spacing={2} alignItems="center">
                     <Grid item xs={12}>
                         <Pagination page={page} onChange={handlePageChange} count={maxPage} color="primary" />
                     </Grid>
                 </Grid>
-                <br /><br />
             </>
+           
         ) : ''}
 
         
-        {!isLoadingBets ? (
-        <>
-        
-        </>
-        ) : ''}
+        {!isLoadingBets ? (<></>) : ''}
         
         {(amIAdmin || amIMod) ? (
-            <>  
+           
                 <Grid container justifyContent="center">
                     <FormDialog getBets={getBets}/>
                 </Grid>
-                <br /><br />
-            </>
+               
+          
         ) : ''}    
 
         </>
     );
 };
 
-export default BetList;
+export default Bets;

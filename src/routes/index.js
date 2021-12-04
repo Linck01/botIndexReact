@@ -14,24 +14,23 @@ import NavMotion from './../layout/NavMotion';
 import {GameProvider} from '../contexts/GameContext';
 
 // sample page routing
-const HomePage = Loadable(lazy(() => import('../views/homePage')));
-const bigGamesPage = Loadable(lazy(() => import('../views/bigGamesPage')));
-const newGamesPage = Loadable(lazy(() => import('../views/newGamesPage')));
-const oldGamesPage = Loadable(lazy(() => import('../views/oldGamesPage')));
+const HomePage = Loadable(lazy(() => import('../views/Home')));
+const bigGamesPage = Loadable(lazy(() => import('../views/BigGames')));
+const newGamesPage = Loadable(lazy(() => import('../views/NewGames')));
+const oldGamesPage = Loadable(lazy(() => import('../views/OldGames')));
 
 const gameBetsPage = Loadable(lazy(() => import('../views/game/Bets')));
 const gameChatPage = Loadable(lazy(() => import('../views/game/Chat')));
 const gameInfoPage = Loadable(lazy(() => import('../views/game/Info')));
 const gameLogPage = Loadable(lazy(() => import('../views/game/Log')));
 const gameMembersPage = Loadable(lazy(() => import('../views/game/Members')));
-const gameSettingsPage = Loadable(lazy(() => import('../views/game/Settings')));
-const gameBetPage = Loadable(lazy(() => import('../views/game/Bet')));
+const gameBetPage = Loadable(lazy(() => import('../views/Bet')));
 
-const hostedGames = Loadable(lazy(() => import('../views/hostedGames')));
-const joinedGames = Loadable(lazy(() => import('../views/joinedGames')));
-const infoPage = Loadable(lazy(() => import('../views/infoPage')));
-const termsAndServicePage = Loadable(lazy(() => import('../views/termsAndServicePage')));
-const aboutPage = Loadable(lazy(() => import('../views/aboutPage')));
+const hostedGames = Loadable(lazy(() => import('../views/HostedGames')));
+const joinedGames = Loadable(lazy(() => import('../views/JoinedGames')));
+const infoPage = Loadable(lazy(() => import('../views/Info')));
+const termsAndConditions = Loadable(lazy(() => import('../views/TermsAndConditions')));
+const aboutPage = Loadable(lazy(() => import('../views/About')));
 
 const ErrorPage = Loadable(lazy(() => import('../views/pages/maintenance/Error.js')));
 const AuthLogin = Loadable(lazy(() => import('../views/pages/authentication/Login')));
@@ -51,21 +50,22 @@ const Routes = () => {
         <Switch>
             {/* MainLayout routes */}
             
-            <Route exact path={['/game/:gameId/', '/game/:gameId/bets', '/game/:gameId/members', '/game/:gameId/log', '/game/:gameId/settings', '/game/:gameId/info', '/game/:gameId/chat', '/game/:gameId/bet/:betId']}>
-                <GameProvider>
+            <Route exact path={['/game/:gameId/', '/game/:gameId/bets', '/game/:gameId/members', '/game/:gameId/log', '/game/:gameId/info', '/game/:gameId/chat', '/game/:gameId/bet/:betId']}>
+               
                     <MainLayout>
+                        <GameProvider>
                         <Switch>
                             <Route exact path={'/game/:gameId/bets'} component={gameBetsPage} />
                             <Route exact path={'/game/:gameId/members'} component={gameMembersPage} />
                             <Route exact path={'/game/:gameId/log'} component={gameLogPage} />
-                            <Route exact path={'/game/:gameId/settings'} component={gameSettingsPage} />
                             <Route exact path={'/game/:gameId/info'} component={gameInfoPage} />
                             <Route exact path={'/game/:gameId/chat'} component={gameChatPage} />
                             <Route exact path={'/game/:gameId/'} component={gameBetsPage} />
                             <Route exact path={'/game/:gameId/bet/:betId'} component={gameBetPage} />
-                        </Switch>         
+                        </Switch> 
+                        </GameProvider>        
                     </MainLayout>
-                </GameProvider>
+              
             </Route>
 
             <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/joined/','/mybots/','/info/','/termsAndService/','/about/']}>
@@ -79,7 +79,7 @@ const Routes = () => {
 
 
                         <Route exact path={'/info/'} component={infoPage}  />
-                        <Route exact path={'/termsAndService/'} component={termsAndServicePage}  />
+                        <Route exact path={'/termsAndService/'} component={termsAndConditions}  />
                         <Route exact path={'/about/'} component={aboutPage}  />
 
                         <AuthGuard>

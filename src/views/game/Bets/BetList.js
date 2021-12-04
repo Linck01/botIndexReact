@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 // material-ui
 import {
@@ -13,7 +14,6 @@ import {
     TableRow,
     Typography,
     ListItem,
-    Link,
     useMediaQuery
 } from '@material-ui/core';
 import { useDispatch, useSelector } from 'react-redux';
@@ -97,25 +97,15 @@ const useStyles = makeStyles((theme) => ({
 
 const UserCard = (props) => {
     const classes = useStyles();
-    const dispatch = useDispatch();
-    const matchesSM = useMediaQuery((theme) => theme.breakpoints.down('md'));
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     const { bets } = props;
-    const url = '/about';
-    let listItemProps = { component: React.forwardRef((props, ref) => <Link {...props} to={url} />) };
-
-    let itemTarget = '';
-    //if (item.target) {
-      //  itemTarget = '_blank';
-    //}
+   
 
     return (
-            <>
-            <Table className={classes.profileTable}>
-                <TableBody>
+            <Table className={classes.profileTable} style={{ marginTop: '-1%' }}>
+                <TableBody > 
                     {bets.map((bet) => (
                         <TableRow key={bet.id}>
-                            
                             <TableCell>
                                 <Grid container spacing={2}>
                                     <Grid item>
@@ -205,9 +195,22 @@ const UserCard = (props) => {
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12} container spacing={1}>
-                                        <Grid item xs={6}>
+                                        <Grid item xs={12}>
+                                          
+                                            <Link to={'/game/' + game.id + '/bet/' + bet.id}>
+                                                <Button
+                                                    variant="outlined"
+                                                    color="primary"
+                                                    size="small"
+                                                    className={classes.btnTable}
+                                                    startIcon={<ChatBubbleTwoToneIcon />}>
+                                                    
+                                                    Details
+                                                </Button>
+                                            </Link>        
                                             
                                         </Grid>
+                                        {/*}
                                         <Grid item xs={6}>
                                             <Button
                                                 variant="outlined"
@@ -219,6 +222,7 @@ const UserCard = (props) => {
                                                 Block
                                             </Button>
                                         </Grid>
+                                        {*/}
                                     </Grid>
                                 </Grid>
                             </TableCell>
@@ -226,7 +230,7 @@ const UserCard = (props) => {
                     ))}
                 </TableBody>
             </Table>
-                                            </>
+       
     );
 };
 

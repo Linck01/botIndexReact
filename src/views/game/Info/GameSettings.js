@@ -2,9 +2,10 @@ import React from 'react';
 
 // material-ui
 import { makeStyles } from '@material-ui/core/styles';
-import { Button, CardActions, Checkbox, Divider, FormControlLabel, Grid, Switch, Typography } from '@material-ui/core';
+import { Button, CardActions, Checkbox, Divider, FormControlLabel, Grid, Switch, Typography, useTheme } from '@material-ui/core';
 
 import SubCard from '../../../ui-component/cards/SubCard';
+import MainCard from '../../../ui-component/cards/MainCard';
 import AnimateButton from '../../../ui-component/extended/AnimateButton';
 
 // style constant
@@ -23,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Settings = () => {
     const classes = useStyles();
+    const theme = useTheme();
 
     const [state1, setState1] = React.useState({
         checkedA: true,
@@ -60,7 +62,9 @@ const Settings = () => {
     };
 
     return (
-        <SubCard title="Email Settings">
+        <MainCard sx={{
+            bgcolor: theme.palette.mode === 'dark' ? 'dark.main' : 'grey.50'
+        }}>
             <Grid container direction="column" spacing={3}>
                 <Grid item xs={12}>
                     <Grid container direction="column" spacing={0}>
@@ -216,7 +220,7 @@ const Settings = () => {
                     </Grid>
                 </Grid>
             </CardActions>
-        </SubCard>
+        </MainCard>
     );
 };
 

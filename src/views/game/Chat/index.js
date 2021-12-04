@@ -44,9 +44,9 @@ const avatarImage = require.context('../../../assets/images/users', true);
 const useStyles = makeStyles((theme) => ({
     ScrollHeight: {
         width: '100%',
-        height: 'calc(100vh - 440px)',
+        height: 'calc(100vh - 250px)',
         overflowX: 'hidden',
-        minHeight: '400px'
+        minHeight: '10px'
     }
 }));
 
@@ -162,11 +162,9 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
 
     return (
         
-       
+       <>
 
-        <MainCard sx={{
-            bgcolor: theme.palette.mode === 'dark' ? 'dark.main' : 'grey.50'
-        }}>
+       
 
             {/*}<Grid container spacing={0.5}>
                 <Grid item xs={12} align='right'>
@@ -192,12 +190,16 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
                 </Grid>
             </Grid>
             <Divider sx={{ mt: theme.spacing(2) }} />{*/}
-            
+            <MainCard sx={{
+                bgcolor: theme.palette.mode === 'dark' ? 'dark.main' : 'grey.50'
+            }}>
             <PerfectScrollbar className={classes.ScrollHeight} containerRef={ref => {setScrollBarEl(ref);}}>
                 <CardContent>
                     <ChartHistory theme={theme} data={chatHistory} scrollBarEl={scrollBarEl} scrollBarRef={scrollBarRef} />
                 </CardContent>
             </PerfectScrollbar>
+            </MainCard>
+            <br />
             <Grid item xs={12}>
                 <Grid container spacing={1} alignItems="center">
                     <Grid item>
@@ -260,7 +262,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
                 </Grid>
             </Grid>
             
-        </MainCard>
+       </>
 
     );
 };

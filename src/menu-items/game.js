@@ -20,20 +20,6 @@ export const game = {
             breadcrumbs: false
         },
         {
-            id: 'chat',
-            title: <FormattedMessage id="chat" />,
-            type: 'item',
-            url: '/',
-            icon: IconNotebook,
-        },
-        {
-            id: 'info',
-            title: <FormattedMessage id="info" />,
-            type: 'item',
-            url: '/',
-            icon: IconMail,
-        },
-        {
             id: 'log',
             title: <FormattedMessage id="log" />,
             type: 'item',
@@ -48,11 +34,26 @@ export const game = {
             icon: IconMail,
         },
         {
+            id: 'chat',
+            title: <FormattedMessage id="chat" />,
+            type: 'item',
+            url: '/',
+            icon: IconNotebook,
+        },
+        {
+            id: 'info',
+            title: <FormattedMessage id="info" />,
+            type: 'item',
+            url: '/',
+            icon: IconMail,
+        },
+        
+        /*{
             id: 'settings',
             title: <FormattedMessage id="settings" />,
             type: 'item',
             url: '/',
             icon: IconMail,
-        }
+        }*/
     ]
 };

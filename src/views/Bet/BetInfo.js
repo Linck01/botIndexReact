@@ -1,7 +1,11 @@
-import React from 'react';
-
-import GameContext from '../../../contexts/GameContext';
-import GameSettings from './GameSettings';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import axios from '../../utils/axios';
+import fct from '../../utils/fct.js';
+import config from '../../config';
+import { SNACKBAR_OPEN } from '../../store/actions';
+import GameContext from '../../contexts/GameContext';
 
 // material-ui
 import {
@@ -19,28 +23,29 @@ import {
     Typography
 } from '@material-ui/core';
 
-// project imports
-import Avatar from '../../../ui-component/extended/Avatar';
-import SubCard from '../../../ui-component/cards/SubCard';
-import { gridSpacing } from '../../../store/constant';
-
 // assets
 import PhonelinkRingTwoToneIcon from '@material-ui/icons/PhonelinkRingTwoTone';
 import PinDropTwoToneIcon from '@material-ui/icons/PinDropTwoTone';
 import MailTwoToneIcon from '@material-ui/icons/MailTwoTone';
 
-import Avatar3 from '../../../assets/images/users/avatar-3.png';
+import SubCard from '../../ui-component/cards/SubCard';
+import AnimateButton from '../../ui-component/extended/AnimateButton';
+// material-ui
 
+//-----------------------|| CUSTOM DATETIME ||-----------------------//
 
-//-----------------------|| PROFILE 1 - PROFILE ||-----------------------//
+const BetInfo = (props) => {
+    const { bet } = props;
+    const { game } = React.useContext(GameContext);
 
-const GameInfo = () => {
-    const {game, socket} = React.useContext(GameContext);
-   
+  
+    useEffect(() => {
+       
+    }, []);
+
     return (
-        <Grid container spacing={gridSpacing}>
-            <Grid item lg={12} xs={12}>
-               
+        <>
+        
                     <List component="nav" aria-label="main mailbox folders">
                         <ListItem button>
                             <ListItemIcon>
@@ -106,13 +111,9 @@ const GameInfo = () => {
                             </Grid>
                         </Grid>
                     </CardContent>
-              
-            </Grid>
-            <Grid item lg={12} xs={12}>
-                <GameSettings></GameSettings>
-            </Grid>
-        </Grid>
+               
+        </>
     );
 };
 
-export default GameInfo;
+export default BetInfo;
