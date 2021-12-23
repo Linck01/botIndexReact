@@ -70,7 +70,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
             const res = await axios.get('http://' + game.server + '/v1/messages/',
                 { params: { gameId: game.id, sortBy: '-createdAt', limit: 10 , page: 0 } });
             
-         
+            
 
             await fct.sleep(1000);
             

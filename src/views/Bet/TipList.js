@@ -4,10 +4,14 @@ import React from 'react';
 import { Avatar, Divider, Grid, makeStyles, Typography, Pagination } from '@material-ui/core';
 import SubCard from '../../ui-component/cards/SubCard';
 import { useTheme } from '@material-ui/core/styles';
+import { gridSpacing } from '../../store/constant';
 
 // assets
 import KeyboardArrowUpOutlinedIcon from '@material-ui/icons/KeyboardArrowUpOutlined';
 import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
+import Avatar1 from '../../assets/images/users/avatar-1.png';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import WatchLaterTwoToneIcon from '@material-ui/icons/WatchLaterTwoTone';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +44,18 @@ const useStyles = makeStyles((theme) => ({
     },
     errorDark: {
         color: theme.palette.orange.dark
-    }
+    },
+    textActive: {
+        width: '10px',
+        height: '10px',
+        verticalAlign: 'center',
+        color: theme.palette.success.main
+    },
+    timeIcon: {
+        fontSize: '0.875rem',
+        marginRight: '4px',
+        verticalAlign: 'sub'
+    },
 }));
 
 //================================|| UI LIST - CUSTOM ||================================//
@@ -59,137 +74,40 @@ export default function CustomList() {
     }
 
     return (
-        <SubCard>
-        <div className={classes.root}>
-            <Grid container direction="column">
-                <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                                User 1
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Grid container alignItems="center" justifyContent="space-between">
-                                <Grid item>
-                                    <Typography variant="subtitle1" color="inherit">
-                                        1800 HB
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Avatar variant="rounded" className={classes.avatarSuccess}>
-                                        <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                                    </Avatar>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item>
-                    <Typography style={{color: theme.palette.success.dark}} variant="subtitle2">
-                        Option 3
-                    </Typography>
-                </Grid>
-            </Grid>
-            <Divider className={classes.divider} />
-            <Grid container direction="column">
-                <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                                User 2
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Grid container alignItems="center" justifyContent="space-between">
-                                <Grid item>
-                                    <Typography variant="subtitle1" color="inherit">
-                                        200 HB
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Avatar variant="rounded" className={classes.avatarError}>
-                                        <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                                    </Avatar>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item>
-                    <Typography variant="subtitle2" style={{color: theme.palette.error.dark}}>
-                        Option 1
-                    </Typography>
-                </Grid>
-            </Grid>
-            <Divider className={classes.divider} />
-            <Grid container direction="column">
-                <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                                User 3
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Grid container alignItems="center" justifyContent="space-between">
-                                <Grid item>
-                                    <Typography variant="subtitle1" color="inherit">
-                                        100 HB
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Avatar variant="rounded" className={classes.avatarSuccess}>
-                                        <KeyboardArrowUpOutlinedIcon fontSize="small" color="inherit" />
-                                    </Avatar>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item>
-                    <Typography variant="subtitle2" style={{color: theme.palette.success.dark}}>
-                        Option 3 
-                    </Typography>
-                </Grid>
-            </Grid>
-            <Divider className={classes.divider} />
-            <Grid container direction="column">
-                <Grid item>
-                    <Grid container alignItems="center" justifyContent="space-between">
-                        <Grid item>
-                            <Typography variant="subtitle1" color="inherit">
-                                User 4
-                            </Typography>
-                        </Grid>
-                        <Grid item>
-                            <Grid container alignItems="center" justifyContent="space-between">
-                                <Grid item>
-                                    <Typography variant="subtitle1" color="inherit">
-                                        190 HB
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Avatar variant="rounded" className={classes.avatarError}>
-                                        <KeyboardArrowDownOutlinedIcon fontSize="small" color="inherit" />
-                                    </Avatar>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </Grid>
-                <Grid item>
-                    <Typography variant="subtitle2" style={{color: theme.palette.info.dark}}>
-                        Option 2
-                    </Typography>
-                </Grid>
-            </Grid>
-        </div>
-        <Grid container direction="column" spacing={2} alignItems="center">
+        <>
+        <Grid container spacing={gridSpacing} alignItems="center">
             <Grid item xs={12}>
-                <Pagination page={tipPage} onChange={handlePageChange} count={maxTipPage} color="primary" />
+                <Grid container spacing={2}>
+                    <Grid item>
+                        <Avatar alt="coverimage" src={Avatar1} />
+                    </Grid>
+                    <Grid item xs zeroMinWidth>
+                        <Typography align="left" component="div" variant="subtitle1">
+                            Alex Thompson
+                        </Typography>
+                        <Grid container spacing={2}>
+                            <Grid item xs zeroMinWidth>
+                                <Typography align="left" component="div" variant="subtitle2">
+                                    <FiberManualRecordIcon className={classes.textActive} /> Cheers! 
+                                </Typography>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item>
+                        <Typography align="center" component="div" variant="caption">
+                            
+                            <WatchLaterTwoToneIcon className={classes.timeIcon} />30 min ago
+                                               
+                        </Typography>
+                        <Typography align="center" component="div" variant="caption">
+                            
+                            34-34-34 32:324:34
+                                               
+                        </Typography>
+                    </Grid>
+                </Grid>
             </Grid>
         </Grid>
-        </SubCard>
+        </>
     );
 }

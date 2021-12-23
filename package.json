@@ -76,7 +76,8 @@
         "react-use-websocket": "^2.8.0",
         "socket.io-client": "*",
         "react-table": "*",
-        "styled-components": "*"
+        "styled-components": "*",
+        "luxon": "*"
     },
     "scripts": {
         "start": "react-scripts start",

@@ -5,11 +5,20 @@ import axios from '../../utils/axios';
 import fct from '../../utils/fct.js';
 import config from '../../config';
 import { SNACKBAR_OPEN } from '../../store/actions';
-import OptionsSelect from './OptionsSelect';
 import SubCard from '../../ui-component/cards/SubCard';
-import { Button, Box, CardMedia, Grid, Stack, Switch, Typography, makeStyles, Pagination, CircularProgress, Divider, TextField } from '@material-ui/core';
+import { Button, Box, CardMedia, Grid, Stack, Switch, Typography, makeStyles, Pagination, CircularProgress, Divider, TextField, Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow, 
+    CardActions,
+    CardContent,
+     } from '@material-ui/core';
 import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
 import useAuth from '../../hooks/useAuth';
+import MainCard from '../../ui-component/cards/MainCard';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 
 // material-ui
 
@@ -37,7 +46,7 @@ const TipBox = ( props ) => {
     const { bet } = props;
     const { user } = useAuth();
     const [myTips, setMyTips] = React.useState([]);
-    const [isLoadingMyTips, setIsLoadingMyTips] = React.useState(true);
+    const [isLoadingMyTips, setIsLoadingMyTips] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(null);
     const [isLoadingSelectedIndex, setIsLoadingSelectedIndex] = React.useState(true);
 
@@ -73,7 +82,7 @@ const TipBox = ( props ) => {
 
     return (
         <>
-        <SubCard>
+     
             {isLoadingMyTips ? (
 
             <Grid container justifyContent="center">
@@ -83,25 +92,34 @@ const TipBox = ( props ) => {
             ) : ''} 
 
             {!isLoadingMyTips ? (
-            <>
-                <OptionsSelect selectedIndex={selectedIndex} setSelectedIndex={setSelectedIndex} answers={bet.answers} myTips={myTips}></OptionsSelect><br />
-                <TextField fullWidth id="outlined-basic-size-small" label="Amount" size="small" defaultValue="" /><br /><br />
-                <Button
-                        variant="outlined"
-                        color="primary"
-                        size="small"
-                        className={classes.btnTable}
-                        startIcon={<ChatBubbleTwoToneIcon />}>
-                        
-                        Send Tip
-                </Button>
+            <>  
+                <PerfectScrollbar className={classes.ScrollHeight}>
+                    <TableContainer >
+                        <Table >
+                            <TableHead>
+                                <TableRow >
+                                    <TableCell align='center'>Title</TableCell>
+                                    <TableCell align='center'>Odds</TableCell>
+                                    <TableCell align='center'>In pot</TableCell>
+                                    <TableCell align='center'>Stake</TableCell>
+                                </TableRow>
+                            </TableHead>
+                            <TableBody >
+                                {bet.answers.map((answer) => (
+                                    <TableRow hover key={answer.id}>
+                                        <TableCell align='center'>{answer.title}</TableCell>
+                                        <TableCell align='center'>{answer.odds.$numberDecimal}</TableCell>
+                                        <TableCell align='center'>{answer.inPot.$numberDecimal}</TableCell>
+                                        <TableCell align='center'>{'0'}</TableCell>
+                                    </TableRow>
+                                ))}
+                            </TableBody>
+                        </Table>
+                    </TableContainer>
+                </PerfectScrollbar>
             </>
-           
             ) : ''}
 
-            
-                
-        </SubCard>
         </>
     );
 };

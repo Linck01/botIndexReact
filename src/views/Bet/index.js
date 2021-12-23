@@ -6,8 +6,10 @@ import fct from '../../utils/fct.js';
 import config from '../../config';
 import TipList from './TipList';
 import BetInfo from './BetInfo';
-import TipBox from './TipBox';
+import AnswerBox from './AnswerBox';
+import AddTipDialog from './AddTipDialog';
 import TipChart from './TipChart';
+import TipStatsCards from './TipStatsCards';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { gridSpacing } from '../../store/constant';
 import AnimateButton from '../../ui-component/extended/AnimateButton';
@@ -58,7 +60,6 @@ const BetDetails = () => {
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     const { betId, gameId } = useParams();
 
-
     const [bet, setBet] = React.useState(null);
     const [isLoadingBet, setIsLoadingBet] = React.useState(true);
 
@@ -89,11 +90,12 @@ const BetDetails = () => {
 
     useEffect(() => {
         getBet();
-        console.log('DDDD', bet);
     }, []);
 
     return (
         <>
+       
+        
         
 
         {isLoadingBet ? (
@@ -106,24 +108,27 @@ const BetDetails = () => {
             </>
         ) : ''} 
         
-        {bet ? (
+        {!isLoadingBet && bet ? (
             <> 
-            {bet.title}
-            <Grid container spacing={gridSpacing}>
-                <Grid item xs={12} sm={12} md={8}>
+            <AddTipDialog bet={bet} getBet={getBet} />
+            <br /><br />
+            <TipStatsCards bet={bet} />
+            <br />
+            <Grid container spacing={gridSpacing} >
+                <Grid item xs={12} sm={12} md={6}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
-                            <BetInfo></BetInfo>
+                            <BetInfo bet={bet}></BetInfo>
                         </Grid>
                         <Grid item xs={12}>
-                            <TipChart></TipChart>
+                            <AnswerBox bet={bet}></AnswerBox>
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={4}>
+                <Grid item xs={12} sm={12} md={6} >
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
-                            <TipBox bet={bet}></TipBox>
+                            <TipChart></TipChart>
                         </Grid>
                         <Grid item xs={12}>
                             <TipList></TipList>
@@ -139,17 +144,7 @@ const BetDetails = () => {
             <Grid container justifyContent="center" spacing={3}>
                 
             </Grid>
-            <Link to={'/game/' + gameId}>
-                <Button
-                    variant="outlined"
-                    color="primary"
-                    size="small"
-                    className={classes.btnTable}
-                    startIcon={<ChatBubbleTwoToneIcon />}>
-                    
-                    Back
-                </Button>
-            </Link>
+            
                 
               
                 <br /><br />
@@ -171,3 +166,17 @@ const BetDetails = () => {
 };
 
 export default BetDetails;
+
+/* 
+<Link to={'/game/' + gameId}>
+                <Button
+                    variant="outlined"
+                    color="secondary"
+                    size="small"
+                    className={classes.btnTable}
+                    startIcon={<ChatBubbleTwoToneIcon />}>
+                    
+                    Place Tip
+                </Button>
+        </Link>
+*/

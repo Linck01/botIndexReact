@@ -15,7 +15,7 @@ import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 import CustomDateTime from './CustomDateTime';
-import SubCard from './../../../ui-component/cards/SubCard';
+import SubCard from '../../../ui-component/cards/SubCard';
 import { IconCirclePlus } from '@tabler/icons';
 
 //===============================|| UI DIALOG - FORMS ||===============================//
@@ -27,6 +27,7 @@ export default function FormDialog({...props}) {
     const dispatch = useDispatch();
     const { getBets } = props;
     const addBetNameRef = useRef(null);
+    const addBetDescRef = useRef(null);
     const [answersCount, setOptionsCount] = React.useState(2);
     const answersRef = useRef(null);
     const [timeLimit, setTimeLimit] = React.useState(new Date());
@@ -40,69 +41,55 @@ export default function FormDialog({...props}) {
     };
 
     const addOption = () => {
-        setOptionsCount(answersCount < 10 ? answersCount + 1 : 10);
+        setOptionsCount(answersCount < 32 ? answersCount + 1 : 32);
     };
-    const util = require('util')
-    const createBet = async () => {
 
-        const title = addBetNameRef.current.childNodes[0].value;
-        
+    const createBet = async () => {  
         setIsLoadingAddBet(true);
- 
+        let err = null;
+
+        console.log(timeLimit);
+        let answers = [];
+
+        let i = 0;
+        answersRef.current.querySelectorAll('input').forEach( (input) => {
+            if (input.type == 'text')
+                answers.push({title: input.value});
+            else
+                answers[answers.length - 1].odds = input.value;
+        });
+
+        const title = addBetNameRef.current.querySelectorAll('input')[0].value;
+        const desc = addBetDescRef.current.querySelectorAll('textarea')[0].value;
+
         try {
-            console.log(timeLimit);
-            let answers = [];
-
-            answersRef.current.querySelectorAll('input').forEach( (input) => {
-                answers.push(input.value);
-            });
-
-
-            const response = await axios.post(config.apiHost + '/v1/bets/', { 
-                gameId: game.id, 
-                title: addBetNameRef.current.querySelectorAll('input')[0].value,
-                answers: answers,
-                timeLimit: timeLimit
-            });
-
-            await fct.sleep(1000);
+            const response = await axios.post(config.apiHost + '/v1/bets/', 
+                { gameId: game.id,  title, answers, desc, timeLimit });
             
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Successfully added bet',
-                variant: 'alert',
-                alertSeverity: 'success',
-                close: true
-            });
-            addBetNameRef.current.childNodes[0].value = '';
+        } catch (e) { err = e.response.data.message; }
 
-            setOpen(false);
-            getBets();
-            
-        } catch (e) {
-            console.log(e);
-            
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: e.response.data.message,
-                variant: 'alert',
-                alertSeverity: 'error',
-                close: true
-            });
-        }
-        
-        
+        await fct.sleep(1000);
+      
         setIsLoadingAddBet(false);
-        
+
+        if(!err) {
+            dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Bet', 
+                variant: 'alert', alertSeverity: 'success', close: true });
+            
+            getBets();
+            setOpen(false);
+        } else {
+            dispatch({ type: SNACKBAR_OPEN, open: true, message: err,
+                variant: 'alert', alertSeverity: 'error', close: true });
+        }
     };
 
     return (
-        <div>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
+        <Grid container justifyContent="center">
+            <Button style={{width:'100%'}} variant="outlined" color="secondary" onClick={handleClickOpen}>
                 Create A New Bet
             </Button>
+
             <Dialog fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">
                     <Typography variant="h3">Create a new bet</Typography>
@@ -110,7 +97,7 @@ export default function FormDialog({...props}) {
                 <DialogContent>
                     <DialogContentText>
                         <Typography variant="body2">
-                            Lorem ipsum
+                            
                         </Typography>
                     </DialogContentText>
                 
@@ -118,7 +105,7 @@ export default function FormDialog({...props}) {
                     <Grid container spacing={1}>
                         <Grid item xs={12} lg={6}>
                   
-                            <TextField fullWidth ref={addBetNameRef} id="outlined-basic" label="Outlined" />
+                            <TextField fullWidth ref={addBetNameRef} id="outlined-basic" label="Title" />
  
                         </Grid>
                         <Grid item xs={12} lg={6}>
@@ -126,6 +113,7 @@ export default function FormDialog({...props}) {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
+                                    ref={addBetDescRef}
                                     fullWidth
                                     id="outlined-multiline-flexible"
                                     label="Description"
@@ -142,7 +130,7 @@ export default function FormDialog({...props}) {
                     <Grid container spacing={3}>
                         <Grid item xs={12} lg={6}>
                             <Typography variant="h4">
-                                Options 
+                                Answers 
                             </Typography>
                         </Grid>
                         
@@ -150,9 +138,18 @@ export default function FormDialog({...props}) {
                     <br />
                     <Grid container spacing={3} ref={answersRef}>
                         {[...Array(answersCount)].map((e, i) => 
-                            (<Grid item xs={12} lg={6} >
-                                <TextField fullWidth id="outlined-basic-size-small" label={'Option ' + (i + 1)} size="small" defaultValue="" inputProps={{ maxLength: 32 }}/>
-                            </Grid>)
+                            (<>
+                            <Grid item xs={8} lg={10} >
+                                
+                                <TextField fullWidth id="outlined-basic-size-small" label={'Answer  ' + (i + 1)} size="small" defaultValue="" inputProps={{ maxLength: 64 }}/>
+                                
+                            </Grid>
+                            <Grid item xs={4} lg={2} >
+                                
+                                <TextField fullWidth id="outlined-basic-size-small" label={'Odds  ' + (i + 1)} type='number' size="small" defaultValue="2" inputProps={{ maxLength: 10 }}/>
+                                
+                            </Grid>
+                            </>)
                         )}
                         
                        
@@ -176,6 +173,6 @@ export default function FormDialog({...props}) {
                     </Button>
                 </DialogActions>
             </Dialog>
-        </div>
+        </Grid>
     );
 }

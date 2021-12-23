@@ -11,8 +11,6 @@ import DateRangeIcon from '@material-ui/icons/DateRange';
 //-----------------------|| CUSTOM DATETIME ||-----------------------//
 
 const CustomDateTime = ( { value, setValue } ) => {
-    
-
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <DateTimePicker

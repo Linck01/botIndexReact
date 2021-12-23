@@ -146,8 +146,8 @@ const FirebaseLogin = (props, { ...others }) => {
 
             <Formik
                 initialValues={{
-                    email: 'info@codedthemes.com',
-                    password: '123456',
+                    email: 'test@test.test',
+                    password: 'qayqay12',
                     submit: null
                 }}
                 validationSchema={Yup.object().shape({

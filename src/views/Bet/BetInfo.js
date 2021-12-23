@@ -20,9 +20,11 @@ import {
     ListItemIcon,
     ListItemSecondaryAction,
     ListItemText,
-    Typography
+    Typography,
+    makeStyles
 } from '@material-ui/core';
 
+import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 // assets
 import PhonelinkRingTwoToneIcon from '@material-ui/icons/PhonelinkRingTwoTone';
 import PinDropTwoToneIcon from '@material-ui/icons/PinDropTwoTone';
@@ -34,10 +36,22 @@ import AnimateButton from '../../ui-component/extended/AnimateButton';
 
 //-----------------------|| CUSTOM DATETIME ||-----------------------//
 
+const useStyles = makeStyles((theme) => ({
+    successBadge: {
+        color: theme.palette.success.dark,
+        width: '14px',
+        height: '14px'
+    },
+    tableSubContent: {
+        whiteSpace: 'break-spaces'
+    },
+}));
+
+
 const BetInfo = (props) => {
     const { bet } = props;
     const { game } = React.useContext(GameContext);
-
+    const classes = useStyles();
   
     useEffect(() => {
        
@@ -46,71 +60,22 @@ const BetInfo = (props) => {
     return (
         <>
         
-                    <List component="nav" aria-label="main mailbox folders">
-                        <ListItem button>
-                            <ListItemIcon>
-                                <MailTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-                            </ListItemIcon>
-                            <ListItemText primary={<Typography variant="subtitle1">Email</Typography>} />
-                            <ListItemSecondaryAction>
-                                <Typography variant="subtitle2" align="right">
-                                    demo@sample.com
-                                </Typography>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                        <Divider />
-                        <ListItem button>
-                            <ListItemIcon>
-                                <PhonelinkRingTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-                            </ListItemIcon>
-                            <ListItemText primary={<Typography variant="subtitle1">Phone</Typography>} />
-                            <ListItemSecondaryAction>
-                                <Typography variant="subtitle2" align="right">
-                                    (+99) 9999 999 999
-                                </Typography>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                        <Divider />
-                        <ListItem button>
-                            <ListItemIcon>
-                                <PinDropTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-                            </ListItemIcon>
-                            <ListItemText primary={<Typography variant="subtitle1">Location</Typography>} />
-                            <ListItemSecondaryAction>
-                                <Typography variant="subtitle2" align="right">
-                                    Melbourne
-                                </Typography>
-                            </ListItemSecondaryAction>
-                        </ListItem>
-                    </List>
-                    <CardContent>
-                        <Grid container spacing={0}>
-                            <Grid item xs={4}>
-                                <Typography align="center" variant="h3">
-                                    37
-                                </Typography>
-                                <Typography align="center" variant="subtitle2">
-                                    Mails
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Typography align="center" variant="h3">
-                                    2749
-                                </Typography>
-                                <Typography align="center" variant="subtitle2">
-                                    Followers
-                                </Typography>
-                            </Grid>
-                            <Grid item xs={4}>
-                                <Typography align="center" variant="h3">
-                                    678
-                                </Typography>
-                                <Typography align="center" variant="subtitle2">
-                                    Following
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </CardContent>
+            <Grid container spacing={1}>
+                <Grid item xs={12}>
+                    <Typography align="left" style={{fontSize:'2em'}} variant="subtitle1">
+                        {bet.title}{' '}
+                        {bet.badgeStatus === 'active' && <CheckCircleIcon className={classes.successBadge} />}
+                    </Typography>
+                    <Typography align="left" variant="subtitle2" className={classes.tableSubContent}>
+                        {fct.formatDateTime(bet._createdAt)} - {fct.formatDateTime(bet.timeLimit)}
+                    </Typography>
+                </Grid>
+                <Grid item xs={12}>
+                    <Typography align="left" variant="body2" className={classes.tableSubContent}>
+                        {bet.desc}
+                    </Typography>
+                </Grid>
+            </Grid>
                
         </>
     );

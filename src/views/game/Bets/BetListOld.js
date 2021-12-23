@@ -99,7 +99,10 @@ const UserCard = (props) => {
     const classes = useStyles();
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     const { bets } = props;
-   
+    const util = require('util');
+    console.log(util.inspect(bets));
+
+
 
     return (
             <Table className={classes.profileTable} style={{ marginTop: '-1%' }}>
@@ -119,12 +122,12 @@ const UserCard = (props) => {
                                                     {bet.badgeStatus === 'active' && <CheckCircleIcon className={classes.successBadge} />}
                                                 </Typography>
                                                 <Typography align="left" variant="subtitle2" className={classes.tableSubContent}>
-                                                    designationnnnn
+                                                    {bet._createdAt}
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <Typography align="left" variant="body2" className={classes.tableSubContent}>
-                                                    subcontentttt
+                                                    {bet.desc}
                                                 </Typography>
                                             </Grid>
                                         </Grid>
@@ -134,57 +137,43 @@ const UserCard = (props) => {
                             <TableCell>
                                 <Grid container spacing={2}>
                                     <Grid item xs={12}>
-                                        <Typography variant="caption">Email</Typography>
-                                        <Typography variant="h6">emailll</Typography>
+                                        <Typography variant="caption">Users</Typography>
+                                        <Typography variant="h6">{bet.tipCount}</Typography>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <Typography variant="caption">Phone</Typography>
-                                        <Typography variant="h6">numberrrr</Typography>
-                                    </Grid>
+                                    
                                 </Grid>
                             </TableCell>
                             <TableCell>
                                 <Grid container spacing={1}>
-                                    <Grid item xs={12}>
-                                        <Typography variant="caption">Location</Typography>
-                                        <Typography variant="h6">locationnnn</Typography>
+                                <Grid item xs={12}>
+                                        <Typography variant="caption">In Pot</Typography>
+                                        <Typography variant="h6">{bet.inPot}</Typography>
                                     </Grid>
-                                    <Grid item xs={12}>
-                                        <Grid container>
-                                            <AvatarGroup
-                                                max={4}
-                                                size="small"
-                                                sx={{
-                                                    '& .MuiAvatar-root.MuiAvatarGroup-avatar': {
-                                                        width: '32px',
-                                                        height: '32px',
-                                                        fontSize: '1rem'
-                                                    }
-                                                }}
-                                            >
-                                                <Avatar alt="User 1" src={Avatar1} />
-                                                <Avatar alt="User 2" src={Avatar2} />
-                                                <Avatar alt="User 3" src={Avatar3} />
-                                                <Avatar alt="User 4" src={Avatar4} />
-                                                <Avatar alt="User 5" src={Avatar5} />
-                                            </AvatarGroup>
-                                        </Grid>
-                                    </Grid>
+                                    
                                 </Grid>
                             </TableCell>
                             <TableCell>
-                                <Grid container spacing={3}>
+                                <Grid container spacing={1}>
+                                <Grid item xs={12}>
+                                        <Typography variant="caption">In Pot</Typography>
+                                        <Typography variant="h6">{bet.inPot}</Typography>
+                                    </Grid>
+                                    
+                                </Grid>
+                            </TableCell>
+                            <TableCell>
+                                <Grid container spacing={2}>
                                     <Grid item xs={12}>
                                         <Grid container alignItems="center" spacing={gridSpacing}>
                                             <Grid item>
-                                                <Typography variant="caption">Progress</Typography>
+                                                <Typography variant="caption">Time left</Typography>
                                             </Grid>
                                             <Grid item sm zeroMinWidth>
                                                 <LinearProgress
                                                     variant="determinate"
                                                     value={56}
                                                     color="primary"
-                                                    sx={{ minWidth: '90px' }}
+                                                    style={{ minWidth: '30px' }}
                                                 />
                                             </Grid>
                                             <Grid item>
@@ -194,22 +183,21 @@ const UserCard = (props) => {
                                             </Grid>
                                         </Grid>
                                     </Grid>
-                                    <Grid item xs={12} container spacing={1}>
-                                        <Grid item xs={12}>
-                                          
-                                            <Link to={'/game/' + game.id + '/bet/' + bet.id}>
-                                                <Button
-                                                    variant="outlined"
-                                                    color="primary"
-                                                    size="small"
-                                                    className={classes.btnTable}
-                                                    startIcon={<ChatBubbleTwoToneIcon />}>
-                                                    
-                                                    Details
-                                                </Button>
-                                            </Link>        
+                                    <Grid item xs={12}  spacing={1}>
+                                        <Link style={{width:'100%'}} to={'/game/' + game.id + '/bet/' + bet.id}>
+                                            <Button
+                                                variant="outlined"
+                                                color="primary"
+                                                size="small"
+                                                style={{width:'100%'}}
+                                                className={classes.btnTable}
+                                                startIcon={<ChatBubbleTwoToneIcon />}>
+                                                
+                                                Bet
+                                            </Button>
+                                        </Link>        
                                             
-                                        </Grid>
+                                      
                                         {/*}
                                         <Grid item xs={6}>
                                             <Button
