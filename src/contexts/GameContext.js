@@ -121,6 +121,7 @@ export const GameProvider = ({ children }) => {
         };
     }, []);
 
+    
     if (!state.isInitialized) {
         return <Loader />;
     } 

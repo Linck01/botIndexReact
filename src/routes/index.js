@@ -54,15 +54,15 @@ const Routes = () => {
                
                     <MainLayout>
                         <GameProvider>
-                        <Switch>
-                            <Route exact path={'/game/:gameId/bets'} component={gameBetsPage} />
-                            <Route exact path={'/game/:gameId/members'} component={gameMembersPage} />
-                            <Route exact path={'/game/:gameId/log'} component={gameLogPage} />
-                            <Route exact path={'/game/:gameId/info'} component={gameInfoPage} />
-                            <Route exact path={'/game/:gameId/chat'} component={gameChatPage} />
-                            <Route exact path={'/game/:gameId/'} component={gameBetsPage} />
-                            <Route exact path={'/game/:gameId/bet/:betId'} component={gameBetPage} />
-                        </Switch> 
+                            <Switch>
+                                <Route exact path={'/game/:gameId/bets'} component={gameBetsPage} />
+                                <Route exact path={'/game/:gameId/members'} component={gameMembersPage} />
+                                <Route exact path={'/game/:gameId/log'} component={gameLogPage} />
+                                <Route exact path={'/game/:gameId/info'} component={gameInfoPage} />
+                                <Route exact path={'/game/:gameId/chat'} component={gameChatPage} />
+                                <Route exact path={'/game/:gameId/'} component={gameBetsPage} />
+                                <Route exact path={'/game/:gameId/bet/:betId'} component={gameBetPage} />
+                            </Switch> 
                         </GameProvider>        
                     </MainLayout>
               

@@ -158,15 +158,15 @@ const BetListItem = ({ bet }) => {
 
                 
                 <Grid item xs={4} md={2}>
-                    <Typography variant="caption">Users</Typography>
-                    <Typography variant="h6">{bet.tipCount}</Typography>
+                    <Typography variant="caption">Members</Typography>
+                    <Typography variant="h6">{bet.memberCount}</Typography>
                 </Grid>
                     
 
         
                 <Grid item xs={4} md={2}>
                         <Typography variant="caption">In Pot</Typography>
-                        <Typography variant="h6">{bet.inPot}</Typography>
+                        <Typography variant="h6">{bet.inPot.$numberDecimal}</Typography>
                     </Grid>
 
         
@@ -174,8 +174,6 @@ const BetListItem = ({ bet }) => {
                         <Typography variant="caption">Possibilities</Typography>
                         <Typography variant="h6">{bet.answers.length}</Typography>
                 </Grid>
-                    
-                
                 
                     
                 <Grid item xs={12} sm={6}>

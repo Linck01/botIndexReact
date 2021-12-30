@@ -16,7 +16,6 @@ import { Button, Box, CardMedia, Grid, Stack, Switch, Typography, makeStyles, Pa
     CardContent,
      } from '@material-ui/core';
 import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
-import useAuth from '../../hooks/useAuth';
 import MainCard from '../../ui-component/cards/MainCard';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 
@@ -43,42 +42,14 @@ const useStyles = makeStyles((theme) => ({
 const TipBox = ( props ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { bet } = props;
-    const { user } = useAuth();
-    const [myTips, setMyTips] = React.useState([]);
+    const { bet, myTips } = props;
     const [isLoadingMyTips, setIsLoadingMyTips] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(null);
     const [isLoadingSelectedIndex, setIsLoadingSelectedIndex] = React.useState(true);
 
-    const getMyTips = async () => {
-        setIsLoadingMyTips(true);
+    //console.log('FFFF', bet);
 
-        try {
-            await fct.sleep(1000);
-            const response = await axios.get(config.apiHost + '/v1/tips/', {params: { betId: bet.id, userId: user.id, limit: 32}});
-
-            setMyTips(response.data.results);
-        } catch (e) {
-            console.log(e);
-            
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: e.message,
-                variant: 'alert',
-                alertSeverity: 'error',
-                close: true
-            });
-        }
-
-        setIsLoadingMyTips(false);
-    }
-
-
-    useEffect(() => {
-        if (user)
-            getMyTips();
-    }, []);
+    
 
     return (
         <>
@@ -100,17 +71,24 @@ const TipBox = ( props ) => {
                                 <TableRow >
                                     <TableCell align='center'>Title</TableCell>
                                     <TableCell align='center'>Odds</TableCell>
+                                    <TableCell align='center'>Members</TableCell>
                                     <TableCell align='center'>In pot</TableCell>
-                                    <TableCell align='center'>Stake</TableCell>
+                                    <TableCell align='center'>Staked</TableCell>
+                                    
                                 </TableRow>
                             </TableHead>
                             <TableBody >
-                                {bet.answers.map((answer) => (
+                                {bet.answers.map((answer) =>  console.log(answer))}
+                                {bet.answers.map((answer, index) => (
                                     <TableRow hover key={answer.id}>
                                         <TableCell align='center'>{answer.title}</TableCell>
                                         <TableCell align='center'>{answer.odds.$numberDecimal}</TableCell>
+                                        <TableCell align='center'>{answer.memberCount}</TableCell>
                                         <TableCell align='center'>{answer.inPot.$numberDecimal}</TableCell>
-                                        <TableCell align='center'>{'0'}</TableCell>
+                                        <TableCell align='center'>
+                                            {myTips.filter((t) => t.optionId == index).length == 1 ? myTips.filter((t) => t.optionId == index)[0].currency.$numberDecimal : '0'}
+                                        </TableCell>
+                                        
                                     </TableRow>
                                 ))}
                             </TableBody>

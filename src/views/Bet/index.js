@@ -24,6 +24,7 @@ import MainCard from '../../ui-component/cards/MainCard';
 import SubCard from '../../ui-component/cards/SubCard';
 import Transitions from '../../ui-component/extended/Transitions';
 import GameContext from '../../contexts/GameContext';
+import useAuth from '../../hooks/useAuth';
 
 // assets
 import image from '../../assets/images/profile/img-profile-bg.png';
@@ -59,18 +60,24 @@ const BetDetails = () => {
     const dispatch = useDispatch();
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     const { betId, gameId } = useParams();
-
+    const [myTips, setMyTips] = React.useState([]);
     const [bet, setBet] = React.useState(null);
     const [isLoadingBet, setIsLoadingBet] = React.useState(true);
+    const { user } = useAuth();
 
     const getBet = async () => {
         setIsLoadingBet(true);
 
         try {
             await fct.sleep(1000);
-            const response = await axios.get(config.apiHost + '/v1/bets/' + betId);
+            const responseBet = await axios.get(config.apiHost + '/v1/bets/' + betId);
             
-            setBet(response.data);
+            setBet(responseBet.data);
+
+            if (user) {
+                const responseMyTips = await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betId, userId: user.id, limit: 32}});
+                setMyTips(responseMyTips.data.results);
+            }
         } catch (e) {
             console.log(e);
             
@@ -84,19 +91,17 @@ const BetDetails = () => {
             });
         }
 
+        
+
         setIsLoadingBet(false);
     }
-
-
+ 
     useEffect(() => {
         getBet();
     }, []);
 
     return (
         <>
-       
-        
-        
 
         {isLoadingBet ? (
             <>
@@ -121,7 +126,7 @@ const BetDetails = () => {
                             <BetInfo bet={bet}></BetInfo>
                         </Grid>
                         <Grid item xs={12}>
-                            <AnswerBox bet={bet}></AnswerBox>
+                            <AnswerBox bet={bet} myTips={myTips}></AnswerBox>
                         </Grid>
                     </Grid>
                 </Grid>
