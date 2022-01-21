@@ -6,10 +6,15 @@ import fct from '../../utils/fct.js';
 import config from '../../config';
 import TipList from './TipList';
 import BetInfo from './BetInfo';
-import AnswerBox from './AnswerBox';
+import CatalgueAnswerBox from './CatalgueAnswerBox';
+import ScaleAnswerBox from './ScaleAnswerBox';
 import AddTipDialog from './AddTipDialog';
-import TipChart from './TipChart';
+import CatalogueTipChart from './CatalogueTipChart';
+import ScaleTipChart from './ScaleTipChart';
 import TipStatsCards from './TipStatsCards';
+import FinalizeBetDialog from './FinalizeBetDialog';
+import AbortBetDialog from './AbortBetDialog';
+
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { gridSpacing } from '../../store/constant';
 import AnimateButton from '../../ui-component/extended/AnimateButton';
@@ -58,52 +63,46 @@ const useStyles = makeStyles((theme) => ({
 const BetDetails = () => {
     const classes = useStyles();
     const dispatch = useDispatch();
-    const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
-    const { betId, gameId } = useParams();
-    const [myTips, setMyTips] = React.useState([]);
-    const [bet, setBet] = React.useState(null);
-    const [isLoadingBet, setIsLoadingBet] = React.useState(true);
+    const { game, socket, amIAdmin, amIMod, betPage, setBetPage } = React.useContext(GameContext);
+    const { betId } = useParams();
     const { user } = useAuth();
 
     const getBet = async () => {
-        setIsLoadingBet(true);
-
         try {
             await fct.sleep(1000);
             const responseBet = await axios.get(config.apiHost + '/v1/bets/' + betId);
             
-            setBet(responseBet.data);
-
+            
+            await fct.sleep(1000);
+            let myTips = [];
             if (user) {
                 const responseMyTips = await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betId, userId: user.id, limit: 32}});
-                setMyTips(responseMyTips.data.results);
+                myTips = responseMyTips.data.results;
             }
-        } catch (e) {
-            console.log(e);
+
+            setBetPage({...betPage,bet: responseBet.data, myTips, isInitialized: true});
             
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: e.message,
-                variant: 'alert',
-                alertSeverity: 'error',
-                close: true
-            });
+        } catch (e) {
+
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
         }
-
-        
-
-        setIsLoadingBet(false);
     }
- 
+
     useEffect(() => {
-        getBet();
+        if (betPage.isInitialized) {
+            setBetPage({...betPage,isInitialized: false});
+            getBet();
+        } else
+            getBet();
+    
+        
     }, []);
 
     return (
         <>
 
-        {isLoadingBet ? (
+        {!betPage.isInitialized ? (
             <>
             <br /><br /><br />
             <Grid container justifyContent="center">
@@ -111,31 +110,47 @@ const BetDetails = () => {
             </Grid>
             <br />
             </>
-        ) : ''} 
+        ) : ''}
         
-        {!isLoadingBet && bet ? (
+        {betPage.isInitialized ? (
             <> 
-            <AddTipDialog bet={bet} getBet={getBet} />
-            <br /><br />
-            <TipStatsCards bet={bet} />
-            <br />
             <Grid container spacing={gridSpacing} >
-                <Grid item xs={12} sm={12} md={6}>
+                <Grid item xs={12}>
+                    <AddTipDialog bet={betPage.bet} getBet={getBet} />
+                </Grid>
+                <Grid item xs={6}>
+                    <FinalizeBetDialog bet={betPage.bet} />
+                </Grid>
+                <Grid item xs={6}>
+                    <AbortBetDialog bet={betPage.bet} />
+                </Grid>
+            </Grid>
+            <br /><br />
+            <TipStatsCards bet={betPage.bet} myTips={betPage.myTips}/>
+            <br /><br />
+            
+            <Grid container spacing={gridSpacing} >
+                <Grid item xs={12} sm={12} md={4}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
-                            <BetInfo bet={bet}></BetInfo>
+                            <BetInfo bet={betPage.bet}></BetInfo>
                         </Grid>
+                       
                         <Grid item xs={12}>
-                            <AnswerBox bet={bet} myTips={myTips}></AnswerBox>
+                            { betPage.bet.betType == 'catalogue' ? <CatalogueTipChart bet={betPage.bet} /> : ''}
+                            { betPage.bet.betType == 'scale' ? <ScaleTipChart bet={betPage.bet} /> : ''}
+
                         </Grid>
                     </Grid>
                 </Grid>
-                <Grid item xs={12} sm={12} md={6} >
+                <Grid item xs={12} sm={12} md={8} >
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
-                            <TipChart></TipChart>
+                            { betPage.bet.betType == 'catalogue' ? <CatalgueAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''}
+                            { betPage.bet.betType == 'scale' ? <ScaleAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''} 
                         </Grid>
                         <Grid item xs={12}>
+                            <br />
                             <TipList></TipList>
                         </Grid>
                     </Grid>
@@ -149,7 +164,7 @@ const BetDetails = () => {
             <Grid container justifyContent="center" spacing={3}>
                 
             </Grid>
-            
+          
                 
               
                 <br /><br />

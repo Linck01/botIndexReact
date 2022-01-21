@@ -7,7 +7,9 @@ import useAuth from '../hooks/useAuth';
 import jwtDecode from 'jwt-decode';
 
 // reducer - state management
-import { GAME_INITIALIZE, NEW_MESSAGES, LOAD_BETPAGE, LOAD_MEMBERPAGE } from '../store/actions';
+import { GAME_INITIALIZE, INIT_CHAT, NEW_MESSAGES, SET_BETPAGEINDEX, 
+    SET_MEMBERPAGEINDEX, SET_MEMBER, SET_HANDLENEWTIP, SET_BET, SET_MYTIPS, 
+    SET_GAME, SET_SOCKET, SET_BETSPAGE, SET_BETPAGE, SET_CHAT } from '../store/actions';
 import gameReducer from '../store/gameReducer';
 
 // project imports
@@ -20,14 +22,31 @@ import fct from '../utils/fct.js';
 const initialState = {
     game: null,
     socket: null,
+    betPage: {
+        bet: null,
+        myTips: [],
+        tipListPage: {
+            items: [],
+            index: 1,
+            maxIndex: 1,
+            isInitialized: false
+        },
+        isInitialized: false
+    },
     amIAdmin: false,
     amIMod: false,
-    isInitialized: false,
-    chatHistory: [],
-    betPage: [],
-    betPageIndex: 1,
-    memberPage: [],
-    memberPageIndex: 1
+    member: null,
+    chat: {
+        items: [],
+        isInitialized: false
+    },
+    betsPage: {
+        items: [],
+        index: 1,
+        maxIndex: 1,
+        isInitialized: false
+    },
+    memberPageIndex: 1,
 };
 
 
@@ -36,8 +55,9 @@ const initialState = {
 
 const GameContext = createContext({
     ...initialState,
-    addMessages: () => Promise.resolve(),
-    setPage: () => Promise.resolve()
+    initChat: () => Promise.resolve(),
+    setBetsPage: () => Promise.resolve(),
+    setChat: () => Promise.resolve()
 });
 
 
@@ -47,88 +67,280 @@ export const GameProvider = ({ children }) => {
     const { user } = useAuth();
     console.log('GAMECONTEXT id' + gameId);
 
-    const initGame = async () => {
+    /*
+    *  Game
+    */
+
+    const fetchGame = async (id) => {
         try {
-            console.log('INITGAME  id' + gameId);
-            const response = await axios.get(config.authHost + '/v1/games/' + gameId);
+            console.log('Get game id' + id);
+            const response = await axios.get(config.authHost + '/v1/games/' + id);
             
             if (process.env.NODE_ENV != 'production') 
-                response.data.server = 'localhost:3005';
-            await fct.sleep(1000);
-            response.data.server = response.data.server;
+                response.data.server = 'http://localhost:3005';
+
+            await fct.sleep(500);
+
             return response.data;
         } catch (err) {
             console.error(err);
-            return {};
+            return null;
         }
     };
 
-    const initSocket = async (url) => {
+    const setGame = (game) => {
+        dispatch({
+            type: SET_GAME,
+            game: game
+        });
+    };
+
+     /*
+    *  Socket 
+    */
+
+     const initSocket = async (url) => {
         if (!state.socket) {
-            const socket = io(url,{ transports: ['websocket','polling']});
+            const socket = io(url,{transports: ['websocket','polling']});
             console.log('Connecting to websocket.');
 
             socket.on('connect', function() {
-                socket.emit('room', gameId);
+                socket.emit('room', 'game:' + gameId);
                 console.log('Joining room ' + gameId);
             });
 
-            
-            
             return socket;
         } else if (!state.socket.connected)
             console.log('Please reconnect to websocket.');
 
     };
+
+    const setSocket = async (socket) => {
+        dispatch({
+            type: SET_SOCKET,
+            socket: socket
+        });
+    };
+
+     /*
+    *  Bets
+    */
     
-    const addMessages = async (messages) => {   
+     const setBetsPage = async (betsPage) => {
         dispatch({
-            type: NEW_MESSAGES,
-            messages: messages
+            type: SET_BETSPAGE,
+            betsPage: betsPage
         });
     };
 
-    const setBetPage = async (data) => {
+    const updateBetsWithNewBet = async (newBet) => {
+        let newBets = [], replaced = false;
+
+        for (let bet of state.betsPage.items) {
+            if (bet.id == newBet.id) {
+                newBets.push(newBet)
+                replaced = true;
+            } else
+            newBets.push(bet);
+        }
+        
+        
+        return newBets; 
+    }
+
+
+    /*
+    *  Bet
+    */
+
+    const setBetPage = async (betPage) => {
         dispatch({
-            type: LOAD_BETPAGE,
-            betPage: data
+            type: SET_BETPAGE,
+            betPage: betPage
         });
     };
 
+    const updateTipListPageWithNewTip = async (newTip) => {
+        let newItems = [],replaced = false;
+      
+        for (let tip of state.betPage.tipListPage.items) {
+            if (tip.id == newTip.id) {
+                newItems.unshift(newTip)
+                replaced = true;
+            } else
+            newItems.push(tip);
+        }
+        
+        if (!replaced && state.betPage.tipListPage.index == 1) {
+            newItems.pop();
+            newItems.unshift(newTip);
+        }
+            
+        await fct.addUsernamesToArray(newItems);
+    
+        return newItems;
+    }
+    
+    const updateMyTipsWithNewTip = async (newTip) => {
+        let newMyTips = [], replaced = false;
+
+        for (let tip of state.betPage.myTips) {
+            if (tip.id == newTip.id) {
+                newMyTips.push(newTip)
+                replaced = true;
+            } else
+                newMyTips.push(tip);
+        }
+        if (!replaced)
+            newMyTips.push(newTip);
+        
+        
+        return newMyTips; 
+    }
+
+    /*
+    *  Member
+    */
+    
+    const fetchMember = async (game,userId) => {
+        try {
+            console.log('Get member id ' + userId);
+            const response = await axios.get( game.server + '/v1/members/' + gameId + '/' + userId);
+
+            await fct.sleep(500);
+            
+            return response.data;
+        } catch (err) {
+            console.error(err);
+            return null;
+        }
+    };
+
+    const setMember = async (member) => {
+        dispatch({
+            type: SET_MEMBER,
+            member: member
+        });
+    };
+
+    /*
+    *  Chat
+    */
+
+    
+    const setChat = async (chat) => { 
+        dispatch({
+            type: SET_CHAT,
+            chat: chat
+        });
+    };
+
+    /*
+    *  Socket events
+    */
+
+    useEffect(() => {
+        if (state.socket)
+            state.socket.on('chatMessage', function(newMessage) {    
+                const newItems = [...state.chat.items, newMessage]
+                setChat({...state.chat, items: newItems});
+            });
+
+        return function cleanup() {
+            if (state.socket) 
+                state.socket.off('chatMessage');
+        };
+
+    }, [state.socket,state.chat]);
+
+    useEffect(() => {
+        if (state.socket)
+            state.socket.on('newTip', function(data) { 
+                handleSocketNewTip(data);
+            });
+
+        return function cleanup() {
+            if (state.socket)
+                state.socket.off('newTip');
+        };
+
+    }, [state.socket, state.betPage, state.betsPage]);
+    
+    const handleSocketNewTip = async (data) => {
+        if (state.betPage.isInitialized && state.betPage.bet.id == data.bet.id) {
+            const newItems = await updateTipListPageWithNewTip(data.tip);
+            const newMyTips = await updateMyTipsWithNewTip(data.tip);  
+            
+            setBetPage({...state.betPage, bet: data.bet, myTips: newMyTips, tipListPage: {...state.betPage.tipListPage, items: newItems}});
+        }
+
+        if (state.betsPage.isInitialized && state.betsPage.items.map(b => b.id).includes(data.bet.id)) {
+            const newBets = await updateBetsWithNewBet(data.bet); 
+            setBetsPage({...state.betsPage, items: newBets});
+        }
+    }
+
+    /*
+    *  Init
+    */
 
     useEffect(() => {
         const init = async () => {
-            const game = await initGame();
+            const game = await fetchGame(gameId);
+            console.log(game);
+            if (!game)
+                return;
+            
             const socket = await initSocket(game.server);
+            if (!socket)
+                return;
+            setSocket(socket);
 
-            let amIAdmin = false, amIMod = false;
+            let amIAdmin = false, amIMod = false, member = null;
             if (user) {
+                member = await fetchMember(game,user.id);
+                setMember(member);
 
                 if (game.userId == user.id)
                     amIAdmin = true;
-                //if (game.moderators.includes(user.id))
-                    //amIMod = true;
+                if (game.moderators.includes(user.id))
+                    amIMod = true;
             }
 
-            dispatch({ type: GAME_INITIALIZE, payload: { game, socket, amIAdmin, amIMod } });
+            setGame(game);
         };
 
         init();
 
         return function cleanup() {
-            if (state.socket && state.socket.off)
-                state.socket.off('chatMessage');
+            if (state.socket)
+                state.socket.disconnect();
         };
     }, []);
 
-    
+    /*
     if (!state.isInitialized) {
         return <Loader />;
-    } 
+    } */
 
-    return <GameContext.Provider value={{ ...state, addMessages, setBetPage }}>{children}</GameContext.Provider>;
+    return <GameContext.Provider value={{ ...state, setBetsPage, setChat, setBetPage }}>{children}</GameContext.Provider>;
 };
 
 export default GameContext;
 
+/* 
+const setBetPageIndex = async (index) => {
+        dispatch({
+            type: SET_BETPAGEINDEX,
+            betPageIndex: index
+        });
+    };
 
+const setMemberPageIndex = async (index) => {
+    dispatch({
+        type: SET_MEMBERPAGEINDEX,
+        memberPageIndex: index
+    });
+}; 
+
+*/

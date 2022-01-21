@@ -21,7 +21,11 @@ export const SET_OUTLINED_FILLED = '@customization/SET_OUTLINED_FILLED';
 export const SNACKBAR_OPEN = '@snackbar/SNACKBAR_OPEN';
 
 // action - game (& websocket)
-export const GAME_INITIALIZE = 'GAME_INITIALIZE';
-export const NEW_MESSAGES = 'NEW_MESSAGES';
-export const LOAD_BETPAGE = 'LOAD_BETPAGE';
-export const LOAD_MEMBERPAGE = 'LOAD_MEMBERPAGE';
+export const SET_MEMBER = 'SET_MEMBER';
+export const SET_GAME = 'SET_GAME';
+export const SET_SOCKET = 'SET_SOCKET';
+export const SET_BET = 'SET_BET';
+export const SET_PRIVILEGES = 'SET_PRIVILEGES';
+export const SET_BETSPAGE = 'SET_BETSPAGE';
+export const SET_BETPAGE = 'SET_BETPAGE';
+export const SET_CHAT = 'SET_CHAT';

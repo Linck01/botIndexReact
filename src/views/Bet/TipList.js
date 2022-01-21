@@ -1,113 +1,88 @@
-import React from 'react';
+import React, { useEffect, useContext } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
-import { Avatar, Divider, Grid, makeStyles, Typography, Pagination } from '@material-ui/core';
+import { Avatar, Divider, Grid, makeStyles, Typography, Pagination, CircularProgress } from '@material-ui/core';
 import SubCard from '../../ui-component/cards/SubCard';
-import { useTheme } from '@material-ui/core/styles';
 import { gridSpacing } from '../../store/constant';
+import fct from '../../utils/fct.js';
+import config from '../../config';
+import axios from '../../utils/axios';
+import TipListItem from './TipListItem';
+import { SNACKBAR_OPEN } from '../../store/actions';
+import GameContext from '../../contexts/GameContext';
 
-// assets
-import KeyboardArrowUpOutlinedIcon from '@material-ui/icons/KeyboardArrowUpOutlined';
-import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
-import Avatar1 from '../../assets/images/users/avatar-1.png';
-import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
-import WatchLaterTwoToneIcon from '@material-ui/icons/WatchLaterTwoTone';
-
-// style constant
-const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-        backgroundColor: theme.palette.background.paper
-    },
-    divider: {
-        marginTop: '12px',
-        marginBottom: '12px'
-    },
-    avatarSuccess: {
-        width: '16px',
-        height: '16px',
-        borderRadius: '5px',
-        backgroundColor: theme.palette.success.light,
-        color: theme.palette.success.dark,
-        marginLeft: '15px'
-    },
-    successDark: {
-        color: theme.palette.success.dark
-    },
-    avatarError: {
-        width: '16px',
-        height: '16px',
-        borderRadius: '5px',
-        backgroundColor: theme.palette.orange.light,
-        color: theme.palette.orange.dark,
-        marginLeft: '15px'
-    },
-    errorDark: {
-        color: theme.palette.orange.dark
-    },
-    textActive: {
-        width: '10px',
-        height: '10px',
-        verticalAlign: 'center',
-        color: theme.palette.success.main
-    },
-    timeIcon: {
-        fontSize: '0.875rem',
-        marginRight: '4px',
-        verticalAlign: 'sub'
-    },
-}));
 
 //================================|| UI LIST - CUSTOM ||================================//
 
-export default function CustomList() {
-    const classes = useStyles();
-    const theme = useTheme();
-    const [isLoadingTips, setIsLoadingTips] = React.useState(true);
-    const [tips, setTips] = React.useState([]);
-    const [tipPage, setTipPage] = React.useState(1);
-    const [maxTipPage, setMaxTipPage] = React.useState(1);
-    
+export default function CustomList(props) {
+    const dispatch = useDispatch();
+    const { game, setBetPage, betPage  } = useContext(GameContext);
+
     const handlePageChange = async (a,b,c) => {
-        console.log(a,b,c);
-        setTipPage(b);
+        setBetPage({...betPage, tipListPage: {...betPage.tipListPage,index:b} });
+        getTipsPage();
     }
+
+    const getTipsPage = async () => {
+        try {
+            await fct.sleep(1000);
+            let responseTips = (await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betPage.bet.id, sortBy: 'createdAt', limit: 10 , page: betPage.tipListPage.index }}));
+ 
+            await fct.addUsernamesToArray(responseTips.data.results);
+            
+            setBetPage({...betPage, tipListPage: {...betPage.tipListPage,items:responseTips.data.results,maxIndex:responseTips.data.totalPages,isInitialized:true} });
+
+        } catch (e) {
+            console.log(e);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
+        }
+    }
+ 
+    useEffect(() => {
+        getTipsPage();
+    }, []);
 
     return (
         <>
-        <Grid container spacing={gridSpacing} alignItems="center">
-            <Grid item xs={12}>
-                <Grid container spacing={2}>
-                    <Grid item>
-                        <Avatar alt="coverimage" src={Avatar1} />
-                    </Grid>
-                    <Grid item xs zeroMinWidth>
-                        <Typography align="left" component="div" variant="subtitle1">
-                            Alex Thompson
-                        </Typography>
-                        <Grid container spacing={2}>
-                            <Grid item xs zeroMinWidth>
-                                <Typography align="left" component="div" variant="subtitle2">
-                                    <FiberManualRecordIcon className={classes.textActive} /> Cheers! 
-                                </Typography>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                    <Grid item>
-                        <Typography align="center" component="div" variant="caption">
-                            
-                            <WatchLaterTwoToneIcon className={classes.timeIcon} />30 min ago
-                                               
-                        </Typography>
-                        <Typography align="center" component="div" variant="caption">
-                            
-                            34-34-34 32:324:34
-                                               
-                        </Typography>
-                    </Grid>
+        {!betPage.tipListPage.isInitialized ? (
+            <>
+            <br /><br /><br />
+            <Grid container justifyContent="center">
+                <CircularProgress color="secondary" size="10em"  />
+            </Grid>
+            <br />
+            </>
+        ) : ''} 
+
+        {betPage.tipListPage.isInitialized && betPage.tipListPage.items.length > 0 ? (
+            <>
+            <Grid container spacing={gridSpacing} alignItems="center" style={{padding: ' 0 7%'}}>
+                {betPage.tipListPage.items.map((tip) => <TipListItem tip={tip} bet={betPage.bet} />)}
+            </Grid>
+            <Grid container direction="column" spacing={2} alignItems="center">
+                <Grid item xs={12}>
+                    <Pagination page={betPage.tipListPage.index} onChange={handlePageChange} count={betPage.tipListPage.maxIndex} color="primary" />
                 </Grid>
             </Grid>
-        </Grid>
+          
+            </>
+        ) : ''}
+
+        {betPage.tipListPage.isInitialized && betPage.tipListPage.items.length == 0 ? (
+            <>
+                <Grid container direction="column" spacing={2} alignItems="center">
+                    <Grid item xs={12}>
+                       <Typography variant="h3">No tips yet. </Typography>
+                    </Grid>
+                </Grid>
+            </>
+           
+        ) : ''}
+
+        
+
         </>
     );
 }

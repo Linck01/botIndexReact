@@ -1,6 +1,6 @@
 
 // material-ui
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Grid } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, FormControl, FormControlLabel, Grid, Radio, RadioGroup } from '@material-ui/core';
 
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import GameContext from '../../../contexts/GameContext';
@@ -17,6 +17,8 @@ import config from '../../../config';
 import CustomDateTime from './CustomDateTime';
 import SubCard from '../../../ui-component/cards/SubCard';
 import { IconCirclePlus } from '@tabler/icons';
+import AnswerCatalogue from './AnswerCatalogue';
+import AnswerScale from './AnswerScale';
 
 //===============================|| UI DIALOG - FORMS ||===============================//
 
@@ -26,11 +28,14 @@ export default function FormDialog({...props}) {
     const [isLoadingAddBet, setIsLoadingAddBet] = useState(false);
     const dispatch = useDispatch();
     const { getBets } = props;
-    const addBetNameRef = useRef(null);
-    const addBetDescRef = useRef(null);
-    const [answersCount, setOptionsCount] = React.useState(2);
-    const answersRef = useRef(null);
+
+    const [desc, setDesc] = React.useState('');
+    const [title, setTitle] = React.useState('');
     const [timeLimit, setTimeLimit] = React.useState(new Date());
+    const [betType, setBetType] = React.useState('catalogue');
+
+    const [catalogue_answers, setCatalogue_answers] = React.useState([{title:'',odds:2},{title:'',odds:2}]);
+    const [scale_options, setScale_options] = React.useState({step: 1, min: 2, max: 10, odds: 2, winRate: 50});
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -40,48 +45,30 @@ export default function FormDialog({...props}) {
         setOpen(false);
     };
 
-    const addOption = () => {
-        setOptionsCount(answersCount < 32 ? answersCount + 1 : 32);
-    };
-
     const createBet = async () => {  
         setIsLoadingAddBet(true);
         let err = null;
 
-        console.log(timeLimit);
-        let answers = [];
-
-        let i = 0;
-        answersRef.current.querySelectorAll('input').forEach( (input) => {
-            if (input.type == 'text')
-                answers.push({title: input.value});
-            else
-                answers[answers.length - 1].odds = input.value;
-        });
-
-        const title = addBetNameRef.current.querySelectorAll('input')[0].value;
-        const desc = addBetDescRef.current.querySelectorAll('textarea')[0].value;
-
-        try {
-            const response = await axios.post(config.apiHost + '/v1/bets/', 
-                { gameId: game.id,  title, answers, desc, timeLimit });
-            
-        } catch (e) { err = e.response.data.message; }
-
         await fct.sleep(1000);
-      
-        setIsLoadingAddBet(false);
+        try {
+            const obj = { gameId: game.id, betType, title, desc, timeLimit };
+            if (betType == 'catalogue') obj.catalogue_answers = catalogue_answers;
+            if (betType == 'scale') obj.scale_options = scale_options;
 
-        if(!err) {
+            const response = await axios.post(config.apiHost + '/v1/bets/', obj);
+            
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Bet', 
                 variant: 'alert', alertSeverity: 'success', close: true });
-            
+
             getBets();
+            setIsLoadingAddBet(false);
             setOpen(false);
-        } else {
-            dispatch({ type: SNACKBAR_OPEN, open: true, message: err,
+        } catch (e) { 
+            setIsLoadingAddBet(false);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
-        }
+         }
+
     };
 
     return (
@@ -104,17 +91,16 @@ export default function FormDialog({...props}) {
                    
                     <Grid container spacing={1}>
                         <Grid item xs={12} lg={6}>
-                  
-                            <TextField fullWidth ref={addBetNameRef} id="outlined-basic" label="Title" />
- 
+                            <TextField fullWidth onChange={(e) => setTitle(e.target.value)} id="outlined-basic" label="Title" />
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <CustomDateTime value={timeLimit} setValue={setTimeLimit}></CustomDateTime>
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
-                                    ref={addBetDescRef}
                                     fullWidth
+                                    value={desc}
+                                    onChange={(e) => setDesc(e.target.value)}
                                     id="outlined-multiline-flexible"
                                     label="Description"
                                     multiline
@@ -125,44 +111,28 @@ export default function FormDialog({...props}) {
                         
                     </Grid>
                     
-                    <br /><br />
+                    <br /><br /><br />
 
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} lg={6}>
-                            <Typography variant="h4">
-                                Answers 
-                            </Typography>
-                        </Grid>
-                        
+                    <Grid container justifyContent="center" spacing={3}>
+                        <FormControl>
+                            <RadioGroup
+                                row
+                                aria-label="gender"
+                                value={betType}
+                                onChange={(e) => setBetType(e.target.value)}
+                                name="row-radio-buttons-group"
+                            >
+                                <FormControlLabel value="catalogue" control={<Radio />} label="Catalogue" />
+                                <FormControlLabel value="scale" control={<Radio />} label="Scale" />
+                            </RadioGroup>
+                        </FormControl>
                     </Grid>
+
                     <br />
-                    <Grid container spacing={3} ref={answersRef}>
-                        {[...Array(answersCount)].map((e, i) => 
-                            (<>
-                            <Grid item xs={8} lg={10} >
-                                
-                                <TextField fullWidth id="outlined-basic-size-small" label={'Answer  ' + (i + 1)} size="small" defaultValue="" inputProps={{ maxLength: 64 }}/>
-                                
-                            </Grid>
-                            <Grid item xs={4} lg={2} >
-                                
-                                <TextField fullWidth id="outlined-basic-size-small" label={'Odds  ' + (i + 1)} type='number' size="small" defaultValue="2" inputProps={{ maxLength: 10 }}/>
-                                
-                            </Grid>
-                            </>)
-                        )}
-                        
-                       
-                        <Grid item xs={12} textAlign={'center'}>
-                            <Button onClick={addOption}>
-                                <IconCirclePlus stroke={1.5} size="3rem" />
-                            </Button>
-                            
-                        </Grid>
-                        
-                    </Grid>
                     
-                  
+                    { betType == 'catalogue' ? <AnswerCatalogue catalogue_answers={catalogue_answers} setCatalogue_answers={setCatalogue_answers}/> : ''}
+                    { betType == 'scale' ? <AnswerScale scale_options={scale_options} setScale_options={setScale_options}/> : ''}
+                    
                 </DialogContent>
                 <DialogActions sx={{ pr: 2.5 }}>
                     <Button onClick={handleClose} color="error">

@@ -6,16 +6,15 @@ import { useLocation, useParams } from 'react-router-dom';
 
 // project imports
 import NavGroup from './NavGroup';
+import NavGameBox from './NavGameBox';
 import menuItem from './../../../../menu-items';
 import useAuth from '../../../../hooks/useAuth';
-import GameContext from '../../../../contexts/GameContext';
 
 //-----------------------|| SIDEBAR MENU LIST ||-----------------------//
 
 const MenuList = () => {
     const location = useLocation();
     const { user } = useAuth();
-    //const { game } = useContext(GameContext);
     const { gameId } = useParams();
 
     const navItems = menuItem.items.map((item) => {
@@ -23,10 +22,11 @@ const MenuList = () => {
             if (!gameId) {
                 return (<></>);
             } else {
-                item.title = 'Game: ' + gameId;
+                item.title = '';//'Game: ' + game.title;
                 for (let child of item.children)
                     child.url = '/game/' + gameId + '/' + child.id 
-                console.log(item);
+                
+                return <><NavGameBox /><NavGroup key={item.id} item={item} /></>
             }  
         }
 

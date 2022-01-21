@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 // material-ui
 import { useTheme } from '@material-ui/core/styles';
+import useColors from '../../hooks/useColors';
 
 // third-party
 import ReactApexChart from 'react-apexcharts';
@@ -55,34 +56,29 @@ const polarChartOptions = {
 
 //-----------------------|| POLAR CHART ||-----------------------//
 
-const ApexPolarChart = () => {
+const ApexPolarChart = (props) => {
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
-
+    const { answerColors } = useColors();
     const { navType } = customization;
+    const { catalogue_answers } = props;
     const primary = theme.palette.text.primary;
     const darkLight = theme.palette.dark.light;
     const grey200 = theme.palette.grey[200];
     const backColor = theme.palette.background.paper;
-
-    const [series] = useState([14, 23, 21, 17, 15, 10, 12, 17, 21]);
+    const [series] = useState(catalogue_answers.map((a) => a.inPot.$numberDecimal));
     const [options, setOptions] = useState(polarChartOptions);
 
-    const secondary = theme.palette.secondary.main;
-    const primaryMain = theme.palette.primary.main;
-    const successDark = theme.palette.success.dark;
-    const error = theme.palette.error.main;
-    const warningDark = theme.palette.warning.dark;
-    const orangeDark = theme.palette.orange.dark;
+    
 
     React.useEffect(() => {
         setOptions((prevState) => ({
             ...prevState,
-            colors: [secondary, primaryMain, successDark, error, warningDark, orangeDark, error],
+            colors: answerColors,
             xaxis: {
                 labels: {
                     style: {
-                        colors: [primary, primary, primary, primary, primary, primary, primary]
+                        colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, ]
                     }
                 }
             },
@@ -97,10 +93,13 @@ const ApexPolarChart = () => {
                 borderColor: navType === 'dark' ? darkLight + 20 : grey200
             },
             legend: {
+                show: false,
                 labels: {
                     colors: 'grey.500'
-                }
+                },
+                customLegendItems: catalogue_answers.map((a) => a.title),
             },
+            labels: catalogue_answers.map((a) => a.title),
             stroke: {
                 colors: [backColor]
             },
@@ -115,7 +114,7 @@ const ApexPolarChart = () => {
                 }
             }
         }));
-    }, [navType, primary, darkLight, grey200, backColor, secondary, primaryMain, successDark, error, warningDark, orangeDark]);
+    }, [navType]);
 
     return (
         <div id="chart">

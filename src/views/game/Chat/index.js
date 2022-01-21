@@ -57,42 +57,37 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { user } = useAuth();
-    const { game, socket, chatHistory, addMessages } = useContext(GameContext);
+    const { game, chatHistory, chat, setChat} = useContext(GameContext);
     const messageInputRef = useRef();
     const scrollBarRef = useRef();
     const customization = useSelector((state) => state.customization);
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
-    
 
-    const getData = async () => {
-
+    const getMessages = async () => {
         try {
-            const res = await axios.get('http://' + game.server + '/v1/messages/',
-                { params: { gameId: game.id, sortBy: '-createdAt', limit: 10 , page: 0 } });
-            
-            
+            const res = await axios.get( game.server + '/v1/messages/',
+                { params: { gameId: game.id, sortBy: '-_createdAt', limit: 10 , page: 0 } });
 
-            await fct.sleep(1000);
+            await fct.sleep(500);
             
-            addMessages(res.data.results.reverse());
-
-            socket.on('chatMessage', function(newMessage) {
-                addMessages([newMessage]);
-            });
-            
-            //setData(res.data.results.reverse() || []);
+            return res.data.results.reverse();
         } catch (e) {
             console.log(e);
-
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
         }  
     };
 
+    const init = async () => {
+        if (!chat.isInitialized) {
+            const messages = await getMessages();
+            setChat({...chat, isInitialized: true, items: messages});
+        }
+    };
+
     React.useEffect(() => {
-        if (chatHistory.length == 0)
-            getData();
+        init();     
     }, []);
-
-
 
     // handle new message form
 
@@ -110,7 +105,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
                 return;
             }
 
-            const res = await axios.post('http://' + game.server + '/v1/messages/', {
+            const res = await axios.post(game.server + '/v1/messages/', {
                 userId: user.id,
                 gameId: game.id,
                 message: messageInputRef.current.querySelectorAll('input[type=text]')[0].value
@@ -195,7 +190,8 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
             }}>
             <PerfectScrollbar className={classes.ScrollHeight} containerRef={ref => {setScrollBarEl(ref);}}>
                 <CardContent>
-                    <ChartHistory theme={theme} data={chatHistory} scrollBarEl={scrollBarEl} scrollBarRef={scrollBarRef} />
+                    {console.log('chat',chat)}
+                    {chat.isInitialized ? <ChartHistory theme={theme} data={chat.items} scrollBarEl={scrollBarEl} scrollBarRef={scrollBarRef} />: ''}
                 </CardContent>
             </PerfectScrollbar>
             </MainCard>

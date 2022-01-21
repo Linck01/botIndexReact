@@ -30,11 +30,15 @@ const useStyles = makeStyles((theme) => ({
         paddingRight: '4px',
         width: '100%',
         minWidth: '120px',
+        
         '&:hover': {
             background: theme.palette.secondary.main,
             borderColor: theme.palette.secondary.main,
             color: '#fff'
         }
+    },
+    ScrollHeight: {
+        maxHeight: '400px',
     }
 }));
 
@@ -43,60 +47,47 @@ const TipBox = ( props ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { bet, myTips } = props;
-    const [isLoadingMyTips, setIsLoadingMyTips] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(null);
     const [isLoadingSelectedIndex, setIsLoadingSelectedIndex] = React.useState(true);
-
-    //console.log('FFFF', bet);
-
     
+    const stakedIntervals = [];
+    let myTipsInInterval;
+    for (let interval of bet.scale_answers) {
+        myTipsInInterval = myTips.filter((t) => t.answerDecimal.$numberDecimal >= interval.from.$numberDecimal && t.answerDecimal.$numberDecimal < interval.to.$numberDecimal)
+
+        stakedIntervals.push(myTipsInInterval.reduce( function(a, b) {
+            return a + parseFloat(b.currency.$numberDecimal);
+        }, 0));
+    }
 
     return (
         <>
-     
-            {isLoadingMyTips ? (
-
-            <Grid container justifyContent="center">
-                <CircularProgress color="secondary" size="10em"  />
-            </Grid>
- 
-            ) : ''} 
-
-            {!isLoadingMyTips ? (
-            <>  
                 <PerfectScrollbar className={classes.ScrollHeight}>
-                    <TableContainer >
-                        <Table >
+                   
+                        <Table stickyHeader>
                             <TableHead>
-                                <TableRow >
+                                <TableRow>
                                     <TableCell align='center'>Title</TableCell>
-                                    <TableCell align='center'>Odds</TableCell>
                                     <TableCell align='center'>Members</TableCell>
                                     <TableCell align='center'>In pot</TableCell>
                                     <TableCell align='center'>Staked</TableCell>
                                     
                                 </TableRow>
                             </TableHead>
-                            <TableBody >
-                                {bet.answers.map((answer) =>  console.log(answer))}
-                                {bet.answers.map((answer, index) => (
-                                    <TableRow hover key={answer.id}>
-                                        <TableCell align='center'>{answer.title}</TableCell>
-                                        <TableCell align='center'>{answer.odds.$numberDecimal}</TableCell>
-                                        <TableCell align='center'>{answer.memberCount}</TableCell>
-                                        <TableCell align='center'>{answer.inPot.$numberDecimal}</TableCell>
-                                        <TableCell align='center'>
-                                            {myTips.filter((t) => t.optionId == index).length == 1 ? myTips.filter((t) => t.optionId == index)[0].currency.$numberDecimal : '0'}
-                                        </TableCell>
-                                        
+                            <TableBody>
+                                {bet.scale_answers.map((interval, index) => (
+                                    <TableRow hover key={interval.id}>
+                                        <TableCell align='center'>{interval.from.$numberDecimal} - {interval.to.$numberDecimal}</TableCell> 
+                                        <TableCell align='center'>{interval.memberCount}</TableCell>
+                                        <TableCell align='center'>{interval.inPot.$numberDecimal}</TableCell>
+                                        <TableCell align='center'> {stakedIntervals[index]}</TableCell>
                                     </TableRow>
                                 ))}
                             </TableBody>
                         </Table>
-                    </TableContainer>
+                
                 </PerfectScrollbar>
-            </>
-            ) : ''}
+            
 
         </>
     );

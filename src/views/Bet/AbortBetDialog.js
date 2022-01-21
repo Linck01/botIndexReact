@@ -9,6 +9,7 @@ import fct from '../../utils/fct.js';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 // project imports
+import { useTheme } from '@material-ui/core/styles';
 
 import { gridSpacing } from '../../store/constant';
 import { SNACKBAR_OPEN } from '../../store/actions';
@@ -24,10 +25,8 @@ import ListAltTwoToneIcon from '@material-ui/icons/ListAltTwoTone';
 
 
 const useStyles = makeStyles((theme) => ({
-    root: {
-        width: '100%',
-
-        backgroundColor: theme.palette.background.paper
+    toggleButton: {
+        backgroundColor: theme.palette.error.main
     }
 }));
 
@@ -38,7 +37,8 @@ const valueText = (value) => {
 //===============================|| UI DIALOG - FORMS ||===============================//
 
 export default function AddTipDialog(props) {
-    const classes = useStyles();
+    const theme = useTheme();
+    const classes = useStyles(theme);
     const { game, refreshMember } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
     const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
@@ -59,8 +59,13 @@ export default function AddTipDialog(props) {
         setOpen(false);
     };
 
+    const handleAmountChange = (event,) => {
+        setAmount(event.target.value);
+    };
+
     const createTip = async () => {  
         setIsLoadingAddTip(true);
+        let err = null;
 
         await fct.sleep(1000);
 
@@ -85,96 +90,39 @@ export default function AddTipDialog(props) {
          }
 
         setIsLoadingAddTip(false);
-        //refreshMember();
-        //getBet();
-        handleClose()
+        refreshMember();
+        getBet();
         dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Tip', 
                 variant: 'alert', alertSeverity: 'success', close: true });
     };
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="warning" onClick={handleClickOpen}>
-                Create A New Tip
+            <Button style={{width:'100%'}} variant="outlined" color="error" onClick={handleClickOpen}>
+                Abort bet
             </Button>
 
             <Dialog fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">
-                    <Typography variant="h3">Create a new tip</Typography>
+                    <Typography variant="h3">Abort bet</Typography>
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
                         <Typography variant="body2">
-                            
+                            Are you sure you want to abort the bet? This will <br />
+                            - Pay all tips back.
+
                         </Typography>
                     </DialogContentText>
                 
-                   
-                    <Grid container spacing={gridSpacing}>
-                        <Grid item xs={12} lg={12}>
-                            <TextField fullWidth id="outlined-basic-size-small" onChange={e => setAmount(e.target.value)}
-                                label={'Amount'} type='number' size="small"  inputProps={{ maxLength: 10 }} />
-                        </Grid>
-
-                        <Grid item xs={12} lg={12}>
-                            { bet.betType == 'catalogue' ? 
-                                <Grid item xs={12} lg={12}>
-                                    <div className={classes.root}>
-                                        <List component="nav" aria-label="main mailbox folders">
-                                            {bet.catalogue_answers.map((a, i) => (
-                                                <ListItem key={bet.id} button selected={answerId === i} onClick={() => setAnswerId(i)}
-                                                    sx={{ borderRadius: customization.borderRadius + 'px' }} >
-                                                    <ListItemIcon>
-                                                        <HomeTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={a.title} />
-                                                </ListItem>
-                                            ))}
-                                        </List>
-                                    </div>
-                                </Grid>
-                            : ''}
-                            
-                            { bet.betType == 'scale' ? 
-                                <><Typography variant="h3">Answer</Typography>
-                                <Grid container spacing={gridSpacing}>
-                                    
-                                    <Grid item xs={12} container spacing={2} alignItems="center" sx={{ mt: 2.5 }}>
-                                        
-                                        <Grid item>
-                                            <Typography variant="h6" color="primary">
-                                                {bet.scale_options.min}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs>
-                                        <Slider value={answerDecimal} onChange={e => setAnswerDecimal(parseFloat(e.target.value))} 
-                                                key="slider1" getAriaValueText={valueText} valueLabelDisplay="on" 
-                                                min={bet.scale_options.min} max={bet.scale_options.max} step={bet.scale_options.step}/>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="h6" color="primary">
-                                                {bet.scale_options.max}
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
-                                </Grid>
-                                </>
-                            : ''}
-                        
-                        </Grid>
-                    </Grid>
-                    
-                   
-
+      
                 </DialogContent>
                 <DialogActions sx={{ pr: 2.5 }}>
                     <Button onClick={handleClose} color="error">
                         Cancel
                     </Button>
                     <Button variant="contained" size="small" onClick={createTip} color="primary">
-                        {isLoadingAddTip ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Create') }  
-
-
+                        {isLoadingAddTip ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Abort') }  
                     </Button>
                 </DialogActions>
             </Dialog>

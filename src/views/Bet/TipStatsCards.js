@@ -20,12 +20,14 @@ import EmojiEventsTwoToneIcon from '@material-ui/icons/EmojiEventsTwoTone';
 
 const WidgetStatistics = (props) => {
     const theme = useTheme();
-    const { bet } = props;
+    const { bet, myTips } = props;
+    
+    let staked = 0;
+    for (let tip of myTips)
+        staked += parseFloat(tip.currency.$numberDecimal);
 
     return (
         <Grid container spacing={gridSpacing}>
-           
-
             <Grid item xs={12} lg={4}>
                 <UserCountCard
                     primary="Participants"
@@ -37,7 +39,7 @@ const WidgetStatistics = (props) => {
             <Grid item xs={12} lg={4} sm={6}>
                 <UserCountCard
                     primary="Staked"
-                    secondary="0"
+                    secondary={staked}
                     iconPrimary={DescriptionTwoToneIcon}
                     color={theme.palette.primary.dark}
                 />

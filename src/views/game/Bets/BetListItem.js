@@ -121,8 +121,8 @@ const BetListItem = ({ bet }) => {
     
     const progress = fct.getBetProgress(bet._createdAt, bet.timeLimit);
 
-    if (progress == 100 && Math.random() < 0.3) bet.isFinished = true; else bet.isFinished = false;
-    bet.answers[0].isCorrect = true;
+    //if (progress == 100 && Math.random() < 0.3) bet.isFinished = true; else bet.isFinished = false;
+    //bet.catalogue_options.answers[0].isCorrect = true;
 
     return (
         <>
@@ -172,7 +172,7 @@ const BetListItem = ({ bet }) => {
         
                 <Grid item xs={4} md={2}>
                         <Typography variant="caption">Possibilities</Typography>
-                        <Typography variant="h6">{bet.answers.length}</Typography>
+                        <Typography variant="h6">{bet.catalogue_answers.length}</Typography>
                 </Grid>
                 
                     
@@ -182,7 +182,7 @@ const BetListItem = ({ bet }) => {
                             <Typography textAlign="center" variant="caption">{bet.isFinished ? 'Finished' : `Progress ${progress}%`}</Typography>
                         </Grid>
                         <Grid item xs={8} sm={9} md={10} style={{width:'100%'}}>
-                            {bet.isFinished ? 'Answer: ' + bet.answers.filter(function (a) { return a.isCorrect == true }).map(a => a.title).join(', ') : <LinearProgress variant="determinate" value={progress} color="primary" style={{width: '90%'}} />}
+                            {bet.isFinished ? 'Answer: ' + bet.catalogue_answers.filter(function (a) { return a.isCorrect == true }).map(a => a.title).join(', ') : <LinearProgress variant="determinate" value={progress} color="primary" style={{width: '90%'}} />}
                         </Grid>
                         <Grid item>
                             <Typography variant="h6" component="div">

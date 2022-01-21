@@ -1,4 +1,6 @@
 import { DateTime } from 'luxon';
+import config from '../config';
+import axios from '../utils/axios';
 
 const f = {};
 
@@ -35,6 +37,17 @@ f.getBetProgress = (createdAt, timeLimit) => {
 f.formatDateTime = (isoString) => {
     const dt = DateTime.fromISO(isoString);
     return dt.toLocaleString(DateTime.DATETIME_MED);
+}
+
+f.addUsernamesToArray = async (arr) => {
+    const uniqueUserIds = [...new Set(arr.map((tip) => tip.userId))];
+    const responseUsers = (await axios.get(config.apiHost + '/v1/users/', {params: { id: uniqueUserIds, limit: 10 }})).data.results;
+    let usr;
+    for (let a of arr) {
+        usr = responseUsers.find(u => a.userId = u.id);
+        a.username = usr ? usr.username : 'n/a';
+    }
+    return arr
 }
 
 export default f;

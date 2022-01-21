@@ -9,7 +9,7 @@ import { IconMail, IconNotebook, IconInfoCircle } from '@tabler/icons';
 export const game = {
     id: 'game',
     type: 'group',
-    title: 'Game: ',
+    title: '',
     children: [
         {
             id: 'bets',

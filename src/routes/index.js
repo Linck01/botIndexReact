@@ -11,7 +11,9 @@ import AuthGuard from './../utils/route-guard/AuthGuard';
 import GuestGuard from './../utils/route-guard/GuestGuard';
 import MinimalLayout from './../layout/MinimalLayout';
 import NavMotion from './../layout/NavMotion';
-import {GameProvider} from '../contexts/GameContext';
+import { GameProvider } from '../contexts/GameContext';
+
+import GameLoadWrapper from '../views/game/LoadWrapper';
 
 // sample page routing
 const HomePage = Loadable(lazy(() => import('../views/Home')));
@@ -51,9 +53,9 @@ const Routes = () => {
             {/* MainLayout routes */}
             
             <Route exact path={['/game/:gameId/', '/game/:gameId/bets', '/game/:gameId/members', '/game/:gameId/log', '/game/:gameId/info', '/game/:gameId/chat', '/game/:gameId/bet/:betId']}>
-               
+                <GameProvider>
                     <MainLayout>
-                        <GameProvider>
+                        <GameLoadWrapper>
                             <Switch>
                                 <Route exact path={'/game/:gameId/bets'} component={gameBetsPage} />
                                 <Route exact path={'/game/:gameId/members'} component={gameMembersPage} />
@@ -63,9 +65,9 @@ const Routes = () => {
                                 <Route exact path={'/game/:gameId/'} component={gameBetsPage} />
                                 <Route exact path={'/game/:gameId/bet/:betId'} component={gameBetPage} />
                             </Switch> 
-                        </GameProvider>        
+                        </GameLoadWrapper>
                     </MainLayout>
-              
+                </GameProvider> 
             </Route>
 
             <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/joined/','/mybots/','/info/','/termsAndService/','/about/']}>

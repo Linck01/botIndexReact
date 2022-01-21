@@ -1,22 +1,38 @@
 // action - state management
-import { GAME_INITIALIZE, NEW_MESSAGES, LOAD_BETPAGE, LOAD_MEMBERPAGE } from './actions';
+import {  SET_GAME, SET_SOCKET, SET_MEMBER, SET_CHAT,
+     SET_PRIVILEGES, SET_BETSPAGE, SET_BETPAGE } from './actions';
 
 //-----------------------|| ACCOUNT REDUCER ||-----------------------//
 
 const gameReducer = (state, action) => {
     switch (action.type) {
-        case GAME_INITIALIZE: {
-            const { game, socket, amIAdmin, amIMod } = action.payload;
+        case SET_GAME: {
+            console.log('action.game',action.game);
             return {
                 ...state,
-                amIAdmin,
-                amIMod,
-                game,
-                socket,
-                isInitialized: true
+                game: action.game
             };
         }
-        case NEW_MESSAGES: {
+        case SET_SOCKET: {
+            return {
+                ...state,
+                socket: action.socket
+            };
+        }
+        case SET_BETSPAGE: {
+            return {
+                ...state,
+                betsPage: action.betsPage
+            };
+        }
+        case SET_BETPAGE: {
+            return {
+                ...state,
+                betPage: action.betPage
+            };
+        }
+        
+        /*case NEW_MESSAGES: {
             let h;
 
             if (state.chatHistory)
@@ -25,19 +41,28 @@ const gameReducer = (state, action) => {
                 h = action.messages;
             return {
                 ...state,
-                chatHistory: h
+                chatHistory: h,
+                chatInitialized: true
             };
-        }
-        case LOAD_BETPAGE: {
+        }*/
+        case SET_CHAT: {
             return {
                 ...state,
-                betPage: action.betPage
+                chat: action.chat
             };
         }
-        case LOAD_MEMBERPAGE: {
+        case SET_MEMBER: {
             return {
                 ...state,
-                memberPage: action.memberPage
+                member: action.member
+            };
+        }
+        case SET_PRIVILEGES: {
+            const { amIAdmin, amIMod } = action.payload;
+            return {
+                ...state,
+                amIAdmin,
+                amIMod,
             };
         }
         default: {
