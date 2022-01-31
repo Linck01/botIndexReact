@@ -1,6 +1,6 @@
 
 // material-ui
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slider, TextField, Typography, Grid, List, ListItem, ListItemIcon, ListItemText, CircularProgress } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slider, TextField, Typography, Grid, Checkbox, List, ListItem, ListItemIcon, ListItemText, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
 import React, {useState, useEffect, useRef, useContext} from 'react';
@@ -17,7 +17,7 @@ import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
 import SubCard from '../../ui-component/cards/SubCard';
-import { IconCirclePlus } from '@tabler/icons';
+import { IconSquare, IconSquareCheck, IconCheckbox, IconCheck, IconX } from '@tabler/icons';
 
 import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone';
 import DescriptionTwoToneIcon from '@material-ui/icons/DescriptionTwoTone';
@@ -41,11 +41,11 @@ export default function AddTipDialog(props) {
     const classes = useStyles(theme);
     const { game, refreshMember } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
-    const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const { getBet, bet } = props;
     const [amount, setAmount] = React.useState(0);
-    const [answerId, setAnswerId] = React.useState(-1);
+    const [answerIds, setAnswerIds] = React.useState([]);
     const customization = useSelector((state) => state.customization);
     const { user } = useAuth();
     const [ answerDecimal, setAnswerDecimal ] = useState(bet.betType == 'scale' ? bet.scale_options.min : 0);
@@ -64,36 +64,44 @@ export default function AddTipDialog(props) {
     };
 
     const finalizeBet = async () => {  
-        setIsLoadingAddTip(true);
-        let err = null;
+        setIsLoading(true);
 
         await fct.sleep(1000);
 
         if (!user) {
-            setIsLoadingAddTip(false);
-            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to send a tip!',
+            setIsLoading(false);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to finalize your bet!',
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
         
         try {
-            const req = { betId: bet.id, userId: user.id, gameId: bet.gameId, currency: amount};
-            if (bet.betType == 'catalogue') req.answerId = answerId;
+            const req = { betId: bet.id };
+            if (bet.betType == 'catalogue') req.answerIds = answerIds;
             if (bet.betType == 'scale') req.answerDecimal = answerDecimal;
 
-            const response = await axios.post(config.apiHost + '/v1/tips/', req);
+            const response = await axios.patch(config.apiHost + '/v1/bets/' + bet.id + '/finalize', req);
             
         } catch (e) {
-            setIsLoadingAddTip(false);
+            setIsLoading(false);
 
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
          }
 
-        setIsLoadingAddTip(false);
-        refreshMember();
-        getBet();
+        setIsLoading(false);
         dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Tip', 
                 variant: 'alert', alertSeverity: 'success', close: true });
+    };
+
+    const toggleAnswerId = (event,id) => {
+        let newAnswerIds = [...answerIds];
+
+        if (newAnswerIds.includes(id))
+            newAnswerIds.splice(newAnswerIds.indexOf(id),1)
+        else 
+            newAnswerIds.push(id);
+
+        setAnswerIds(newAnswerIds);
     };
 
     return (
@@ -112,33 +120,32 @@ export default function AddTipDialog(props) {
                             
                         </Typography>
                     </DialogContentText>
-                
-                   
-                    <Grid container spacing={gridSpacing}>
-                      
-
-                        <Grid item xs={12} lg={12}>
                             { bet.betType == 'catalogue' ? 
-                                <Grid item xs={12} lg={12}>
-                                    <div className={classes.root}>
-                                        <List component="nav" aria-label="main mailbox folders">
-                                            {bet.catalogue_answers.map((a, i) => (
-                                                <ListItem key={bet.id} button selected={answerId === i} onClick={() => setAnswerId(i)}
-                                                    sx={{ borderRadius: customization.borderRadius + 'px' }} >
-                                                    <ListItemIcon>
-                                                        <HomeTwoToneIcon sx={{ fontSize: '1.3rem' }} />
-                                                    </ListItemIcon>
-                                                    <ListItemText primary={a.title} />
-                                                </ListItem>
-                                            ))}
-                                        </List>
-                                    </div>
+                                <Grid container spacing={1}>
+                                    <Grid item xs={12}><Typography variant="h3">Select correct answer(s)</Typography></Grid>
+
+                                    {bet.catalogue_answers.map((a, i) => (         
+                                        <Grid item xs={12} >
+                                            <ListItem key={bet.id} button selected={answerIds === i} onClick={(e) => toggleAnswerId(e,i)}
+                                                sx={{ borderRadius: customization.borderRadius + 'px' }} >
+                                                <ListItemIcon>
+                                                    {answerIds.includes(i) ? 
+                                                        ( <IconCheck style={{color: theme.palette.success.main}} /> ) :
+                                                        ( <IconX style={{color: theme.palette.error.main}} /> )
+                                                    }
+                                                
+                                                </ListItemIcon>
+                                                <ListItemText primary={a.title} />
+                                            </ListItem>
+                                        </Grid>
+                                    ))}
                                 </Grid>
-                            : ''}
+                            : '' }
                             
                             { bet.betType == 'scale' ? 
-                                <><Typography variant="h3">Answer</Typography>
                                 <Grid container spacing={gridSpacing}>
+                                    <Grid item xs={12}><Typography variant="h3">Select correct answer</Typography></Grid>
+                               
                                     
                                     <Grid item xs={12} container spacing={2} alignItems="center" sx={{ mt: 2.5 }}>
                                         
@@ -159,12 +166,9 @@ export default function AddTipDialog(props) {
                                         </Grid>
                                     </Grid>
                                 </Grid>
-                                </>
+              
                             : ''}
-                        
-                        </Grid>
-                    </Grid>
-                    
+                  
                    
 
                 </DialogContent>
@@ -173,7 +177,7 @@ export default function AddTipDialog(props) {
                         Cancel
                     </Button>
                     <Button variant="contained" size="small" onClick={finalizeBet} color="primary">
-                        {isLoadingAddTip ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Finalize') }  
+                        {isLoading ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Finalize') }  
 
 
                     </Button>

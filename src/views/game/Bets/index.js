@@ -29,29 +29,26 @@ import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
 
 const Bets = () => {
-    const { game, socket, amIAdmin, amIMod, betsPage, setBetsPage  } = useContext(GameContext);
-    const [isLoadingBets, setIsLoadingBets] = useState(true);
+    const { game, socket, privileges, betsPage, setBetsPage  } = useContext(GameContext);
     const { user } = useAuth();
     const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
 
     const getBetsPage = async () => {
-        setIsLoadingBets(true);
+        setIsLoading(true);
 
         try {
-            const response = await axios.get(config.apiHost + '/v1/bets/', { params: { gameId: game.id, sortBy: 'createdAt', limit: 10 , page: betsPage.index } });
+            const response = await axios.get(config.apiHost + '/v1/bets/', { params: { gameId: game.id, sortBy: '-_createdAt', limit: 5 , page: betsPage.index } });
 
-            //setMaxPage(response.data.totalPages);
-            console.log(response);
             await fct.sleep(500);
-            setBetsPage({...betsPage, items: response.data.results, isInitialized: true});
+            setBetsPage({...betsPage, items: response.data.results,maxIndex: response.data.totalPages});
+            setIsLoading(false);
         } catch (e) {
-            setIsLoadingBets(false);
-            
+            setIsLoading(false);
+            console.log(e);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
-
-        setIsLoadingBets(false);
     }
 
     const handlePageChange = async (a,b,c) => {
@@ -60,27 +57,20 @@ const Bets = () => {
     }
 
     useEffect(() => {
-        if (betsPage.isInitialized) {
-            setBetsPage({...betsPage,isInitialized: false});
-            getBetsPage();
-        } else
-            getBetsPage();
-
-        //if (!betsPage.isInitialized)
-            
-    }, []);
+        getBetsPage();
+    }, [betsPage.index]);
 
     return (
         <>  
 
-        {(amIAdmin || amIMod) ? (        
+        {(privileges.admin || privileges.mod) ? (        
             <>
-            <AddBetDialog getBets={getBetsPage} />
+            <AddBetDialog/>
             <br />
             </>
         ) : ''}    
         
-        {!betsPage.isInitialized ? (
+        {isLoading ? (
            
             <>
             <br />
@@ -93,7 +83,7 @@ const Bets = () => {
          
         ) : ''} 
         
-        {betsPage.isInitialized && betsPage.items.length > 0 ? (
+        {!isLoading && betsPage.items.length > 0 ? (
             <>
                 {betsPage.items.map((bet) => (
                     <BetListItem bet={bet} />  
@@ -108,7 +98,7 @@ const Bets = () => {
            
         ) : ''}
 
-        {betsPage.isInitialized && betsPage.items.length == 0 ? (
+        {!isLoading && betsPage.items.length == 0 ? (
             <>
                 <Grid container direction="column" spacing={2} alignItems="center">
                     <Grid item xs={12}>

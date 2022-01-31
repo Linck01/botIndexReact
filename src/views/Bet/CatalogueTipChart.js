@@ -61,12 +61,12 @@ const ApexPolarChart = (props) => {
     const customization = useSelector((state) => state.customization);
     const { answerColors } = useColors();
     const { navType } = customization;
-    const { catalogue_answers } = props;
+    const { bet } = props;
     const primary = theme.palette.text.primary;
     const darkLight = theme.palette.dark.light;
     const grey200 = theme.palette.grey[200];
     const backColor = theme.palette.background.paper;
-    const [series] = useState(catalogue_answers.map((a) => a.inPot.$numberDecimal));
+    const [series] = useState(bet.catalogue_answers.map((a) => a.inPot.$numberDecimal));
     const [options, setOptions] = useState(polarChartOptions);
 
     
@@ -97,9 +97,9 @@ const ApexPolarChart = (props) => {
                 labels: {
                     colors: 'grey.500'
                 },
-                customLegendItems: catalogue_answers.map((a) => a.title),
+                customLegendItems: bet.catalogue_answers.map((a) => a.title),
             },
-            labels: catalogue_answers.map((a) => a.title),
+            labels: bet.catalogue_answers.map((a) => a.title),
             stroke: {
                 colors: [backColor]
             },

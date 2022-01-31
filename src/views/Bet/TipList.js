@@ -1,4 +1,4 @@
-import React, { useEffect, useContext } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
@@ -18,22 +18,25 @@ import GameContext from '../../contexts/GameContext';
 export default function CustomList(props) {
     const dispatch = useDispatch();
     const { game, setBetPage, betPage  } = useContext(GameContext);
+    const [isLoading, setIsLoading] = useState(true);
 
     const handlePageChange = async (a,b,c) => {
         setBetPage({...betPage, tipListPage: {...betPage.tipListPage,index:b} });
-        getTipsPage();
     }
 
     const getTipsPage = async () => {
+        setIsLoading(true);
+
         try {
             await fct.sleep(1000);
-            let responseTips = (await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betPage.bet.id, sortBy: 'createdAt', limit: 10 , page: betPage.tipListPage.index }}));
+            let responseTips = (await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betPage.bet.id, sortBy: '-_updatedAt', limit: config.tipListPageSize , page: betPage.tipListPage.index }}));
  
             await fct.addUsernamesToArray(responseTips.data.results);
             
-            setBetPage({...betPage, tipListPage: {...betPage.tipListPage,items:responseTips.data.results,maxIndex:responseTips.data.totalPages,isInitialized:true} });
-
+            setBetPage({...betPage, tipListPage: {...betPage.tipListPage,items:responseTips.data.results,maxIndex: responseTips.data.totalPages} });
+            setIsLoading(false);
         } catch (e) {
+            setIsLoading(false);
             console.log(e);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
@@ -42,11 +45,11 @@ export default function CustomList(props) {
  
     useEffect(() => {
         getTipsPage();
-    }, []);
+    }, [betPage.tipListPage.index]);
 
     return (
         <>
-        {!betPage.tipListPage.isInitialized ? (
+        {isLoading ? (
             <>
             <br /><br /><br />
             <Grid container justifyContent="center">
@@ -56,11 +59,12 @@ export default function CustomList(props) {
             </>
         ) : ''} 
 
-        {betPage.tipListPage.isInitialized && betPage.tipListPage.items.length > 0 ? (
+        {!isLoading && betPage.tipListPage.items.length > 0 ? (
             <>
             <Grid container spacing={gridSpacing} alignItems="center" style={{padding: ' 0 7%'}}>
                 {betPage.tipListPage.items.map((tip) => <TipListItem tip={tip} bet={betPage.bet} />)}
             </Grid>
+            <br />
             <Grid container direction="column" spacing={2} alignItems="center">
                 <Grid item xs={12}>
                     <Pagination page={betPage.tipListPage.index} onChange={handlePageChange} count={betPage.tipListPage.maxIndex} color="primary" />
@@ -70,11 +74,11 @@ export default function CustomList(props) {
             </>
         ) : ''}
 
-        {betPage.tipListPage.isInitialized && betPage.tipListPage.items.length == 0 ? (
+        {!isLoading && betPage.tipListPage.items.length == 0 ? (
             <>
                 <Grid container direction="column" spacing={2} alignItems="center">
                     <Grid item xs={12}>
-                       <Typography variant="h3">No tips yet. </Typography>
+                       <Typography variant="h3">No tips yet.</Typography>
                     </Grid>
                 </Grid>
             </>

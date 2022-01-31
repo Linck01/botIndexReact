@@ -1,6 +1,8 @@
 
 // material-ui
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, Grid } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, 
+    DialogContentText, DialogTitle, TextField, Typography, 
+    Grid, CircularProgress } from '@material-ui/core';
 
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import GameContext from '../../contexts/GameContext';
@@ -25,10 +27,11 @@ export default function FormDialog({...props}) {
     const dispatch = useDispatch();
     const { getHostedGames } = props;
     const addGameTitleRef = useRef(null);
-    const [isLoadingAddGame, setIsLoadingAddGame] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleClickOpen = () => {
         setOpen(true);
+        setIsLoading(false);
     };
 
     const handleClose = () => {
@@ -37,47 +40,27 @@ export default function FormDialog({...props}) {
 
     const createGame = async () => {
         let err = null;
+        setIsLoading(true);
 
         const title = addGameTitleRef.current.querySelectorAll('input')[0].value;
-        setIsLoadingAddGame(true);
- 
+        
         try {
             const response = await axios.post(config.apiHost + '/v1/games/', { title });
+            setIsLoading(true);
 
             await fct.sleep(1000);
+
+            dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Game', 
+                variant: 'alert', alertSeverity: 'success', close: true });
             
-        } catch (e) {
-            err = e.response.data.message;
-        }
-
-        
-        setIsLoadingAddGame(false);
-
-        if(!err) {
-            //await botModel.addBot();
-
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Successfully added Game',
-                variant: 'alert',
-                alertSeverity: 'success',
-                close: true
-            });
-            addGameTitleRef.current.childNodes[0].value = '';
-
             
             getHostedGames();
-            setOpen(false);
-        } else {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: err,
-                variant: 'alert',
-                alertSeverity: 'error',
-                close: true
-            });
+            handleClose();
+        
+        } catch (e) {
+            setIsLoading(false);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
         }
     };
 
@@ -112,7 +95,7 @@ export default function FormDialog({...props}) {
                         Cancel
                     </Button>
                     <Button variant="contained" size="small" onClick={createGame} color="primary">
-                        Create
+                        {isLoading ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Create') }  
                     </Button>
                 </DialogActions>
             </Dialog>

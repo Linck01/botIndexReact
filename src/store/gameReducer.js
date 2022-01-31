@@ -58,11 +58,9 @@ const gameReducer = (state, action) => {
             };
         }
         case SET_PRIVILEGES: {
-            const { amIAdmin, amIMod } = action.payload;
             return {
                 ...state,
-                amIAdmin,
-                amIMod,
+                privileges: action.privileges
             };
         }
         default: {

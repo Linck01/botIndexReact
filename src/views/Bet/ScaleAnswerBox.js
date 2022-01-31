@@ -52,9 +52,17 @@ const TipBox = ( props ) => {
     
     const stakedIntervals = [];
     let myTipsInInterval;
-    for (let interval of bet.scale_answers) {
-        myTipsInInterval = myTips.filter((t) => t.answerDecimal.$numberDecimal >= interval.from.$numberDecimal && t.answerDecimal.$numberDecimal < interval.to.$numberDecimal)
+    for (let i = 0; i < bet.scale_answers.length;i++) {
+        myTipsInInterval = myTips.filter((t) => {
+            const isBigger = parseFloat(t.answerDecimal.$numberDecimal) >= parseFloat(bet.scale_answers[i].from.$numberDecimal);
 
+            if (bet.scale_answers[i+1])
+                return isBigger && parseFloat(t.answerDecimal.$numberDecimal) < parseFloat(bet.scale_answers[i+1].from.$numberDecimal);
+            else {
+                return isBigger;
+            }
+        });
+        
         stakedIntervals.push(myTipsInInterval.reduce( function(a, b) {
             return a + parseFloat(b.currency.$numberDecimal);
         }, 0));
@@ -62,12 +70,12 @@ const TipBox = ( props ) => {
 
     return (
         <>
-                <PerfectScrollbar className={classes.ScrollHeight}>
+               {/*}<PerfectScrollbar className={classes.ScrollHeight}>{*/}
                    
                         <Table stickyHeader>
                             <TableHead>
                                 <TableRow>
-                                    <TableCell align='center'>Title</TableCell>
+                                    <TableCell align='center'>Interval</TableCell>
                                     <TableCell align='center'>Members</TableCell>
                                     <TableCell align='center'>In pot</TableCell>
                                     <TableCell align='center'>Staked</TableCell>
@@ -77,7 +85,7 @@ const TipBox = ( props ) => {
                             <TableBody>
                                 {bet.scale_answers.map((interval, index) => (
                                     <TableRow hover key={interval.id}>
-                                        <TableCell align='center'>{interval.from.$numberDecimal} - {interval.to.$numberDecimal}</TableCell> 
+                                        <TableCell align='center'>{'>'} {interval.from.$numberDecimal}</TableCell> 
                                         <TableCell align='center'>{interval.memberCount}</TableCell>
                                         <TableCell align='center'>{interval.inPot.$numberDecimal}</TableCell>
                                         <TableCell align='center'> {stakedIntervals[index]}</TableCell>
@@ -86,7 +94,7 @@ const TipBox = ( props ) => {
                             </TableBody>
                         </Table>
                 
-                </PerfectScrollbar>
+                {/*}</PerfectScrollbar>{*/}
             
 
         </>

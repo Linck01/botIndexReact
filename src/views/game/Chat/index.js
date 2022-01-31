@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef } from 'react';
+import React, { useState, useContext, useRef, useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import fct from '../../../utils/fct.js';
 
@@ -15,7 +15,8 @@ import {
     useMediaQuery,
     Divider,
     MenuItem,
-    Menu
+    Menu,
+    CircularProgress
 } from '@material-ui/core';
 
 import MoreHorizTwoToneIcon from '@material-ui/icons/MoreHorizTwoTone';
@@ -57,36 +58,48 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { user } = useAuth();
-    const { game, chatHistory, chat, setChat} = useContext(GameContext);
+    const { game, socket, chatHistory, chat, setChat} = useContext(GameContext);
     const messageInputRef = useRef();
     const scrollBarRef = useRef();
     const customization = useSelector((state) => state.customization);
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
+    const [isLoading, setIsLoading] = useState(true);
 
     const getMessages = async () => {
+        setIsLoading(true);
+
         try {
             const res = await axios.get( game.server + '/v1/messages/',
                 { params: { gameId: game.id, sortBy: '-_createdAt', limit: 10 , page: 0 } });
 
             await fct.sleep(500);
             
-            return res.data.results.reverse();
+            setChat({...chat, isInitialized: true, items: res.data.results.reverse()});
+            setIsLoading(false);
         } catch (e) {
+            setIsLoading(false);
             console.log(e);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
         }  
     };
 
-    const init = async () => {
-        if (!chat.isInitialized) {
-            const messages = await getMessages();
-            setChat({...chat, isInitialized: true, items: messages});
-        }
-    };
+    useEffect(() => {
+        if (socket)
+            socket.on('chatMessage', function(newMessage) {    
+                const newItems = [...chat.items, newMessage]
+                setChat({...chat, items: newItems});
+            });
 
-    React.useEffect(() => {
-        init();     
+        return function cleanup() {
+            if (socket) 
+                socket.off('chatMessage');
+        };
+
+    }, [socket,chat]);
+
+    useEffect(() => {
+        getMessages();     
     }, []);
 
     // handle new message form
@@ -159,7 +172,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
         
        <>
 
-       
+        
 
             {/*}<Grid container spacing={0.5}>
                 <Grid item xs={12} align='right'>
@@ -191,7 +204,16 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
             <PerfectScrollbar className={classes.ScrollHeight} containerRef={ref => {setScrollBarEl(ref);}}>
                 <CardContent>
                     {console.log('chat',chat)}
-                    {chat.isInitialized ? <ChartHistory theme={theme} data={chat.items} scrollBarEl={scrollBarEl} scrollBarRef={scrollBarRef} />: ''}
+                    {isLoading ? (
+                        <>
+                        <br />
+                        <Grid container justifyContent="center">
+                            
+                            <CircularProgress color="secondary" size="10em"  />
+                            
+                        </Grid>
+                        </>
+                    ) : <ChartHistory theme={theme} data={chat.items} scrollBarEl={scrollBarEl} scrollBarRef={scrollBarRef} />} 
                 </CardContent>
             </PerfectScrollbar>
             </MainCard>

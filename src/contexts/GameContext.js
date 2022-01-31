@@ -9,7 +9,7 @@ import jwtDecode from 'jwt-decode';
 // reducer - state management
 import { GAME_INITIALIZE, INIT_CHAT, NEW_MESSAGES, SET_BETPAGEINDEX, 
     SET_MEMBERPAGEINDEX, SET_MEMBER, SET_HANDLENEWTIP, SET_BET, SET_MYTIPS, 
-    SET_GAME, SET_SOCKET, SET_BETSPAGE, SET_BETPAGE, SET_CHAT } from '../store/actions';
+    SET_GAME, SET_SOCKET, SET_BETSPAGE, SET_BETPAGE, SET_CHAT, SET_PRIVILEGES } from '../store/actions';
 import gameReducer from '../store/gameReducer';
 
 // project imports
@@ -29,24 +29,21 @@ const initialState = {
             items: [],
             index: 1,
             maxIndex: 1,
-            isInitialized: false
-        },
-        isInitialized: false
+        }
     },
-    amIAdmin: false,
-    amIMod: false,
+    privileges: {
+        admin: false,
+        mod: false
+    },
     member: null,
     chat: {
         items: [],
-        isInitialized: false
     },
     betsPage: {
         items: [],
         index: 1,
         maxIndex: 1,
-        isInitialized: false
     },
-    memberPageIndex: 1,
 };
 
 
@@ -92,6 +89,13 @@ export const GameProvider = ({ children }) => {
         dispatch({
             type: SET_GAME,
             game: game
+        });
+    };
+
+    const setPrivileges = async (privileges) => { 
+        dispatch({
+            type: SET_PRIVILEGES,
+            privileges: privileges
         });
     };
 
@@ -144,7 +148,6 @@ export const GameProvider = ({ children }) => {
             newBets.push(bet);
         }
         
-        
         return newBets; 
     }
 
@@ -160,43 +163,7 @@ export const GameProvider = ({ children }) => {
         });
     };
 
-    const updateTipListPageWithNewTip = async (newTip) => {
-        let newItems = [],replaced = false;
-      
-        for (let tip of state.betPage.tipListPage.items) {
-            if (tip.id == newTip.id) {
-                newItems.unshift(newTip)
-                replaced = true;
-            } else
-            newItems.push(tip);
-        }
-        
-        if (!replaced && state.betPage.tipListPage.index == 1) {
-            newItems.pop();
-            newItems.unshift(newTip);
-        }
-            
-        await fct.addUsernamesToArray(newItems);
     
-        return newItems;
-    }
-    
-    const updateMyTipsWithNewTip = async (newTip) => {
-        let newMyTips = [], replaced = false;
-
-        for (let tip of state.betPage.myTips) {
-            if (tip.id == newTip.id) {
-                newMyTips.push(newTip)
-                replaced = true;
-            } else
-                newMyTips.push(tip);
-        }
-        if (!replaced)
-            newMyTips.push(newTip);
-        
-        
-        return newMyTips; 
-    }
 
     /*
     *  Member
@@ -227,7 +194,6 @@ export const GameProvider = ({ children }) => {
     *  Chat
     */
 
-    
     const setChat = async (chat) => { 
         dispatch({
             type: SET_CHAT,
@@ -241,20 +207,6 @@ export const GameProvider = ({ children }) => {
 
     useEffect(() => {
         if (state.socket)
-            state.socket.on('chatMessage', function(newMessage) {    
-                const newItems = [...state.chat.items, newMessage]
-                setChat({...state.chat, items: newItems});
-            });
-
-        return function cleanup() {
-            if (state.socket) 
-                state.socket.off('chatMessage');
-        };
-
-    }, [state.socket,state.chat]);
-
-    useEffect(() => {
-        if (state.socket)
             state.socket.on('newTip', function(data) { 
                 handleSocketNewTip(data);
             });
@@ -265,19 +217,85 @@ export const GameProvider = ({ children }) => {
         };
 
     }, [state.socket, state.betPage, state.betsPage]);
+
+    useEffect(() => {
+        if (state.socket)
+            state.socket.on('newBet', function(data) { 
+                handleSocketNewBet(data);
+            });
+
+        return function cleanup() {
+            if (state.socket)
+                state.socket.off('newBet');
+        };
+
+    }, [state.socket, state.betsPage]);
     
+    const handleSocketNewBet = async (bet) => {
+        console.log('bet',bet);
+
+        setBetsPage({...state.betsPage,items:[bet,...state.betsPage.items]})
+    }
+
     const handleSocketNewTip = async (data) => {
-        if (state.betPage.isInitialized && state.betPage.bet.id == data.bet.id) {
-            const newItems = await updateTipListPageWithNewTip(data.tip);
+        if (state.betPage.bet && state.betPage.bet.id == data.bet.id) {
+            const newTipListItems = await updateTipListItemsWithNewTip(data.tip);
             const newMyTips = await updateMyTipsWithNewTip(data.tip);  
             
-            setBetPage({...state.betPage, bet: data.bet, myTips: newMyTips, tipListPage: {...state.betPage.tipListPage, items: newItems}});
+            console.log('newTipListItems',newTipListItems,'newMyTips',newMyTips);
+            
+            let maxIndex = state.betPage.tipListPage.maxIndex;
+            const paginationIncrement = (state.betPage.tipListPage.items.length+1) % config.tipListPageSize == 1;
+            if (paginationIncrement)
+                maxIndex++;
+
+            setBetPage({...state.betPage, bet: data.bet, myTips: newMyTips, tipListPage: {...state.betPage.tipListPage, items: newTipListItems, maxIndex: maxIndex}});
         }
 
-        if (state.betsPage.isInitialized && state.betsPage.items.map(b => b.id).includes(data.bet.id)) {
+        if (state.betsPage.items.map(b => b.id).includes(data.bet.id)) {
             const newBets = await updateBetsWithNewBet(data.bet); 
             setBetsPage({...state.betsPage, items: newBets});
         }
+    }
+
+    const updateTipListItemsWithNewTip = async (newTip) => {
+        let newItems = [],replaced = false;
+        for (let tip of state.betPage.tipListPage.items) {
+            if (tip.id == newTip.id) {
+                newItems.unshift(newTip)
+                replaced = true;
+            } else
+                newItems.push(tip);
+        }
+        
+        if (!replaced && state.betPage.tipListPage.index == 1) {
+            newItems.unshift(newTip);
+
+            if (state.betPage.tipListPage.items.length >= config.tipListPageSize) 
+                newItems.pop();
+                
+        }
+            
+        await fct.addUsernamesToArray(newItems);
+    
+        return newItems;
+    }
+    
+    const updateMyTipsWithNewTip = async (newTip) => {
+        let newMyTips = [], replaced = false;
+
+        for (let tip of state.betPage.myTips) {
+            if (tip.id == newTip.id) {
+                newMyTips.push(newTip)
+                replaced = true;
+            } else
+                newMyTips.push(tip);
+        }
+        if (!replaced)
+            newMyTips.push(newTip);
+        
+        
+        return newMyTips; 
     }
 
     /*
@@ -296,17 +314,18 @@ export const GameProvider = ({ children }) => {
                 return;
             setSocket(socket);
 
-            let amIAdmin = false, amIMod = false, member = null;
+            let admin = false, mod = false, member = null;
             if (user) {
                 member = await fetchMember(game,user.id);
                 setMember(member);
 
                 if (game.userId == user.id)
-                    amIAdmin = true;
+                    admin = true;
                 if (game.moderators.includes(user.id))
-                    amIMod = true;
+                    mod = true;
             }
 
+            setPrivileges({...state.privileges, admin, mod});
             setGame(game);
         };
 

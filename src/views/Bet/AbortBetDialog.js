@@ -90,8 +90,6 @@ export default function AddTipDialog(props) {
          }
 
         setIsLoadingAddTip(false);
-        refreshMember();
-        getBet();
         dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Tip', 
                 variant: 'alert', alertSeverity: 'success', close: true });
     };

@@ -1,6 +1,8 @@
 
 // material-ui
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, FormControl, FormControlLabel, Grid, Radio, RadioGroup } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, 
+    DialogTitle, TextField, Typography, FormControl, FormControlLabel, 
+    Grid, Radio, RadioGroup, CircularProgress } from '@material-ui/core';
 
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import GameContext from '../../../contexts/GameContext';
@@ -25,9 +27,8 @@ import AnswerScale from './AnswerScale';
 export default function FormDialog({...props}) {
     const { game } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
-    const [isLoadingAddBet, setIsLoadingAddBet] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
-    const { getBets } = props;
 
     const [desc, setDesc] = React.useState('');
     const [title, setTitle] = React.useState('');
@@ -46,7 +47,7 @@ export default function FormDialog({...props}) {
     };
 
     const createBet = async () => {  
-        setIsLoadingAddBet(true);
+        setIsLoading(true);
         let err = null;
 
         await fct.sleep(1000);
@@ -60,11 +61,10 @@ export default function FormDialog({...props}) {
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Bet', 
                 variant: 'alert', alertSeverity: 'success', close: true });
 
-            getBets();
-            setIsLoadingAddBet(false);
+            setIsLoading(false);
             setOpen(false);
         } catch (e) { 
-            setIsLoadingAddBet(false);
+            setIsLoading(false);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
          }
@@ -139,7 +139,7 @@ export default function FormDialog({...props}) {
                         Cancel
                     </Button>
                     <Button variant="contained" size="small" onClick={createBet} color="primary">
-                        Create
+                        {isLoading ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Create') }  
                     </Button>
                 </DialogActions>
             </Dialog>

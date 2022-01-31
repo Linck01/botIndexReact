@@ -34,7 +34,6 @@ export default function FormDialog({...props}) {
     };
 
     const updateAnswer = (e,field,index) => {
-        console.log('GGGGGGG', e,field,index);
         let tmp = [...catalogue_answers];
         tmp[index][field] = e.target.value;
         

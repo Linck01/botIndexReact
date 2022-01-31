@@ -66,7 +66,13 @@ export default function AddTipDialog(props) {
 
         if (!user) {
             setIsLoadingAddTip(false);
-            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to send a tip!',
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to send a tip.',
+                variant: 'alert', alertSeverity: 'error', close: true });
+        }
+
+        if (amount <= 0) {
+            setIsLoadingAddTip(false);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Tip must be bigger than 0.',
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
         
@@ -79,14 +85,11 @@ export default function AddTipDialog(props) {
             
         } catch (e) {
             setIsLoadingAddTip(false);
-
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
          }
 
         setIsLoadingAddTip(false);
-        //refreshMember();
-        //getBet();
         handleClose()
         dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Tip', 
                 variant: 'alert', alertSeverity: 'success', close: true });

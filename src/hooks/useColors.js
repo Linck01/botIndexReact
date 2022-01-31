@@ -46,13 +46,24 @@ const useAnswerColors = () => {
     const warningMain = theme.palette.warning.main;
     const warningDark = theme.palette.warning.dark;
 
+    const success = theme.palette.mode === 'dark' ? successDark : successLight;
+    const warning = theme.palette.mode === 'dark' ? warningDark : warningLight;
+    const info = theme.palette.mode === 'dark' ? infoDark : infoLight;
+    const error = theme.palette.mode === 'dark' ? errorDark : errorLight;
 
     const answerColors = [
         primaryDark, secondaryDark, successDark, orangeDark, infoDark, warningDark, errorDark, 
         primaryMain, secondaryMain, successMain, orangeMain, infoMain, warningMain, errorMain,
-        primary200, secondary200, success200,
+        primary200, secondary200, success200, 
     ]
-    
+
+    const colors = {
+        success, warning, info, error,
+        primaryDark, secondaryDark, successDark, orangeDark, infoDark, warningDark, errorDark, 
+        primaryMain, secondaryMain, successMain, orangeMain, infoMain, warningMain, errorMain,
+        primary200, secondary200, success200,
+    }
+ 
     const get = async () => {
         
     }
@@ -61,7 +72,7 @@ const useAnswerColors = () => {
        
     }, []);
 
-    return { answerColors };
+    return { answerColors, colors };
 };
 
 export default useAnswerColors;

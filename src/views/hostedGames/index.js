@@ -2,7 +2,7 @@ import React, {useState, useEffect, useRef} from 'react';
 import fct from '../../utils/fct.js';
 
 // material-ui
-import { Typography, Grid, Button, InputAdornment, OutlinedInput, CircularProgress } from '@material-ui/core';
+import { Typography, Grid, Button, InputAdornment, OutlinedInput, CircularProgress, Pagination } from '@material-ui/core';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 
 
@@ -24,9 +24,10 @@ import AddGameDialog from './AddGameDialog';
 //==============================|| SAMPLE PAGE ||==============================//
 
 const HostedGamesPage = () => {
-    const [isLoadingHostedGames, setIsLoadingHostedGames] = useState(true);
+    const [isLoading, setIsLoading] = useState(true);
     const [hostedGames, setHostedGames] = useState([]);
     const auth = useAuth();
+    const [page, setPage] = useState({index: 1, maxIndex: 1});
 
     const dispatch = useDispatch();
 
@@ -40,30 +41,30 @@ const HostedGamesPage = () => {
     };
 
     const getHostedGames = async () => {
-        setIsLoadingHostedGames(true);
+        setIsLoading(true);
 
         try {
-            const response = await axios.get(config.apiHost + '/v1/games/', { params: { userId: auth.user.id, sortBy: 'createdAt', limit: 10 , page: 0 } });
+            const response = await axios.get(config.apiHost + '/v1/games/', { params: { userId: auth.user.id, sortBy: 'createdAt', limit: 9 , page: page.index } });
 
             await fct.sleep(1000);
-            setHostedGames(response.data.results); // [{id:1},{id:2},{id:3}]
+            setHostedGames(response.data.results);
+            setPage({...page, maxIndex: response.data.totalPages});
+            setIsLoading(false);
         } catch (e) {
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: e.response.data.message,
-                variant: 'alert',
-                alertSeverity: 'error',
-                close: true
-            });
+            setIsLoading(false);
+            console.log(e);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
         }
+    }
 
-        setIsLoadingHostedGames(false);
+    const handlePageChange = async (a,b,c) => {
+        setPage({...page, index: b});
     }
 
     useEffect(() => {
         getHostedGames();
-    }, []);
+    }, [page.index]);
 
     return (
         <>
@@ -71,7 +72,7 @@ const HostedGamesPage = () => {
  
             <br /><br />
       
-            {isLoadingHostedGames ? (
+            {isLoading ? (
                 <>
                     
                     <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>
@@ -80,17 +81,29 @@ const HostedGamesPage = () => {
                 </>
             ) : ''}
             
-            <Grid container spacing={gridSpacing}>
-            {!isLoadingHostedGames ? hostedGames.map( (game) => {
-                return (
-                    <Grid item xs={12} lg={4} key={game.id}>              
-                        <GameCard1 game={game} />     
+            
+            {!isLoading && hostedGames.length > 0 ? (
+                <>
+                <Grid container spacing={gridSpacing}>
+                    {hostedGames.map( (game) => {
+                        return (
+                            <Grid item xs={12} lg={4} key={game.id}>              
+                                <GameCard1 game={game} />     
+                            </Grid>
+                        );
+                    })}
+                </Grid>
+                <br />
+                <Grid container direction="column" spacing={2} alignItems="center">
+                    <Grid item xs={12}>
+                        <Pagination page={page.index} onChange={handlePageChange} count={page.maxIndex} color="primary" />
                     </Grid>
-                );
-            }) : ''}
-            </Grid>
+                </Grid>
+                </>)
+                : ''}
+        
 
-            {!isLoadingHostedGames && hostedGames.length == 0 ? (
+            {!isLoading && hostedGames.length == 0 ? (
                 <>
                     <Grid container direction="column" spacing={2} alignItems="center">
                         <Grid item xs={12}>

@@ -18,6 +18,7 @@ import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownO
 import Avatar1 from '../../assets/images/users/avatar-1.png';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import WatchLaterTwoToneIcon from '@material-ui/icons/WatchLaterTwoTone';
+import useColors from '../../hooks/useColors.js';
 
 
 // style constant
@@ -73,34 +74,37 @@ export default function CustomList(props) {
     const theme = useTheme();
     const { tip, bet } = props;
     const { game } = React.useContext(GameContext);
+    const { colors } = useColors();
+
+    let currencyString = '';
+    if (bet.isPaid) {
+        const diffColor = parseFloat(tip.diff.$numberDecimal) < 0 ? 'error' : 'success';
+        currencyString =  (<Typography align="left" style={{color:colors[diffColor],textAlign: 'center',fontSize:'0.7em'}} variant="">({parseFloat(tip.diff.$numberDecimal).toFixed(2)})</Typography>);
+    }
 
     return (
         <>
         <Grid item xs={12}>
             <Grid container spacing={2}>
-                <Grid xs={2} item style={{marginTop:'5px'}}>
-                    <Typography align="center" component="div" variant="body1" style={{fontSize:'1.5em'}}>
-                        {tip.currency.$numberDecimal + game.currencyName}
+                <Grid xs={4} item style={{marginTop:'5px'}}>
+                    <Typography align="" component="div" variant="body1" style={{fontSize:'1.5em'}}>
+                        {game.currencyName} {tip.currency.$numberDecimal} &nbsp;{currencyString} 
                     </Typography>
                 </Grid>
-                <Grid xs={7} item xs zeroMinWidth>
-                    <Typography align="left" component="div" variant="subtitle1">
+                <Grid xs={4} item >
+                    <Typography align="left" component="div" variant="h5">
                         {tip.username}
                     </Typography>
-                    <Grid container spacing={2}>
-                        <Grid item xs zeroMinWidth>
-                            <Typography align="left" component="div" variant="subtitle2">
-                                <FiberManualRecordIcon className={classes.textActive} /> &nbsp;
-                                {bet.betType == 'catalogue' ? bet.catalogue_answers[tip.answerId].title : ''}
-                                {bet.betType == 'scale' ? tip.answerDecimal.$numberDecimal : ''}
-                            </Typography>
-                        </Grid>
-                    </Grid>
+                    <Typography align="left" component="div" variant="subtitle2">
+                        <FiberManualRecordIcon className={classes.textActive} /> &nbsp;
+                        {bet.betType == 'catalogue' ? bet.catalogue_answers[tip.answerId].title : ''}
+                        {bet.betType == 'scale' ? tip.answerDecimal.$numberDecimal : ''}
+                    </Typography> 
                 </Grid>
-                
-                <Grid xs={3} item>
+            
+                <Grid xs={4} item>
                     <Typography align="center" component="div" variant="caption">
-                        <WatchLaterTwoToneIcon className={classes.timeIcon} />30 min ago       
+                        <WatchLaterTwoToneIcon className={classes.timeIcon} />{fct.timeAgoString(tip._updatedAt)}      
                     </Typography>
                     <Typography align="center" component="div" variant="caption">
                         {fct.formatDateTime(tip._updatedAt)}
