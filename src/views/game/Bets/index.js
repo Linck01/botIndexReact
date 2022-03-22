@@ -62,7 +62,6 @@ const Bets = () => {
 
     return (
         <>  
-
         {(privileges.admin || privileges.mod) ? (        
             <>
             <AddBetDialog/>
@@ -86,7 +85,7 @@ const Bets = () => {
         {!isLoading && betsPage.items.length > 0 ? (
             <>
                 {betsPage.items.map((bet) => (
-                    <BetListItem bet={bet} />  
+                    <BetListItem key={bet.id} bet={bet} />  
                 ))}
                 <br />
                 <Grid container direction="column" spacing={2} alignItems="center">
@@ -99,7 +98,8 @@ const Bets = () => {
         ) : ''}
 
         {!isLoading && betsPage.items.length == 0 ? (
-            <>
+            <>  
+                <br />
                 <Grid container direction="column" spacing={2} alignItems="center">
                     <Grid item xs={12}>
                        <Typography variant="h3">No bets to show.</Typography>

@@ -1,173 +1,110 @@
-import React from 'react'
-import styled from 'styled-components'
-import { useTable, usePagination } from 'react-table'
-import { Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import React, {useState, useEffect, useRef, useContext} from 'react';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import GameContext from '../../../contexts/GameContext';
+import fct from '../../../utils/fct.js';
+import MemberTable from './MemberTable';
 
+import { Divider, Typography, CardMedia, Stack, Switch, Pagination, Grid, Button, InputAdornment, OutlinedInput, CircularProgress, Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
+import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import { useDispatch, useSelector } from 'react-redux';
+// project imports
 import SubCard from '../../../ui-component/cards/SubCard';
-import SecondaryAction from '../../../ui-component/cards/CardSecondaryAction';
+import { gridSpacing } from '../../../store/constant';
+import { SNACKBAR_OPEN } from '../../../store/actions';
+import useAuth from '../../../hooks/useAuth';
+import axios from '../../../utils/axios';
+import config from '../../../config';
+// project imports
 
-import makeData from './makeData'
-const data = makeData(25);
+
+//-----------------------|| PROFILE 1 - PROFILE ||-----------------------//
 
 
-  // style constant
-  const useStyles = makeStyles({
-    root: {
-        width: '100%',
-        overflow: 'hidden'
-    },
-    container: {
-        
+
+
+
+const Members = () => {
+    const { game, socket, privileges, membersPage, setMembersPage  } = useContext(GameContext);
+    const { user } = useAuth();
+    const dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
+
+    const getMembersPage = async () => {
+        setIsLoading(true);
+
+        try {
+            const response = await axios.get(config.apiHost + '/v1/members/', { params: { gameId: game.id, sortBy: '-currency', limit: 10 , page: membersPage.index } });
+            await fct.addUsernamesToArray(response.data.results);
+
+            await fct.sleep(500);
+            setMembersPage({...membersPage, items: response.data.results,maxIndex: response.data.totalPages});
+
+
+
+            setIsLoading(false);
+        } catch (e) {
+            setIsLoading(false);
+            console.log(e);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
+        }
     }
-});
 
+    const handlePageChange = async (a,b,c) => {
+        console.log(a,b,c);
+        setMembersPage({...membersPage, index: b});
+    }
 
+    useEffect(() => {
+        getMembersPage();
+    }, [membersPage.index]);
 
-const columns = 
-     [
-      {
-        Header: 'Username',
-        columns: [
-            {
-                Header: 'First Name',
-                accessor: 'firstName',
-            }
-        ]
-      },
-      {
-        Header: 'Honor',
-        columns: [
-            {
-                Header: 'Last Name',
-                accessor: 'lastName',
-            }
-        ]
-      },
-    ];
-
-function StickyHeadTable({}) {
-  // Use the state and functions returned from useTable to build your UI
-  const {
-    getTableProps,
-    getTableBodyProps,
-    headerGroups,
-    prepareRow,
-    page, // Instead of using 'rows', we'll use page,
-    // which has only the rows for the active page
-
-    // The rest of these things are super handy, too ;)
-    canPreviousPage,
-    canNextPage,
-    pageOptions,
-    pageCount,
-    gotoPage,
-    nextPage,
-    previousPage,
-    setPageSize,
-    state: { pageIndex, pageSize },
-  } = useTable(
-    {
-      columns,
-      data,
-      initialState: { pageIndex: 0 },
-    },
-    usePagination
-  )
-
-  const classes = useStyles();
-
-
-  // Render the UI for your table
-  return (
-    <>
-        <SubCard content={false}>
-            <TableContainer className={classes.container}>
-                <Table  stickyHeader aria-label="sticky table">
-                    <TableHead>
-                       
-                        <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell sx={{ py: 1.5 }} key={column.id} align={column.align} style={{ minWidth: column.minWidth }}>
-                                        {column.Header}
-                                    </TableCell>
-                                ))}
-                        </TableRow>
-                      
-                    </TableHead>
-                    <TableBody {...getTableBodyProps()}>
-                        {page.map((row, i) => {
-                            console.log(row);
-                            prepareRow(row)
-                            return (
-                            <TableRow  sx={{ py: 1 }} hover role="checkbox" tabIndex={-1}>
-                                {row.cells.map(cell => {
-                                    if (cell.value)
-                                        return <TableCell>{cell.render('Cell')}</TableCell>
-                                })}
-                            </TableRow>
-                            )
-                        })}
-                    </TableBody>
-                </Table>
-            </TableContainer>
-        </SubCard>
-        <br />
-      {/* 
-        Pagination can be built however you'd like. 
-        This is just a very basic UI implementation:
-      */}
-      <div className="pagination" style={{width:'100%', textAlign: 'center'}}>
-        <span>
-          Page{' '}
-          <strong>
-            {pageIndex + 1} of {pageOptions.length}
-          </strong>{' '}
-        </span>
-        <br />
-        <button onClick={() => gotoPage(0)} disabled={!canPreviousPage}>
-          {'<<'}
-        </button>{' '}
-        <button onClick={() => previousPage()} disabled={!canPreviousPage}>
-          {'<'}
-        </button>{' '}
-        <button onClick={() => nextPage()} disabled={!canNextPage}>
-          {'>'}
-        </button>{' '}
-        <button onClick={() => gotoPage(pageCount - 1)} disabled={!canNextPage}>
-          {'>>'}
-        </button>{' '}
+    return (
+        <>  
         
+        {isLoading ? (         
+            <>
+            <br />
+            <Grid container justifyContent="center">     
+                <CircularProgress color="secondary" size="10em"  /> 
+            </Grid>
+            </>       
+        ) : ''} 
         
-        {/*}
-        <span>
-          | Go to page:{' '}
-          <input
-            type="number"
-            defaultValue={pageIndex + 1}
-            onChange={e => {
-              const page = e.target.value ? Number(e.target.value) - 1 : 0
-              gotoPage(page)
-            }}
-            style={{ width: '100px' }}
-          />
-        </span>{' '}
-        <select
-          value={pageSize}
-          onChange={e => {
-            setPageSize(Number(e.target.value))
-          }}
-        >
-          {[10, 20, 30, 40, 50].map(pageSize => (
-            <option key={pageSize} value={pageSize}>
-              Show {pageSize}
-            </option>
-          ))}
-        </select>
-          {*/}
-      </div>
-    </>
-  )
-}
+        {!isLoading && membersPage.items.length > 0 ? (
+            <>
+            <MemberTable membersPage={membersPage} />  
+            <br />
+            </>
+        ) : ''}
 
-export default StickyHeadTable
+        {!isLoading && membersPage.maxIndex > 1 ? (
+            <>
+            <Grid container direction="column" spacing={2} alignItems="center">
+                <Grid item xs={12}>
+                    <Pagination page={membersPage.index} onChange={handlePageChange} count={membersPage.maxIndex} color="primary" />
+                </Grid>
+            </Grid>
+            </>
+        ) : ''}
+
+        {!isLoading && membersPage.items.length == 0 ? (
+            <>  
+                <br />
+                <Grid container direction="column" spacing={2} alignItems="center">
+                    <Grid item xs={12}>
+                       <Typography variant="h3">No Members to show.</Typography>
+                    </Grid>
+                </Grid>
+            </>
+           
+        ) : ''}
+
+  
+        
+
+        </>
+    );
+};
+
+export default Members;

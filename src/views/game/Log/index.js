@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 // material-ui
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Typography } from '@material-ui/core';
+import { Paper, Typography, Grid, Pagination } from '@material-ui/core';
 import {
     Timeline,
     TimelineItem,
@@ -13,103 +13,71 @@ import {
     TimelineOppositeContent
 } from '@material-ui/lab';
 
+import GameContext from '../../../contexts/GameContext';
+import LogListItem from './LogListItem';
 // assets
 import FastfoodIcon from '@material-ui/icons/FastfoodTwoTone';
 import LaptopMacIcon from '@material-ui/icons/LaptopMacTwoTone';
 import HotelIcon from '@material-ui/icons/HotelTwoTone';
 import RepeatIcon from '@material-ui/icons/RepeatTwoTone';
+import fct from '../../../utils/fct.js';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
-    paper: {
-        padding: '20px',
-        boxShadow: 'none',
-        background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.primary.light,
-        border: '1px dashed',
-        borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.dark : theme.palette.primary.dark
+    aaa: {
+        
     }
 }));
 
 //==============================|| UI TIMELINE - CUSTOMIZED ||==============================//
 
+const entriesPerPage = 12;
+
 export default function CustomizedTimeline() {
     const classes = useStyles();
+    const { game, logsPage, setLogsPage } = React.useContext(GameContext);
+    
+
+    const handlePageChange = async (a,b,c) => {
+        setLogsPage({...logsPage, index: b});
+
+    }
+
+    React.useEffect(() => {
+        setLogsPage({...logsPage, maxIndex: Math.ceil(game.logs.length / entriesPerPage), items: fct.paginate([...game.logs].reverse(),entriesPerPage,logsPage.index)});
+
+    }, [logsPage.index]);
 
     return (
-        <Timeline position="alternate">
-            <TimelineItem>
-                <TimelineOppositeContent>
-                    <Typography variant="body2" color="textSecondary">
-                        9:30 am
-                    </Typography>
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                    <TimelineDot color="secondary">
-                        <FastfoodIcon sx={{ color: '#fff' }} />
-                    </TimelineDot>
-                    <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>
-                    <Paper elevation={3} className={classes.paper}>
-                        <Typography variant="h5" component="h1">
-                            Eat
-                        </Typography>
-                        <Typography>Because you need strength</Typography>
-                    </Paper>
-                </TimelineContent>
-            </TimelineItem>
-            <TimelineItem>
-                <TimelineOppositeContent>
-                    <Typography variant="body2" color="textSecondary">
-                        10:00 am
-                    </Typography>
-                </TimelineOppositeContent>
-                <TimelineSeparator>
-                    <TimelineDot color="primary">
-                        <LaptopMacIcon />
-                    </TimelineDot>
-                    <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>
-                    <Paper elevation={3} className={classes.paper}>
-                        <Typography variant="h5" component="h1">
-                            Code
-                        </Typography>
-                        <Typography>Because it&apos;s awesome!</Typography>
-                    </Paper>
-                </TimelineContent>
-            </TimelineItem>
-            <TimelineItem>
-                <TimelineSeparator>
-                    <TimelineDot color="secondary">
-                        <HotelIcon />
-                    </TimelineDot>
-                    <TimelineConnector />
-                </TimelineSeparator>
-                <TimelineContent>
-                    <Paper elevation={3} className={classes.paper}>
-                        <Typography variant="h5" component="h1">
-                            Sleep
-                        </Typography>
-                        <Typography>Because you need rest</Typography>
-                    </Paper>
-                </TimelineContent>
-            </TimelineItem>
-            <TimelineItem>
-                <TimelineSeparator>
-                    <TimelineDot color="primary">
-                        <RepeatIcon />
-                    </TimelineDot>
-                </TimelineSeparator>
-                <TimelineContent>
-                    <Paper elevation={3} className={classes.paper}>
-                        <Typography variant="h5" component="h1">
-                            Repeat
-                        </Typography>
-                        <Typography>Because this is the life you love!</Typography>
-                    </Paper>
-                </TimelineContent>
-            </TimelineItem>
-        </Timeline>
+        <>
+        {game.logs.length > 0 ? (
+            <>
+                <Timeline position="alternate">
+                    {logsPage.items.map((log,i) => (
+                        <LogListItem key={i} log={log} />  
+                    ))}
+                </Timeline>
+                <br />
+                <Grid container direction="column" spacing={2} alignItems="center">
+                    <Grid item xs={12}>
+                        <Pagination page={logsPage.index} onChange={handlePageChange} count={logsPage.maxIndex} color="primary" />
+                    </Grid>
+                </Grid>
+            </>
+           
+        ) : ''}
+
+        {game.logs.length == 0 ? (
+            <>  
+                <br />
+                <Grid container direction="column" spacing={2} alignItems="center">
+                    <Grid item xs={12}>
+                       <Typography variant="h3">No logs to show.</Typography>
+                    </Grid>
+                </Grid>
+            </>
+           
+        ) : ''}
+        </>
     );
 }

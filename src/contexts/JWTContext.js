@@ -47,7 +47,9 @@ const setSessionAndSocket = (userId, accessToken) => {
 const JWTContext = createContext({
     ...initialState,
     login: () => Promise.resolve(),
-    logout: () => {}
+    logout: () => Promise.resolve(),
+    register: () => Promise.resolve(),
+    sendVerificationEmail: () => Promise.resolve(),
 });
 
 export const JWTProvider = ({ children }) => {
@@ -72,8 +74,8 @@ export const JWTProvider = ({ children }) => {
         dispatch({ type: LOGOUT });
     };
 
-    const register = async (username, email, password) => {
-        const response = await axios.post(config.authHost + '/v1/auth/register', { username, email, password });
+    const register = async (username, email, password, captchaToken) => {
+        const response = await axios.post(config.authHost + '/v1/auth/register', { username, email, password, captchaToken });
  
         console.log(response);
         const { tokens, user } = response.data;
@@ -84,6 +86,12 @@ export const JWTProvider = ({ children }) => {
                 user
             }
         });
+    };
+
+    const sendVerificationEmail = async (username, email) => {
+        const response = await axios.post(config.authHost + '/v1/auth/send-verification-email', { username, email });
+ 
+        console.log(response);
     };
 
     useEffect(() => {
@@ -132,7 +140,7 @@ export const JWTProvider = ({ children }) => {
         return <Loader />;
     }
 
-    return <JWTContext.Provider value={{ ...state, login, logout, register }}>{children}</JWTContext.Provider>;
+    return <JWTContext.Provider value={{ ...state, login, logout, register, sendVerificationEmail }}>{children}</JWTContext.Provider>;
 };
 
 export default JWTContext;

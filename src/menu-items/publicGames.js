@@ -34,12 +34,12 @@ export const publicGames = {
             url: '/games/new',
             icon: IconBrandAppleArcade,
         },
-        {
+        /*{
             id: 'About',
             title: <FormattedMessage id="oldGames" />,
             type: 'item',
             url: '/games/old',
             icon: IconCalendar,
-        }
+        }*/
     ]
 };

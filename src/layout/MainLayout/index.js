@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { AppBar, CssBaseline, Toolbar, useMediaQuery } from '@material-ui/core';
+import CookieConsent, { Cookies, getCookieConsentValue } from "react-cookie-consent";
 
 // third-party
 import clsx from 'clsx';
@@ -17,7 +18,7 @@ import Customization from './../Customization';
 import navigation from './../../menu-items';
 import { drawerWidth } from '../../store/constant';
 import { SET_MENU } from './../../store/actions';
-
+import useColors from './../../hooks/useColors';
 // assets
 import { IconChevronRight } from '@tabler/icons';
 
@@ -80,7 +81,7 @@ const MainLayout = ({ children }) => {
     const classes = useStyles();
     const theme = useTheme();
     const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
-
+    const { colors } = useColors();
     // Handle left drawer
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
     const dispatch = useDispatch();
@@ -125,6 +126,24 @@ const MainLayout = ({ children }) => {
                 <div>{children}</div>
             </main>
             <Customization />
+            <CookieConsent
+                location="bottom"
+                buttonText="Accept"
+                cookieName="cookieConsentOne"
+                style={{ background: colors.warning, zIndex: '10000000', fontSize: "1.2em" }}
+                buttonStyle={{ background: colors.secondary, fontSize: "0.9em" }}
+                declineButtonStyle={{ background: colors.error, fontSize: "0.9em" }}
+                declineButtonText="Decline"
+                setDeclineCookie={false}
+                expires={150}
+                enableDeclineButton
+                onDecline={() => {
+                    window.location.replace("https://google.com");
+                }}
+                >
+                This website uses cookies to enhance user experience.{" "}
+                {/*}<span style={{ fontSize: "10px" }}>This bit of text is smaller :O</span>{*/}
+            </CookieConsent>
         </div>
     );
 };

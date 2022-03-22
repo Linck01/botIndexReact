@@ -48,7 +48,7 @@ export default function CustomList(props) {
     }, [betPage.tipListPage.index]);
 
     return (
-        <>
+        <> 
         {isLoading ? (
             <>
             <br /><br /><br />
@@ -62,7 +62,7 @@ export default function CustomList(props) {
         {!isLoading && betPage.tipListPage.items.length > 0 ? (
             <>
             <Grid container spacing={gridSpacing} alignItems="center" style={{padding: ' 0 7%'}}>
-                {betPage.tipListPage.items.map((tip) => <TipListItem tip={tip} bet={betPage.bet} />)}
+                {betPage.tipListPage.items.map((tip) => <TipListItem key={tip.id} tip={tip} bet={betPage.bet} />)}
             </Grid>
             <br />
             <Grid container direction="column" spacing={2} alignItems="center">

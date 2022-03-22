@@ -1,9 +1,5 @@
 import { useState, useEffect } from 'react';
-import fct from '../utils/fct.js';
 import { useTheme } from '@material-ui/core/styles';
-
-
-
 
 const useAnswerColors = () => {
     const [isLoading, setIsLoading] = useState(true);
@@ -59,13 +55,10 @@ const useAnswerColors = () => {
 
     const colors = {
         success, warning, info, error,
+        primaryLight, secondaryLight, orangeLight, errorLight,
         primaryDark, secondaryDark, successDark, orangeDark, infoDark, warningDark, errorDark, 
         primaryMain, secondaryMain, successMain, orangeMain, infoMain, warningMain, errorMain,
-        primary200, secondary200, success200,
-    }
- 
-    const get = async () => {
-        
+        primary200, secondary200, success200, darkLight, dark800, darkMain, darkDark
     }
 
     useEffect(() =>{

@@ -16,7 +16,7 @@ export const userspace = {
     requiresAuth: true,
     children: [  
         {
-            id: 'favoritebots',
+            id: 'hostedGames',
             title: <FormattedMessage id="hostedGames" />,
             type: 'item',
             url: '/games/hosted',
@@ -24,10 +24,10 @@ export const userspace = {
             breadcrumbs: false
         },
         {
-            id: 'mybots',
-            title: <FormattedMessage id="joinedGames" />,
+            id: 'favoritedGames',
+            title: <FormattedMessage id="favoritedGames" />,
             type: 'item',
-            url: '/games/joined',
+            url: '/games/favorite',
             icon: IconDeviceGamepad,
             breadcrumbs: false
         }

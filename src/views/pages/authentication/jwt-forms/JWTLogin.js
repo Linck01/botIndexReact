@@ -172,11 +172,7 @@ const JWTLogin = (props, { ...others }) => {
                             <Typography
                                 variant="subtitle1"
                                 component={Link}
-                                to={
-                                    props.login
-                                        ? '/pages/forgot-password/forgot-password' + props.login
-                                        : '/pages/forgot-password/forgot-password1'
-                                }
+                                to={ '/forgot-password/' }
                                 color="secondary"
                                 sx={{ textDecoration: 'none' }}
                             >

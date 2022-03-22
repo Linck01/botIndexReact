@@ -24,12 +24,13 @@ const oldGamesPage = Loadable(lazy(() => import('../views/OldGames')));
 const gameBetsPage = Loadable(lazy(() => import('../views/game/Bets')));
 const gameChatPage = Loadable(lazy(() => import('../views/game/Chat')));
 const gameInfoPage = Loadable(lazy(() => import('../views/game/Info')));
+const gameSettingsPage = Loadable(lazy(() => import('../views/game/Settings')));
 const gameLogPage = Loadable(lazy(() => import('../views/game/Log')));
 const gameMembersPage = Loadable(lazy(() => import('../views/game/Members')));
 const gameBetPage = Loadable(lazy(() => import('../views/Bet')));
 
 const hostedGames = Loadable(lazy(() => import('../views/HostedGames')));
-const joinedGames = Loadable(lazy(() => import('../views/JoinedGames')));
+const favoritedGames = Loadable(lazy(() => import('../views/favoritedGames')));
 const infoPage = Loadable(lazy(() => import('../views/Info')));
 const termsAndConditions = Loadable(lazy(() => import('../views/TermsAndConditions')));
 const aboutPage = Loadable(lazy(() => import('../views/About')));
@@ -52,7 +53,7 @@ const Routes = () => {
         <Switch>
             {/* MainLayout routes */}
             
-            <Route exact path={['/game/:gameId/', '/game/:gameId/bets', '/game/:gameId/members', '/game/:gameId/log', '/game/:gameId/info', '/game/:gameId/chat', '/game/:gameId/bet/:betId']}>
+            <Route exact path={['/game/:gameId/', '/game/:gameId/bets', '/game/:gameId/members', '/game/:gameId/settings', '/game/:gameId/log', '/game/:gameId/info', '/game/:gameId/chat', '/game/:gameId/bet/:betId']}>
                 <GameProvider>
                     <MainLayout>
                         <GameLoadWrapper>
@@ -62,6 +63,7 @@ const Routes = () => {
                                 <Route exact path={'/game/:gameId/log'} component={gameLogPage} />
                                 <Route exact path={'/game/:gameId/info'} component={gameInfoPage} />
                                 <Route exact path={'/game/:gameId/chat'} component={gameChatPage} />
+                                <Route exact path={'/game/:gameId/settings'} component={gameSettingsPage} />
                                 <Route exact path={'/game/:gameId/'} component={gameBetsPage} />
                                 <Route exact path={'/game/:gameId/bet/:betId'} component={gameBetPage} />
                             </Switch> 
@@ -70,7 +72,7 @@ const Routes = () => {
                 </GameProvider> 
             </Route>
 
-            <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/joined/','/mybots/','/info/','/termsAndService/','/about/']}>
+            <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/favorite/','/info/','/termsAndService/','/about/']}>
                 <MainLayout>
                     <Switch>
                         <Route exact path="/" component={HomePage} />
@@ -79,14 +81,13 @@ const Routes = () => {
                         <Route exact path={'/games/new/'} component={newGamesPage}  />
                         <Route exact path={'/games/old/'} component={oldGamesPage}  />
 
-
                         <Route exact path={'/info/'} component={infoPage}  />
                         <Route exact path={'/termsAndService/'} component={termsAndConditions}  />
                         <Route exact path={'/about/'} component={aboutPage}  />
 
                         <AuthGuard>
                             <Route exact path={'/games/hosted'} component={hostedGames} />
-                            <Route exact path={'/games/joined'} component={joinedGames} />
+                            <Route exact path={'/games/favorite'} component={favoritedGames} />
                         </AuthGuard>
                     </Switch>
                 </MainLayout>

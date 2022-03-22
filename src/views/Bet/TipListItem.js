@@ -87,7 +87,7 @@ export default function CustomList(props) {
         <Grid item xs={12}>
             <Grid container spacing={2}>
                 <Grid xs={4} item style={{marginTop:'5px'}}>
-                    <Typography align="" component="div" variant="body1" style={{fontSize:'1.5em'}}>
+                    <Typography align="left" component="div" variant="body1" style={{fontSize:'1.5em'}}>
                         {game.currencyName} {tip.currency.$numberDecimal} &nbsp;{currencyString} 
                     </Typography>
                 </Grid>

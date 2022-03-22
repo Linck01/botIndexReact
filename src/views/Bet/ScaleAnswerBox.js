@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TipBox = ( props ) => {
+const ScaleAnswerBox = ( props ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { bet, myTips } = props;
@@ -84,7 +84,7 @@ const TipBox = ( props ) => {
                             </TableHead>
                             <TableBody>
                                 {bet.scale_answers.map((interval, index) => (
-                                    <TableRow hover key={interval.id}>
+                                    <TableRow hover key={interval._id}>
                                         <TableCell align='center'>{'>'} {interval.from.$numberDecimal}</TableCell> 
                                         <TableCell align='center'>{interval.memberCount}</TableCell>
                                         <TableCell align='center'>{interval.inPot.$numberDecimal}</TableCell>
@@ -101,4 +101,4 @@ const TipBox = ( props ) => {
     );
 };
 
-export default TipBox;
+export default ScaleAnswerBox;

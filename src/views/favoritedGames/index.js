@@ -13,10 +13,10 @@ import config from '../../config';
 
 //==============================|| SAMPLE PAGE ||==============================//
 
-const NewGamesPage = () => {
+const BigGamesPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [games, setGames] = useState([]);
-    const auth = useAuth();
+    const { user } = useAuth();
     const [page, setPage] = useState({index: 1, maxIndex: 1});
 
     const dispatch = useDispatch();
@@ -25,11 +25,18 @@ const NewGamesPage = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(config.apiHost + '/v1/games/', {params: {isEnded: false, isPublic: true ,sortBy: '-_createdAt', limit: 9 , page: page.index } });
+            const memberResponse = await axios.get(config.apiHost + '/v1/members/', {params: {userId: user.id, isFavoritedGame: true, sortBy: 'createdAt', limit: 9 , page: page.index } });
+            if (memberResponse.data.results.length == 0) {
+                setGames([]);
+                setIsLoading(false);
+                return 
+            }
+
+            const gameResponse = await axios.get(config.apiHost + '/v1/games/', {params: {ids: memberResponse.data.results.map(m => m.gameId), sortBy: '-memberCount', limit: 9 , page: page.index } });
 
             await fct.sleep(1000);
-            setGames(response.data.results);
-            setPage({...page, maxIndex: response.data.totalPages});
+            setGames(gameResponse.data.results);
+            setPage({...page, maxIndex: gameResponse.data.totalPages});
             setIsLoading(false);
         } catch (e) {
             setIsLoading(false);
@@ -92,4 +99,4 @@ const NewGamesPage = () => {
     );
 };
 
-export default NewGamesPage;
+export default BigGamesPage;

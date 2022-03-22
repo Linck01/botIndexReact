@@ -6,7 +6,7 @@ import fct from '../../utils/fct.js';
 import config from '../../config';
 import TipList from './TipList';
 import BetInfo from './BetInfo';
-import CatalgueAnswerBox from './CatalgueAnswerBox';
+import CatalogueAnswerBox from './CatalogueAnswerBox';
 import ScaleAnswerBox from './ScaleAnswerBox';
 import AddTipDialog from './AddTipDialog';
 import CatalogueTipChart from './CatalogueTipChart';
@@ -82,7 +82,7 @@ const BetDetails = () => {
 
     return (
         <>
-
+        
         {isLoading ? (
             <>
             <br /><br /><br />
@@ -98,7 +98,8 @@ const BetDetails = () => {
             
             <TipStatsCards bet={betPage.bet} myTips={betPage.myTips}/>
             <br />
-            {!betPage.bet.isFinished ? (
+            
+            {!betPage.bet.isSolved ? (
                 <>
                <Grid container spacing={gridSpacing} >
                     <Grid item xs={12}>
@@ -110,14 +111,12 @@ const BetDetails = () => {
 
                     {privileges.admin || privileges.mod ? (
                         <Grid item xs={6}><AbortBetDialog bet={betPage.bet} /></Grid>
-                    ): ''}
+                    ): ''}   
                 </Grid>
                 <br /><br />     
                 </>
             ) : ''}
-
-            
-            
+                        
             <Grid container spacing={gridSpacing} >
                 <Grid item xs={12} sm={12} md={5}>
                     <Grid container spacing={gridSpacing}>
@@ -133,37 +132,27 @@ const BetDetails = () => {
                     </Grid>
                 </Grid>
                 <Grid item xs={12} sm={12} md={7} >
-                   
                     <br />
-                    <TipList></TipList>
-                        
+                    <TipList />              
                 </Grid>
             </Grid>
             <br /><br />
-
+           
             <Grid container spacing={gridSpacing} >
                 <Grid item xs={12}>
-                    { betPage.bet.betType == 'catalogue' ? <CatalgueAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''}
+                    { betPage.bet.betType == 'catalogue' ? <CatalogueAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''}
                     { betPage.bet.betType == 'scale' ? <ScaleAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''} 
                 </Grid>
             </Grid>
             
-            <Grid container justifyContent="center" spacing={3}>
-                
-            </Grid>
-            <br /><br /><br /><br />
-            <Grid container justifyContent="center" spacing={3}>
-                
-            </Grid>
-          
-                
-              
-                <br /><br />
+            
+            
+            <br /><br />
             </>
         ) : ''}
 
         
-     
+        
         </>
 
         

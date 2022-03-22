@@ -8,6 +8,7 @@ import MemberCurrencyCard from './MemberCurrencyCard';
 
 // project imports
 import GameContext from '../../../../../contexts/GameContext';
+import useAuth from '../../../../../hooks/useAuth';
 
 
 // style constant
@@ -22,10 +23,11 @@ const useStyles = makeStyles((theme) => ({
 const NavGameBox = ({ item }) => {
     const classes = useStyles();
     const { isInitialized, game, member } = useContext(GameContext);
+    const { user } = useAuth();
 
     return (
         <>
-            { game  ? <><MemberCurrencyCard member={member} game={game}/></> : ''}
+            { game  ? <><MemberCurrencyCard user={user} member={member} game={game}/></> : ''}
         </>
     );
 };

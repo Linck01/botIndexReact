@@ -48,7 +48,6 @@ export default function FormDialog({...props}) {
 
     const createBet = async () => {  
         setIsLoading(true);
-        let err = null;
 
         await fct.sleep(1000);
         try {
@@ -68,7 +67,6 @@ export default function FormDialog({...props}) {
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
          }
-
     };
 
     return (

@@ -66,12 +66,16 @@ const ApexPolarChart = (props) => {
     const darkLight = theme.palette.dark.light;
     const grey200 = theme.palette.grey[200];
     const backColor = theme.palette.background.paper;
-    const [series] = useState(bet.catalogue_answers.map((a) => a.inPot.$numberDecimal));
+
+
+    const [series, setSeries] = useState([]);
     const [options, setOptions] = useState(polarChartOptions);
 
     
 
     React.useEffect(() => {
+        setSeries(bet.catalogue_answers.map((a) => a.inPot.$numberDecimal));
+
         setOptions((prevState) => ({
             ...prevState,
             colors: answerColors,
@@ -114,7 +118,7 @@ const ApexPolarChart = (props) => {
                 }
             }
         }));
-    }, [navType]);
+    }, [navType, theme, bet]);
 
     return (
         <div id="chart">

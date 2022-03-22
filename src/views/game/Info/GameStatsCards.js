@@ -5,10 +5,11 @@ import { useTheme } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 
 
-import UserCountCard from '../../ui-component/cards/UserCountCard';
+import UserCountCard from '../../../ui-component/cards/UserCountCard';
 
-import { gridSpacing } from '../../store/constant';
+import { gridSpacing } from '../../../store/constant';
 
+import GameContext from '../../../contexts/GameContext';
 // assets
 
 import AccountCircleTwoTone from '@material-ui/icons/AccountCircleTwoTone';
@@ -20,34 +21,30 @@ import EmojiEventsTwoToneIcon from '@material-ui/icons/EmojiEventsTwoTone';
 
 const WidgetStatistics = (props) => {
     const theme = useTheme();
-    const { bet, myTips } = props;
-    
-    let staked = 0;
-    for (let tip of myTips)
-        staked += parseFloat(tip.currency.$numberDecimal);
+    const { game } = React.useContext(GameContext);
 
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12} lg={4}>
                 <UserCountCard
-                    primary="Participants"
-                    secondary={bet.memberCount.toString()}
+                    primary="Members"
+                    secondary={game.memberCount.toString()}
                     iconPrimary={AccountCircleTwoTone}
                     color={theme.palette.secondary.main}
                 />
             </Grid>
             <Grid item xs={12} lg={4} sm={6}>
                 <UserCountCard
-                    primary="Staked"
-                    secondary={staked.toString()}
+                    primary="???"
+                    secondary={'???'}
                     iconPrimary={DescriptionTwoToneIcon}
                     color={theme.palette.primary.dark}
                 />
             </Grid>
             <Grid item xs={12} lg={4} sm={6}>
                 <UserCountCard
-                    primary="In Pot"
-                    secondary={bet.inPot.$numberDecimal}
+                    primary="Bets"
+                    secondary={game.betCount.toString()}
                     
                     iconPrimary={EmojiEventsTwoToneIcon}
                     color={theme.palette.success.dark}

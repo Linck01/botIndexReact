@@ -103,13 +103,11 @@ export default function AddTipDialog(props) {
 
             <Dialog fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">
-                    <Typography variant="h3">Create a new tip</Typography>
+                    Create a new tip
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        <Typography variant="body2">
-                            
-                        </Typography>
+                        {/*}<Typography variant="body2"></Typography>{*/}
                     </DialogContentText>
                 
                    
@@ -118,14 +116,14 @@ export default function AddTipDialog(props) {
                             <TextField fullWidth id="outlined-basic-size-small" onChange={e => setAmount(e.target.value)}
                                 label={'Amount'} type='number' size="small"  inputProps={{ maxLength: 10 }} />
                         </Grid>
-
+                        
                         <Grid item xs={12} lg={12}>
                             { bet.betType == 'catalogue' ? 
                                 <Grid item xs={12} lg={12}>
                                     <div className={classes.root}>
                                         <List component="nav" aria-label="main mailbox folders">
                                             {bet.catalogue_answers.map((a, i) => (
-                                                <ListItem key={bet.id} button selected={answerId === i} onClick={() => setAnswerId(i)}
+                                                <ListItem key={i} button selected={answerId === i} onClick={() => setAnswerId(i)}
                                                     sx={{ borderRadius: customization.borderRadius + 'px' }} >
                                                     <ListItemIcon>
                                                         <HomeTwoToneIcon sx={{ fontSize: '1.3rem' }} />

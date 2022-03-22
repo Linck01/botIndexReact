@@ -1,7 +1,7 @@
 import { DateTime, Duration } from 'luxon';
 import config from '../config';
 import axios from '../utils/axios';
-import { IconCalendarStats, IconCalendarOff, IconCheck, IconBell, IconBellOff } from '@tabler/icons';
+import { IconCalendarStats, IconCalendarOff, IconCheck, IconBell, IconBellOff, IconTrash } from '@tabler/icons';
 
 const f = {};
 
@@ -23,11 +23,15 @@ f.getBetProgress = (bet) => {
     
 }
 
+f.paginate = (array, page_size, page_number) => {
+    return array.slice((page_number - 1) * page_size, page_number * page_size);
+}
+
 f.getStatus = (bet) => {
     const start = (new Date(bet._createdAt)).getTime();
     const now = Date.now();
     const end = (new Date(bet.timeLimit)).getTime();
-    console.log(start,end);
+
     let progress = 0;
 
     if (end < now)
@@ -40,25 +44,30 @@ f.getStatus = (bet) => {
     let icon,title,color,tag;
 
     if (bet.isAborted) {
-        icon = IconCalendarStats;
+        icon = IconTrash;
         tag = 'aborted';
         title = 'Aborted';
         color = 'errorDark';
-    } else if (bet.isFinished) {
+    } else if (bet.isPaid) {
         icon = IconCheck;
-        tag = 'finished';
-        title = 'Finished';
-        color = 'infoDark';
-    } else if (progress < 100) {
+        tag = 'isPaid';
+        title = 'Solved & Paid';
+        color = 'successDark';
+    } else if (bet.isSolved) {
+        icon = IconCheck;
+        tag = 'isSolved';
+        title = 'Solved';
+        color = 'successDark';
+    }  else if (progress < 100) {
         icon = IconCalendarStats;
         tag = 'inProgress';
         title = 'In progress';
-        color = 'successDark';
+        color = 'warningDark';
     } else {
         icon = IconCalendarOff;
         tag = 'ended';
         title = 'Ended';
-        color = 'warningDark';
+        color = 'infoDark';
     }
 
     return { progress, icon, title, color, tag };
@@ -86,7 +95,7 @@ f.timeLeftString = (time) => {
     const now = Date.now();
 
     const diffSec = f.getTimeDifference(time,now) / 1000;
-    console.log('AAAA', diffSec,time,now);
+
     if (diffSec < 1)
         return '' + f.secondsToMHD(Math.abs(diffSec)) + ' left';
     else
@@ -139,7 +148,7 @@ f.capitalizeFirstLetter = (string) => {
 f.getCorrectAnswerStrings = (bet, maxCharacters) => {
     let correctAnswerStrings = [], moreAnswersString = '';
 
-    if (bet.isFinished) {
+    if (bet.isSolved) {
         if (bet.betType == 'catalogue') {
 
             let i = 0, chars = 0,title;

@@ -77,7 +77,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
 
             
             {!isLoggedIn ? 
-                <Box component="span" className={classes.box} style={{'margin-left':'1em'}}>
+                <Box component="span" className={classes.box} style={{'marginLeft':'1em'}}>
                     <ButtonBase sx={{ borderRadius: '12px' }}>
                         <Link to="/login">
                         <Avatar

@@ -8,6 +8,8 @@ import { Divider, List, Typography } from '@material-ui/core';
 // project imports
 import NavItem from './../NavItem';
 import NavCollapse from './../NavCollapse';
+import GameContext from '../../../../../contexts/GameContext';
+import useAuth from '../../../../../hooks/useAuth';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -27,9 +29,14 @@ const useStyles = makeStyles((theme) => ({
 
 const NavGroup = ({ item }) => {
     const classes = useStyles();
+    const { user } = useAuth();
+    const { game } = React.useContext(GameContext);
 
     // menu list collapse & items
     const items = item.children.map((menu) => {
+        if(menu.id == 'settings' && (!game || !user || user.id != game.userId))
+            return;
+
         switch (menu.type) {
             case 'collapse':
                 return <NavCollapse key={menu.id} menu={menu} level={1} />;

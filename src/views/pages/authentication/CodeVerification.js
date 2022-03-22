@@ -12,6 +12,7 @@ import Logo from './../../../ui-component/Logo';
 import AnimateButton from './../../../ui-component/extended/AnimateButton';
 import FirebaseCodeVerification from './firebase-forms/FirebaseCodeVerification';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
+import useAuth from '../../../hooks/useAuth';
 
 // assets
 
@@ -20,6 +21,12 @@ import AuthFooter from './../../../ui-component/cards/AuthFooter';
 const CodeVerification = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
+    const { sendVerificationEmail, user } = useAuth();
+    
+    const resendCode = () => {
+        console.log(user);
+        
+    };
 
     return (
         <AuthWrapper1>
@@ -92,6 +99,7 @@ const CodeVerification = () => {
                                                 type="submit"
                                                 variant="outlined"
                                                 color="secondary"
+                                                onClick={resendCode}
                                             >
                                                 Resend Code
                                             </Button>

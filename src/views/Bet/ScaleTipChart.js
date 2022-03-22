@@ -115,7 +115,7 @@ const ApexAreaChart = (props) => {
                 }
             }
         }));
-    }, [navType, primary, darkLight, grey200, theme, bet]);
+    }, [navType, theme, bet]);
 
     return (
         <div id="chart">

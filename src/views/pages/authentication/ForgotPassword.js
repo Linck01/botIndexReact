@@ -9,7 +9,7 @@ import { Divider, Grid, Typography, useMediaQuery } from '@material-ui/core';
 import AuthWrapper1 from './AuthWrapper1';
 import AuthCardWrapper from './AuthCardWrapper';
 import Logo from './../../../ui-component/Logo';
-import FirebaseForgotPassword from './firebase-forms/FirebaseForgotPassword';
+import JWTForgotPassword from './jwt-forms/JWTForgotPassword';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
 
 // assets
@@ -46,13 +46,13 @@ const ForgotPassword = () => {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <Typography variant="caption" fontSize="16px" textAlign="center">
-                                                    Enter your email address below and we'll send you password reset OTP.
+                                                    Enter your email address below and we'll send you a password reset.
                                                 </Typography>
                                             </Grid>
                                         </Grid>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <FirebaseForgotPassword />
+                                        <JWTForgotPassword />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Divider />
@@ -61,7 +61,7 @@ const ForgotPassword = () => {
                                         <Grid item container direction="column" alignItems="center" xs={12}>
                                             <Typography
                                                 component={RouterLink}
-                                                to="/pages/login/login3"
+                                                to="/login/"
                                                 variant="subtitle1"
                                                 sx={{ textDecoration: 'none' }}
                                             >

@@ -18,8 +18,6 @@ import {
     Chip
 } from '@material-ui/core';
 
-// asset
-
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 import GameContext from '../../contexts/GameContext';
@@ -72,11 +70,9 @@ const useStyles = makeStyles((theme) => ({
 
 
 
-const BetListItem = ({ bet }) => {
+const BetStatusTab = ({ bet }) => {
     const classes = useStyles();
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
-    //const util = require('util');
-    //console.log(util.inspect(bets));
     const { colors } = useColors();
     const status = fct.getStatus(bet);
 
@@ -90,7 +86,7 @@ const BetListItem = ({ bet }) => {
                 <br/>
                 <Typography variant="caption" style={{paddingLeft:'5%'}}>{status.title}</Typography>
             </Grid>
-            <Grid item xs={9}>
+            <Grid item xs={9} align="left">
                 <Typography align="left" style={{fontSize:'1.6em'}} variant="subtitle1">
                     {bet.title}
                     {bet.badgeStatus === 'active' && <CheckCircleIcon className={classes.successBadge} />}
@@ -99,31 +95,29 @@ const BetListItem = ({ bet }) => {
                     {fct.formatDateTime(bet._createdAt)} - {fct.formatDateTime(bet.timeLimit)}
                 </Typography>
                 
-                {bet.isFinished ? correctAnswerStrings.map(a => (
-                    <>
+                {bet.isSolved ? correctAnswerStrings.map(a => (
+                    <React.Fragment key={a}>
                         <Chip label={a} variant="outlined" style={{color: colors.successDark, borderColor: colors.successDark}} /> 
                         <Typography align="left" variant="caption" color="primary" className={classes.tableSubContent}>{moreAnswersString}</Typography>
-                    </>
+                    </React.Fragment>
                 )) : (
-                    <><br />
-                    <Grid container gridSpacing={0}>
+
+                    <Grid container spacing={0}>
                         <Grid item xs={10}>
-                        
+                            <br />
                             <LinearProgress variant="determinate" value={status.progress} color="primary" style={{width: '90%'}} />
                             <Typography align="left" variant="subtitle1">
                                 {fct.timeLeftString(bet.timeLimit)}
                             </Typography>
-                            
                         </Grid>
                         <Grid item xs={2}>
                             
                         </Grid>
                     </Grid>
-                    </>
                 )}
             </Grid>
         </Grid>
     );
 };
 
-export default BetListItem;
+export default BetStatusTab;

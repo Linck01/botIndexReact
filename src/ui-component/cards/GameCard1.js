@@ -3,8 +3,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, Card, CardContent, CardMedia, Chip, Grid, Typography, IconButton } from '@material-ui/core';
+import useColors from '../../hooks/useColors';
 
 // project imports
 import Avatar from '../extended/Avatar';
@@ -13,13 +14,6 @@ import { gridSpacing } from '../../store/constant';
 import { IconCalendar, IconBrandAppleArcade, IconUsers, IconCertificate } from '@tabler/icons';
 
 import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
-import LinkedInIcon from '@material-ui/icons/LinkedIn';
-import NavigateNextRoundedIcon from '@material-ui/icons/NavigateNextRounded';
-import PeopleAltTwoToneIcon from '@material-ui/icons/PeopleAltTwoTone';
-import PublicTwoToneIcon from '@material-ui/icons/PublicTwoTone';
-import CalendarTodayTwoToneIcon from '@material-ui/icons/CalendarTodayTwoTone';
-import SupervisedUserCircleIcon from '@material-ui/icons/SupervisedUserCircle';
-import CampaignIcon from '@material-ui/icons/Campaign';
 
 const avatarImage = require.context('./../../assets/images/profile', true);
 
@@ -59,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
             height: '15px',
             verticalAlign: 'text-top',
             marginRight: '5px',
-            marginTop: '2px'
+            marginTop: '2px',
         }
     },
 }));
@@ -68,10 +62,9 @@ const useStyles = makeStyles((theme) => ({
 
 const UserProfileCard = (props) => {
     const { game } = props;
-    const classes = useStyles();
-    //let avatarProfile = avatar && avatarImage(`./${avatar}`).default;
-    //let imageProfile = profile && avatarImage(`./${profile}`).default;
-
+    const theme = useTheme();
+    const { colors } = useColors();
+    const classes = useStyles(theme);
 
     return (
         <Card className={classes.followerBlock}>
@@ -88,26 +81,25 @@ const UserProfileCard = (props) => {
                     <Grid item xs={12}>
                         {game.currencyName}
 
-                        {!game.isFinished ? (
+                        {!game.isSolved ? (
                             <Chip label="Active" size="small" className={classes.active} />
                         ) : (
-                            <Chip label="Finished" size="small" className={classes.reject} />
+                            <Chip label="Solved" size="small" className={classes.reject} />
                         )} 
                     </Grid>
                     <Grid item xs={12} alignItems="center">  
                         <Grid container spacing={1}>
-                            <Grid item xs={12} sm={12}>
+                            {/*}<Grid item xs={12} sm={12}>
                                 <Typography variant="body2">{game.desc}</Typography>
-                            </Grid>
+                            </Grid>{*/}
                             <Grid item xs={12} sm={6}>
-                                <Typography variant="body2" style={{fontSize:'1.8em'}} className={classes.customerHeadDetails}>
-                                    
-                                    <IconUsers  style={{width: '1.1em',height: '1.1em'}} /> {game.totalMembers}
+                                <Typography variant="body2" style={{fontSize:'1.6em', color: colors.primaryMain}} className={classes.customerHeadDetails}>
+                                    <IconUsers  style={{width: '1em',height: '1em', color: colors.infoDark}} /> {game.memberCount}
                                 </Typography>
                             </Grid>
                             <Grid item xs={12} sm={6}>
-                                <Typography variant="body2" style={{fontSize:'1.8em'}} className={classes.customerHeadDetails}>
-                                    <IconCertificate  style={{width: '1.1em',height: '1.1em'}} /> {game.totalBets}
+                                <Typography variant="body2" style={{fontSize:'1.6em', color: colors.primaryMain}} className={classes.customerHeadDetails}>
+                                    <IconCertificate  style={{width: '1.1em',height: '1.1em', color: colors.warningDark}} /> {game.betCount}
                                 </Typography>
                             </Grid><br /><br /><br />
                         </Grid>

@@ -9,7 +9,7 @@ import jwtDecode from 'jwt-decode';
 // reducer - state management
 import { GAME_INITIALIZE, INIT_CHAT, NEW_MESSAGES, SET_BETPAGEINDEX, 
     SET_MEMBERPAGEINDEX, SET_MEMBER, SET_HANDLENEWTIP, SET_BET, SET_MYTIPS, 
-    SET_GAME, SET_SOCKET, SET_BETSPAGE, SET_BETPAGE, SET_CHAT, SET_PRIVILEGES } from '../store/actions';
+    SET_GAME, SET_SOCKET, SET_BETSPAGE, SET_BETPAGE, SET_CHAT, SET_PRIVILEGES, SET_LOGSPAGE, SET_MEMBERSPAGE } from '../store/actions';
 import gameReducer from '../store/gameReducer';
 
 // project imports
@@ -44,19 +44,29 @@ const initialState = {
         index: 1,
         maxIndex: 1,
     },
+    membersPage: {
+        items: [],
+        index: 1,
+        maxIndex: 1,
+    },
+    logsPage: {
+        index: 1,
+        maxIndex: 1,
+        items: []
+    },
 };
-
-
 
 //-----------------------|| JWT CONTEXT & PROVIDER ||-----------------------//
 
 const GameContext = createContext({
     ...initialState,
-    initChat: () => Promise.resolve(),
+    setBetPage: () => Promise.resolve(),
     setBetsPage: () => Promise.resolve(),
-    setChat: () => Promise.resolve()
+    setChat: () => Promise.resolve(),
+    setLogsPage: () => Promise.resolve(),
+    setMembersPage: () => Promise.resolve(),
+    
 });
-
 
 export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
@@ -67,7 +77,6 @@ export const GameProvider = ({ children }) => {
     /*
     *  Game
     */
-
     const fetchGame = async (id) => {
         try {
             console.log('Get game id' + id);
@@ -92,17 +101,16 @@ export const GameProvider = ({ children }) => {
         });
     };
 
-    const setPrivileges = async (privileges) => { 
+    const setPrivileges = async (privileges) => {
         dispatch({
             type: SET_PRIVILEGES,
             privileges: privileges
         });
     };
 
-     /*
+    /*
     *  Socket 
     */
-
      const initSocket = async (url) => {
         if (!state.socket) {
             const socket = io(url,{transports: ['websocket','polling']});
@@ -110,7 +118,7 @@ export const GameProvider = ({ children }) => {
 
             socket.on('connect', function() {
                 socket.emit('room', 'game:' + gameId);
-                console.log('Joining room ' + gameId);
+                console.log('Joining room game:' + gameId);
             });
 
             return socket;
@@ -126,10 +134,10 @@ export const GameProvider = ({ children }) => {
         });
     };
 
-     /*
+    /*
     *  Bets
     */
-    
+   
      const setBetsPage = async (betsPage) => {
         dispatch({
             type: SET_BETSPAGE,
@@ -151,18 +159,12 @@ export const GameProvider = ({ children }) => {
         return newBets; 
     }
 
-
-    /*
-    *  Bet
-    */
-
     const setBetPage = async (betPage) => {
         dispatch({
             type: SET_BETPAGE,
             betPage: betPage
         });
     };
-
     
 
     /*
@@ -189,6 +191,24 @@ export const GameProvider = ({ children }) => {
             member: member
         });
     };
+    
+    const setMembersPage = async (membersPage) => {
+        dispatch({
+            type: SET_MEMBERSPAGE,
+            membersPage: membersPage
+        });
+    };
+
+     /*
+    *  Logs
+    */
+
+     const setLogsPage = async (logsPage) => {
+        dispatch({
+            type: SET_LOGSPAGE,
+            logsPage: logsPage
+        });
+    };
 
     /*
     *  Chat
@@ -206,16 +226,16 @@ export const GameProvider = ({ children }) => {
     */
 
     useEffect(() => {
-        if (state.socket)
-            state.socket.on('newTip', function(data) { 
+        if (state.socket) {
+            state.socket.on('newTip', function(data) {
+                console.log('Received socket message newTip.');
                 handleSocketNewTip(data);
             });
 
-        return function cleanup() {
-            if (state.socket)
+            return function cleanup() {
                 state.socket.off('newTip');
-        };
-
+            };
+        }
     }, [state.socket, state.betPage, state.betsPage]);
 
     useEffect(() => {
@@ -256,6 +276,11 @@ export const GameProvider = ({ children }) => {
             const newBets = await updateBetsWithNewBet(data.bet); 
             setBetsPage({...state.betsPage, items: newBets});
         }
+
+        if (state.member && state.member.userId == data.member.userId) {
+            setMember(data.member);
+        }
+            
     }
 
     const updateTipListItemsWithNewTip = async (newTip) => {
@@ -321,7 +346,7 @@ export const GameProvider = ({ children }) => {
 
                 if (game.userId == user.id)
                     admin = true;
-                if (game.moderators.includes(user.id))
+                if (member && member.isModerator)
                     mod = true;
             }
 
@@ -342,7 +367,7 @@ export const GameProvider = ({ children }) => {
         return <Loader />;
     } */
 
-    return <GameContext.Provider value={{ ...state, setBetsPage, setChat, setBetPage }}>{children}</GameContext.Provider>;
+    return <GameContext.Provider value={{ ...state, setBetsPage, setChat, setBetPage, setLogsPage, setMembersPage }}>{children}</GameContext.Provider>;
 };
 
 export default GameContext;

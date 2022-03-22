@@ -2,7 +2,7 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { IconMail, IconNotebook, IconInfoCircle } from '@tabler/icons';
+import { IconMail, IconNotebook, IconInfoCircle, IconEdit } from '@tabler/icons';
 
 //-----------------------|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||-----------------------//
 
@@ -40,20 +40,19 @@ export const game = {
             url: '/',
             icon: IconNotebook,
         },
-        {
+        /*{
             id: 'info',
             title: <FormattedMessage id="info" />,
             type: 'item',
             url: '/',
             icon: IconMail,
-        },
-        
-        /*{
+        },*/
+        {
             id: 'settings',
             title: <FormattedMessage id="settings" />,
             type: 'item',
             url: '/',
-            icon: IconMail,
-        }*/
+            icon: IconEdit,
+        }
     ]
 };

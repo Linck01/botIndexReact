@@ -29,3 +29,5 @@ export const SET_PRIVILEGES = 'SET_PRIVILEGES';
 export const SET_BETSPAGE = 'SET_BETSPAGE';
 export const SET_BETPAGE = 'SET_BETPAGE';
 export const SET_CHAT = 'SET_CHAT';
+export const SET_MEMBERSPAGE = 'SET_MEMBERSPAGE';
+export const SET_LOGSPAGE = 'SET_LOGSPAGE';

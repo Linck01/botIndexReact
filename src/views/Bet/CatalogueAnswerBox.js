@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 
-const TipBox = ( props ) => {
+const CatalogueAnswerBox = ( props ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { bet, myTips } = props;
@@ -50,7 +50,7 @@ const TipBox = ( props ) => {
     return (
         <>
 
-                <PerfectScrollbar className={classes.ScrollHeight}>
+                {/*}<PerfectScrollbar className={classes.ScrollHeight}>{*/}
                     <TableContainer >
                         <Table stickyHeader>
                             <TableHead>
@@ -66,7 +66,7 @@ const TipBox = ( props ) => {
                             <TableBody >
                                 
                                 {bet.catalogue_answers.map((answer, index) => (
-                                    <TableRow hover key={answer.id}>
+                                    <TableRow hover key={answer._id}>
                                         <TableCell align='center'>{answer.title}</TableCell>
                                         <TableCell align='center'>{answer.odds.$numberDecimal}</TableCell>
                                         <TableCell align='center'>{answer.memberCount}</TableCell>
@@ -80,10 +80,10 @@ const TipBox = ( props ) => {
                             </TableBody>
                         </Table>
                     </TableContainer>
-                </PerfectScrollbar>
+                {/*}</PerfectScrollbar>{*/}
           
         </>
     );
 };
 
-export default TipBox;
+export default CatalogueAnswerBox;

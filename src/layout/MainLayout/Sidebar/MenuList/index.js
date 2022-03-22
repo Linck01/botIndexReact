@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import React, { useContext } from 'react';
 
 // material-ui
 import { Typography } from '@material-ui/core';
@@ -20,18 +20,18 @@ const MenuList = () => {
     const navItems = menuItem.items.map((item) => {
         if (item.id == 'game') {
             if (!gameId) {
-                return (<></>);
+                return;
             } else {
                 item.title = '';//'Game: ' + game.title;
                 for (let child of item.children)
                     child.url = '/game/' + gameId + '/' + child.id 
                 
-                return <><NavGameBox /><NavGroup key={item.id} item={item} /></>
+                return <React.Fragment key={item.id}><NavGameBox /><NavGroup item={item} /></React.Fragment>
             }  
         }
 
         if (item.requiresAuth && !user)
-            return (<></>);
+            return;
 
         switch (item.type) {
             case 'group':

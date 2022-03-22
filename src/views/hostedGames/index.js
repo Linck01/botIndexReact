@@ -26,7 +26,7 @@ import AddGameDialog from './AddGameDialog';
 const HostedGamesPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [hostedGames, setHostedGames] = useState([]);
-    const auth = useAuth();
+    const { user } = useAuth();
     const [page, setPage] = useState({index: 1, maxIndex: 1});
 
     const dispatch = useDispatch();
@@ -44,7 +44,7 @@ const HostedGamesPage = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(config.apiHost + '/v1/games/', { params: { userId: auth.user.id, sortBy: 'createdAt', limit: 9 , page: page.index } });
+            const response = await axios.get(config.apiHost + '/v1/games/', { params: { userId: user.id, sortBy: 'createdAt', limit: 9 , page: page.index } });
 
             await fct.sleep(1000);
             setHostedGames(response.data.results);

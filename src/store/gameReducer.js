@@ -1,6 +1,6 @@
 // action - state management
 import {  SET_GAME, SET_SOCKET, SET_MEMBER, SET_CHAT,
-     SET_PRIVILEGES, SET_BETSPAGE, SET_BETPAGE } from './actions';
+     SET_PRIVILEGES, SET_BETSPAGE, SET_BETPAGE, SET_MEMBERSPAGE, SET_LOGSPAGE } from './actions';
 
 //-----------------------|| ACCOUNT REDUCER ||-----------------------//
 
@@ -29,6 +29,20 @@ const gameReducer = (state, action) => {
             return {
                 ...state,
                 betPage: action.betPage
+            };
+        }
+
+        case SET_MEMBERSPAGE: {
+            return {
+                ...state,
+                membersPage: action.membersPage
+            };
+        }
+
+        case SET_LOGSPAGE: {
+            return {
+                ...state,
+                logsPage: action.logsPage
             };
         }
         
