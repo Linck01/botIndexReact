@@ -82,7 +82,7 @@ const useStyles = makeStyles((theme) => ({
 const Price1 = () => {
     const classes = useStyles();
     const theme = useTheme();
-
+    console.log('EEEEEEEEEEEEEEEEE', process.env.NODE_ENV);
     const plans = [
         {
             active: true,
