@@ -74,7 +74,14 @@ const ApexPolarChart = (props) => {
     
 
     React.useEffect(() => {
-        setSeries(bet.catalogue_answers.map((a) => a.inPot.$numberDecimal));
+        let values = [];
+        console.log('AAAAA', bet.catalogue_answers.reduce((prev, a) => prev + parseFloat(a.inPot.$numberDecimal),0));
+        if (bet.catalogue_answers.reduce((prev, a) => prev + parseFloat(a.inPot.$numberDecimal),0) == 0)
+            values = new Array(bet.catalogue_answers.length).fill(1);
+        else
+            values = bet.catalogue_answers.map((a) => a.inPot.$numberDecimal);
+        
+        setSeries(values);
 
         setOptions((prevState) => ({
             ...prevState,

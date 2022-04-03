@@ -25,7 +25,7 @@ const CustomDateTime = ( { value, setValue } ) => {
                     '& .MuiTabs-flexContainer .MuiTabs-indicator': {
                         bgcolor: 'primary.main'
                     }
-                }}
+                }}          
             />
         </LocalizationProvider>
     );

@@ -12,11 +12,10 @@ import GuestGuard from './../utils/route-guard/GuestGuard';
 import MinimalLayout from './../layout/MinimalLayout';
 import NavMotion from './../layout/NavMotion';
 import { GameProvider } from '../contexts/GameContext';
-
 import GameLoadWrapper from '../views/game/LoadWrapper';
 
 // sample page routing
-const HomePage = Loadable(lazy(() => import('../views/Home')));
+const HomePage = Loadable(lazy(() => import('../views/Home/')));
 const bigGamesPage = Loadable(lazy(() => import('../views/BigGames')));
 const newGamesPage = Loadable(lazy(() => import('../views/NewGames')));
 const oldGamesPage = Loadable(lazy(() => import('../views/OldGames')));
@@ -31,8 +30,11 @@ const gameBetPage = Loadable(lazy(() => import('../views/Bet')));
 
 const hostedGames = Loadable(lazy(() => import('../views/HostedGames')));
 const favoritedGames = Loadable(lazy(() => import('../views/favoritedGames')));
+const userSettingsPage = Loadable(lazy(() => import('../views/user/Settings')));
+
 const infoPage = Loadable(lazy(() => import('../views/Info')));
-const termsAndConditions = Loadable(lazy(() => import('../views/TermsAndConditions')));
+const termsAndConditions = Loadable(lazy(() => import('../views/pages/other/TermsAndConditions')));
+const privacyPolicy = Loadable(lazy(() => import('../views/pages/other/PrivacyPolicy')));
 const aboutPage = Loadable(lazy(() => import('../views/About')));
 
 const ErrorPage = Loadable(lazy(() => import('../views/pages/maintenance/Error.js')));
@@ -72,22 +74,24 @@ const Routes = () => {
                 </GameProvider> 
             </Route>
 
-            <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/favorite/','/info/','/termsAndService/','/about/']}>
+            <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/favorite/','/info/','/termsAndService/','/privacyPolicy/','/about/','/user/settings']}>
                 <MainLayout>
                     <Switch>
                         <Route exact path="/" component={HomePage} />
 
-                        <Route exact path={'/games/big/'} component={bigGamesPage}  />
-                        <Route exact path={'/games/new/'} component={newGamesPage}  />
-                        <Route exact path={'/games/old/'} component={oldGamesPage}  />
+                        <Route exact path={'/games/big/'} component={bigGamesPage} />
+                        <Route exact path={'/games/new/'} component={newGamesPage} />
+                        <Route exact path={'/games/old/'} component={oldGamesPage} />
 
                         <Route exact path={'/info/'} component={infoPage}  />
-                        <Route exact path={'/termsAndService/'} component={termsAndConditions}  />
+                        <Route exact path={'/termsAndService/'} component={termsAndConditions} />
+                        <Route exact path={'/privacyPolicy/'} component={privacyPolicy} />
                         <Route exact path={'/about/'} component={aboutPage}  />
 
                         <AuthGuard>
                             <Route exact path={'/games/hosted'} component={hostedGames} />
                             <Route exact path={'/games/favorite'} component={favoritedGames} />
+                            <Route exact path={'/user/settings'} component={userSettingsPage} />
                         </AuthGuard>
                     </Switch>
                 </MainLayout>

@@ -73,14 +73,14 @@ export default function FormDialog({...props}) {
                
             <Dialog fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">
-                    <Typography variant="h3">Create a new Game</Typography>
+                    <Typography style={{fontSize:'1.7em', fontWeight: 'bold'}}>Create a new Game</Typography>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    {/*}<DialogContentText>
                         <Typography variant="body2">
                             
                         </Typography>
-                    </DialogContentText>
+                    </DialogContentText>{*/}
                 
                    
                     <Grid container spacing={1}>

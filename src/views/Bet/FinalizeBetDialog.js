@@ -36,9 +36,9 @@ const valueText = (value) => {
 
 //===============================|| UI DIALOG - FORMS ||===============================//
 
-export default function AddTipDialog(props) {
+export default function FinalizeBetDialog(props) {
     const theme = useTheme();
-    const classes = useStyles(theme);
+    const classes = useStyles();
     const { game, refreshMember } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -112,63 +112,61 @@ export default function AddTipDialog(props) {
 
             <Dialog fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">
-                    <Typography variant="h3">Finalize bet</Typography>
+                    <Typography style={{fontSize:'1.7em', fontWeight: 'bold'}}>Finalize bet</Typography>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
+                    {/*}<DialogContentText>
                         <Typography variant="body2">
-                            
                         </Typography>
-                    </DialogContentText>
-                            { bet.betType == 'catalogue' ? 
-                                <Grid container spacing={1}>
-                                    <Grid item xs={12}><Typography variant="h3">Select correct answer(s)</Typography></Grid>
+                    </DialogContentText>{*/}
+                    { bet.betType == 'catalogue' ? 
+                        <Grid container spacing={1}>
+                            <Grid item key={0} xs={12}><Typography variant="h3">Select correct answer(s)</Typography></Grid>
 
-                                    {bet.catalogue_answers.map((a, i) => (         
-                                        <Grid item xs={12} >
-                                            <ListItem key={bet.id} button selected={answerIds === i} onClick={(e) => toggleAnswerId(e,i)}
-                                                sx={{ borderRadius: customization.borderRadius + 'px' }} >
-                                                <ListItemIcon>
-                                                    {answerIds.includes(i) ? 
-                                                        ( <IconCheck style={{color: theme.palette.success.main}} /> ) :
-                                                        ( <IconX style={{color: theme.palette.error.main}} /> )
-                                                    }
-                                                
-                                                </ListItemIcon>
-                                                <ListItemText primary={a.title} />
-                                            </ListItem>
-                                        </Grid>
-                                    ))}
+                            {bet.catalogue_answers.map((a, i) => (         
+                                <Grid item xs={12} key={i}>
+                                    <ListItem button selected={answerIds === i} onClick={(e) => toggleAnswerId(e,i)}
+                                        sx={{ borderRadius: customization.borderRadius + 'px' }} >
+                                        <ListItemIcon>
+                                            {answerIds.includes(i) ? 
+                                                ( <IconCheck style={{color: theme.palette.success.main}} /> ) :
+                                                ( <IconX style={{color: theme.palette.error.main}} /> )
+                                            }
+                                        </ListItemIcon>
+                                        <ListItemText primary={a.title} />
+                                    </ListItem>
                                 </Grid>
-                            : '' }
+                            ))}
+                        </Grid>
+                    : '' }
+                    
+                    { bet.betType == 'scale' ? 
+                        <Grid container spacing={gridSpacing}>
+                            <Grid item xs={12}><Typography variant="h3">Select correct answer</Typography></Grid>
+                        
                             
-                            { bet.betType == 'scale' ? 
-                                <Grid container spacing={gridSpacing}>
-                                    <Grid item xs={12}><Typography variant="h3">Select correct answer</Typography></Grid>
-                               
-                                    
-                                    <Grid item xs={12} container spacing={2} alignItems="center" sx={{ mt: 2.5 }}>
-                                        
-                                        <Grid item>
-                                            <Typography variant="h6" color="primary">
-                                                {bet.scale_options.min}
-                                            </Typography>
-                                        </Grid>
-                                        <Grid item xs>
-                                        <Slider value={answerDecimal} onChange={e => setAnswerDecimal(parseFloat(e.target.value))} 
-                                                key="slider1" getAriaValueText={valueText} valueLabelDisplay="on" 
-                                                min={bet.scale_options.min} max={bet.scale_options.max} step={bet.scale_options.step}/>
-                                        </Grid>
-                                        <Grid item>
-                                            <Typography variant="h6" color="primary">
-                                                {bet.scale_options.max}
-                                            </Typography>
-                                        </Grid>
-                                    </Grid>
+                            <Grid item xs={12} container spacing={2} alignItems="center" sx={{ mt: 2.5 }}>
+                                
+                                <Grid item>
+                                    <Typography variant="h6" color="primary">
+                                        {bet.scale_options.min}
+                                    </Typography>
                                 </Grid>
-              
-                            : ''}
-                  
+                                <Grid item xs>
+                                <Slider value={answerDecimal} onChange={e => setAnswerDecimal(parseFloat(e.target.value))} 
+                                        key="slider1" getAriaValueText={valueText} valueLabelDisplay="on" 
+                                        min={bet.scale_options.min} max={bet.scale_options.max} step={bet.scale_options.step}/>
+                                </Grid>
+                                <Grid item>
+                                    <Typography variant="h6" color="primary">
+                                        {bet.scale_options.max}
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+        
+                    : ''}
+            
                    
 
                 </DialogContent>

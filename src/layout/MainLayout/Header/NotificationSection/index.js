@@ -70,8 +70,7 @@ const useStyles = makeStyles((theme) => ({
         paddingBottom: '16px'
     },
     box: {
-        marginLeft: '16px',
-        marginRight: '24px',
+        marginLeft: '1em',
         [theme.breakpoints.down('sm')]: {
             marginRight: '16px'
         }

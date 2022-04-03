@@ -9,21 +9,28 @@ import { IconMail, IconNotebook, IconInfoCircle } from '@tabler/icons';
 export const other = {
     id: 'other',
     type: 'group',
-    title: <FormattedMessage id="info" />,
+    title: '',//<FormattedMessage id="info" />,
     children: [
-        {
+        /*{
             id: 'info',
             title: <FormattedMessage id="info" />,
             type: 'item',
             url: '/info',
             icon: IconInfoCircle,
             breadcrumbs: false
-        },
+        },*/
         {
             id: 'termsAndService',
             title: <FormattedMessage id="termsAndService" />,
             type: 'item',
             url: '/termsAndService',
+            icon: IconNotebook,
+        },
+        {
+            id: 'privacyPolicy',
+            title: <FormattedMessage id="privacyPolicy" />,
+            type: 'item',
+            url: '/privacyPolicy',
             icon: IconNotebook,
         },
         {

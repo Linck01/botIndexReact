@@ -3,7 +3,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 // material-ui
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Avatar, Box, ButtonBase, Typography } from '@material-ui/core';
 
 // project imports
@@ -11,13 +11,14 @@ import LogoSection from '../LogoSection';
 import SearchSection from './SearchSection';
 import LocalizationSection from './LocalizationSection';
 import MobileSection from './MobileSection';
+import LoginSection from './LoginSection';
+import Customization from './Customization';
 import ProfileSection from './ProfileSection';
 import NotificationSection from './NotificationSection';
 import useAuth from '../../../hooks/useAuth';
 
 // assets
-import { IconMenu2 } from '@tabler/icons';
-import { IconLogin } from '@tabler/icons';
+import { IconMenu2, IconSettings, IconLogin, IconBrandDiscord, IconPlus } from '@tabler/icons';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -40,7 +41,11 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         [theme.breakpoints.down('md')]: {
             width: 'auto'
-        }
+        },
+
+    },
+    box: {
+      
     }
 }));
 
@@ -49,7 +54,6 @@ const useStyles = makeStyles((theme) => ({
 const Header = ({ handleLeftDrawerToggle }) => {
     const classes = useStyles();
     const { isLoggedIn } = useAuth();
-    
 
     return (
         <React.Fragment>
@@ -65,41 +69,76 @@ const Header = ({ handleLeftDrawerToggle }) => {
                 </ButtonBase>
             </div>
 
+            <Box component="span" className={classes.box} style={{'marginLeft':'1em'}}>
+                <ButtonBase sx={{ borderRadius: '12px' }} href="/games/hosted"> 
+                    <Avatar
+                        variant="rounded"
+                        className={classes.headerAvatar}
+                        color="inherit" >
+                        
+                        <IconPlus stroke={1.5} size="1.6rem" />
+                    </Avatar> 
+                    &nbsp;&nbsp;
+                    <Typography
+                            style={{paddingTop: '4px'}}
+                            variant="body2"
+                            color="primary"
+                            
+                            display="block"
+                            gutterBottom
+                        >
+                        <strong>Create Game</strong>
+                    </Typography>
+                </ButtonBase>
+            </Box>
+
+            <Box component="span" className={classes.box} style={{'marginLeft':'1em'}}>
+                <ButtonBase sx={{ borderRadius: '12px' }} href="https://discord.gg/FwrxrkWgmx"> 
+                    <Avatar
+                        variant="rounded"
+                        className={classes.headerAvatar}
+                        color="inherit" >
+                        
+                        <IconBrandDiscord stroke={1.5} size="1.6rem" />
+                    </Avatar> 
+                    &nbsp;&nbsp;
+                    <Typography
+                            style={{paddingTop: '4px'}}
+                            variant="body2"
+                            color="primary"
+                            
+                            display="block"
+                            gutterBottom
+                        >
+                        <strong>Join Discord</strong>
+                    </Typography>
+                </ButtonBase>
+            </Box>
+
+            
+
             {/* header search */}
-            <SearchSection theme="light" />
+            {/*}<SearchSection theme="light" />{*/}
             <div className={classes.grow} />
             <div className={classes.grow} />
 
             {/* live customization & localization */}
+            {/*}
             <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
                 <LocalizationSection />
             </Box>
+            {*/}
+            <Customization />
 
+            {!isLoggedIn ? <><LoginSection /></> : <></>}
             
-            {!isLoggedIn ? 
-                <Box component="span" className={classes.box} style={{'marginLeft':'1em'}}>
-                    <ButtonBase sx={{ borderRadius: '12px' }}>
-                        <Link to="/login">
-                        <Avatar
-                            variant="rounded"
-                            className={classes.headerAvatar}
-                            color="inherit" >
-                            
-                            <IconLogin stroke={1.5} size="1.6rem" />
-                        </Avatar>
-                        </Link>
-                    </ButtonBase>
-                </Box> 
-            : <></>}
-            
-
             {/* notification & profile */}
             {isLoggedIn ? <><NotificationSection /><ProfileSection /></> : <></>}
 
             {/* mobile header */}
-            <Box sx={{ display: { xs: 'block', sm: 'none' } }}>
+            {/*}<Box sx={{ display: { xs: 'block', sm: 'none' } }}>
                 <MobileSection />
-            </Box>
+            </Box>{*/}
         </React.Fragment>
     );
 };

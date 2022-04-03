@@ -29,7 +29,8 @@ const initialState = {
             items: [],
             index: 1,
             maxIndex: 1,
-        }
+        },
+        status: null
     },
     privileges: {
         admin: false,

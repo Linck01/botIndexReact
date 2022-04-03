@@ -47,7 +47,8 @@ const BetDetails = () => {
     const { game, socket, betPage, setBetPage, privileges } = React.useContext(GameContext);
     const { betId } = useParams();
     const { user } = useAuth();
-    const [isLoading, setIsLoading] = useState(false);
+    const [ isLoading, setIsLoading ] = useState(false);
+    
 
     const getBetPage = async () => {
         try {
@@ -64,7 +65,7 @@ const BetDetails = () => {
                 //for (let tip of myTips) { tip.currency.$numberDecimal = parseFloat(tip.currency.$numberDecimal);tip.answerDecimal.$numberDecimal = parseFloat(tip.answerDecimal.$numberDecimal) }
             }
 
-            setBetPage({...betPage,bet: responseBet.data, myTips});
+            setBetPage({...betPage,bet: responseBet.data, myTips, status: fct.getStatus(responseBet.data)});
             setIsLoading(false);
         } catch (e) {
             setIsLoading(false);
@@ -77,7 +78,6 @@ const BetDetails = () => {
 
     useEffect(() => {
         getBetPage();
-        
     }, []);
 
     return (
@@ -99,12 +99,12 @@ const BetDetails = () => {
             <TipStatsCards bet={betPage.bet} myTips={betPage.myTips}/>
             <br />
             
-            {!betPage.bet.isSolved ? (
+            {betPage.status.tag == 'inProgress' || betPage.status.tag == 'ended' ? (
                 <>
                <Grid container spacing={gridSpacing} >
-                    <Grid item xs={12}>
-                        <AddTipDialog bet={betPage.bet} />
-                    </Grid>
+                    {betPage.status.tag == 'inProgress' ? (
+                        <Grid item xs={12}><AddTipDialog bet={betPage.bet} /></Grid>   
+                    ): ''}
                     {privileges.admin || privileges.mod ? (
                         <Grid item xs={6}><FinalizeBetDialog bet={betPage.bet} /></Grid>   
                     ): ''}

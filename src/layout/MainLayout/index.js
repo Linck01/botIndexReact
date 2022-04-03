@@ -14,7 +14,7 @@ import clsx from 'clsx';
 import Breadcrumbs from './../../ui-component/extended/Breadcrumbs';
 import Header from './Header';
 import Sidebar from './Sidebar';
-import Customization from './../Customization';
+//import Customization from './../Customization';
 import navigation from './../../menu-items';
 import { drawerWidth } from '../../store/constant';
 import { SET_MENU } from './../../store/actions';
@@ -100,8 +100,8 @@ const MainLayout = ({ children }) => {
         <div className={classes.root}>
             <CssBaseline />
             {/* header */}
-            <AppBar position="fixed" color="inherit" elevation={0} className={leftDrawerOpened ? classes.appBarWidth : classes.appBar}>
-                <Toolbar>
+            <AppBar position="fixed" color="inherit" elevation={0} className={leftDrawerOpened ? classes.appBarWidth : classes.appBar} >
+                <Toolbar style={{paddingTop: ''}}>
                     <Header handleLeftDrawerToggle={handleLeftDrawerToggle} />
                 </Toolbar>
             </AppBar>
@@ -125,7 +125,7 @@ const MainLayout = ({ children }) => {
 
                 <div>{children}</div>
             </main>
-            <Customization />
+            {/*}<Customization />{*/}
             <CookieConsent
                 location="bottom"
                 buttonText="Accept"

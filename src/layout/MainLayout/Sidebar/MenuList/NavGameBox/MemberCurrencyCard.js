@@ -11,6 +11,9 @@ import { useDispatch } from 'react-redux';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Card, CardContent, Grid, Typography, CardHeader } from '@material-ui/core';
 import { IconHeart } from '@tabler/icons';
+import GameContext from '../../../../../contexts/GameContext';
+import useAuth from '../../../../../hooks/useAuth';
+
 
 const useStyles = makeStyles((theme) => ({
     socialHoverCard: {
@@ -37,7 +40,9 @@ const useStyles = makeStyles((theme) => ({
 
 const MemberCurrencyCard = (props) => {
     const classes = useStyles();
-    const { user, member, game } = props;
+    const { game, member } = React.useContext(GameContext);
+    const { user } = useAuth();
+
     const { colors } = useColors();
     const theme = useTheme();
     const [ favorited, setFavorited ] = React.useState(user && member ? member.isFavoritedGame : false);

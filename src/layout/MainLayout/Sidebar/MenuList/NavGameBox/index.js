@@ -22,12 +22,11 @@ const useStyles = makeStyles((theme) => ({
 
 const NavGameBox = ({ item }) => {
     const classes = useStyles();
-    const { isInitialized, game, member } = useContext(GameContext);
-    const { user } = useAuth();
+    const { game } = useContext(GameContext);
 
     return (
         <>
-            { game  ? <><MemberCurrencyCard user={user} member={member} game={game}/></> : ''}
+            { game  ? <><MemberCurrencyCard /></> : ''}
         </>
     );
 };

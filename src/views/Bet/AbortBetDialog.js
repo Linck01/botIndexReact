@@ -36,9 +36,9 @@ const valueText = (value) => {
 
 //===============================|| UI DIALOG - FORMS ||===============================//
 
-export default function AddTipDialog(props) {
+export default function AbortBetDialog(props) {
     const theme = useTheme();
-    const classes = useStyles(theme);
+    const classes = useStyles();
     const { game, refreshMember } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
     const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
@@ -102,15 +102,12 @@ export default function AddTipDialog(props) {
 
             <Dialog fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">
-                    <Typography variant="h3">Abort bet</Typography>
+                    <Typography style={{fontSize:'1.7em',fontWeight: 'bold'}}>Abort bet</Typography>
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        <Typography variant="body2">
-                            Are you sure you want to abort the bet? This will <br />
-                            - Pay all tips back.
-
-                        </Typography>
+                        Are you sure you want to abort the bet? This will <br />
+                        - Pay all tips back.
                     </DialogContentText>
                 
       

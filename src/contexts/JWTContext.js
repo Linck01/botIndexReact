@@ -4,7 +4,7 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import jwtDecode from 'jwt-decode';
 
 // reducer - state management
-import { ACCOUNT_INITIALIZE, LOGIN, LOGOUT, REGISTER } from '../store/actions';
+import { ACCOUNT_INITIALIZE, LOGIN, LOGOUT, REGISTER, SET_USER } from '../store/actions';
 import accountReducer from '../store/accountReducer';
 import io from 'socket.io-client';
 
@@ -50,6 +50,7 @@ const JWTContext = createContext({
     logout: () => Promise.resolve(),
     register: () => Promise.resolve(),
     sendVerificationEmail: () => Promise.resolve(),
+    incrementCaptchaTicker: () => Promise.resolve(),
 });
 
 export const JWTProvider = ({ children }) => {
@@ -63,6 +64,17 @@ export const JWTProvider = ({ children }) => {
         setSessionAndSocket(user.id, tokens.access.token);
         dispatch({
             type: LOGIN,
+            payload: {
+                user
+            }
+        });
+    };
+
+    const incrementCaptchaTicker = () => {
+        const user = {...state.user, captchaTicker: state.user.captchaTicker+1};
+
+        dispatch({
+            type: SET_USER,
             payload: {
                 user
             }
@@ -140,7 +152,7 @@ export const JWTProvider = ({ children }) => {
         return <Loader />;
     }
 
-    return <JWTContext.Provider value={{ ...state, login, logout, register, sendVerificationEmail }}>{children}</JWTContext.Provider>;
+    return <JWTContext.Provider value={{ ...state, login, logout, register, sendVerificationEmail, incrementCaptchaTicker }}>{children}</JWTContext.Provider>;
 };
 
 export default JWTContext;

@@ -55,6 +55,7 @@ const useStyles = makeStyles((theme) => ({
         margin: '8px 0 8px 8px !important'
     },
     profileChip: {
+        marginLeft: '1em',
         height: '48px',
         alignItems: 'center',
         borderRadius: '27px',
@@ -289,7 +290,7 @@ const ProfileSection = () => {
                                                     selected={selectedIndex === 0}
                                                     onClick={(event) => handleListItemClick(event, 0)}
                                                     component={React.forwardRef((props, ref) => (
-                                                        <RouterLink {...props} to="/user/account-profile/profile1" />
+                                                        <RouterLink {...props} to="/user/settings" />
                                                     ))}
                                                 >
                                                     <ListItemIcon>

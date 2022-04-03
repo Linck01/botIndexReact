@@ -5,6 +5,7 @@ export const REGISTER = 'REGISTER';
 export const ACCOUNT_INITIALIZE = 'ACCOUNT_INITIALIZE';
 export const FIREBASE_STATE_CHANGED = 'FIREBASE_STATE_CHANGED';
 export const SET_MENU = 'SET_MENU';
+export const SET_USER = 'SET_USER';
 
 // action - customization reducer
 export const MENU_TOGGLE = '@customization/MENU_TOGGLE';

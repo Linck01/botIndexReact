@@ -24,7 +24,7 @@ function valueText(value) {
 }
 
 
-export default function FormDialog(props) {
+export default function AnswerScale(props) {
     const { scale_options, setScale_options } = props;  
     const [ currentValue, setCurrentValue ] = useState(0);
 

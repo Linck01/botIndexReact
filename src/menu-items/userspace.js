@@ -11,7 +11,7 @@ import { IconServer, IconDeviceGamepad } from '@tabler/icons';
 
 export const userspace = {
     id: 'userspace',
-    title: <FormattedMessage id="userspace" />,
+    title: '',//<FormattedMessage id="userspace" />,
     type: 'group',
     requiresAuth: true,
     children: [  

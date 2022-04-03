@@ -27,6 +27,7 @@ import * as Yup from 'yup';
 import { Formik } from 'formik';
 
 // project imports
+import config from '../../../../config';
 import useAuth from '../../../../hooks/useAuth';
 import useColor from '../../../../hooks/useColors';
 import useScriptRef from '../../../../hooks/useScriptRef';
@@ -96,18 +97,7 @@ const JWTRegister = ({ ...others }) => {
     const [ captchaToken, setCaptchaToken ] = React.useState(null);
     const { register, sendVerificationEmail } = useAuth();
 
-    {/*
-    const { firebaseEmailPasswordNewUser, firebaseGoogleSignIn } = useAuth();
-
-    const googleHandler = async () => {
-        try {
-            await firebaseGoogleSignIn();
-        } catch (err) {
-            console.error(err);
-        }
-    };*/}
-    const handleVerificationSuccess = (token, ekey) => {
-        console.log("handleVerificationSuccess",token,ekey);
+    const handleCaptchaVerificationSuccess = (token, ekey) => {
         setCaptchaToken(token);
     };
 
@@ -131,9 +121,7 @@ const JWTRegister = ({ ...others }) => {
                 setPasswordMatch(true);
             else 
                 setPasswordMatch(false);
-        }
-
-        
+        }   
     };
 
     useEffect(() => {
@@ -453,8 +441,8 @@ const JWTRegister = ({ ...others }) => {
                             </Grid>
                             <Grid item>                         
                                     <HCaptcha
-                                    sitekey="6211eb89-e849-430a-aefb-3643694bf708"
-                                    onVerify={(token,ekey) => handleVerificationSuccess(token, ekey)}
+                                    sitekey={config.hCaptchaSiteKey}
+                                    onVerify={(token,ekey) => handleCaptchaVerificationSuccess(token, ekey)}
                                     />
                             </Grid>
                         </Grid>

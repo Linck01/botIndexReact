@@ -64,7 +64,7 @@ const UserProfileCard = (props) => {
     const { game } = props;
     const theme = useTheme();
     const { colors } = useColors();
-    const classes = useStyles(theme);
+    const classes = useStyles();
 
     return (
         <Card className={classes.followerBlock}>

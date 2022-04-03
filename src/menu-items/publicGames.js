@@ -16,7 +16,7 @@ const tags = () => {
 
 export const publicGames = {
     id: 'publicGames',
-    title: <FormattedMessage id="publicGames" />,
+    title: '', //<FormattedMessage id="publicGames" />,
     type: 'group',
     children: [
         {

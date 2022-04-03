@@ -8,6 +8,7 @@ import GameContext from '../../contexts/GameContext';
 import fct from '../../utils/fct.js';
 import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import { useDispatch, useSelector } from 'react-redux';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 // project imports
 
 import { gridSpacing } from '../../store/constant';
@@ -47,9 +48,13 @@ export default function AddTipDialog(props) {
     const [amount, setAmount] = React.useState(0);
     const [answerId, setAnswerId] = React.useState(-1);
     const customization = useSelector((state) => state.customization);
-    const { user } = useAuth();
+    const { user, incrementCaptchaTicker } = useAuth();
     const [ answerDecimal, setAnswerDecimal ] = useState(bet.betType == 'scale' ? bet.scale_options.min : 0);
-   
+    const [ captchaToken, setCaptchaToken ] = React.useState(null);
+
+    const handleCaptchaVerificationSuccess = (token, ekey) => {
+        setCaptchaToken(token);
+    };
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -72,17 +77,18 @@ export default function AddTipDialog(props) {
 
         if (amount <= 0) {
             setIsLoadingAddTip(false);
-            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Tip must be bigger than 0.',
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Tip amount must be greater than 0.',
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
         
         try {
-            const req = { betId: bet.id, userId: user.id, gameId: bet.gameId, currency: amount};
+            const req = { betId: bet.id, userId: user.id, gameId: bet.gameId, currency: amount, captchaToken};
             if (bet.betType == 'catalogue') req.answerId = answerId;
             if (bet.betType == 'scale') req.answerDecimal = answerDecimal;
 
             const response = await axios.post(config.apiHost + '/v1/tips/', req);
-            
+            incrementCaptchaTicker();
+
         } catch (e) {
             setIsLoadingAddTip(false);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
@@ -103,12 +109,12 @@ export default function AddTipDialog(props) {
 
             <Dialog fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">
-                    Create a new tip
+                    <Typography style={{fontSize:'1.7em', fontWeight: 'bold'}}>Create a new tip</Typography>
                 </DialogTitle>
                 <DialogContent>
-                    <DialogContentText>
-                        {/*}<Typography variant="body2"></Typography>{*/}
-                    </DialogContentText>
+                    {/*}<DialogContentText>
+                        <Typography variant="body2"></Typography>
+                    </DialogContentText>{*/}
                 
                    
                     <Grid container spacing={gridSpacing}>
@@ -164,8 +170,17 @@ export default function AddTipDialog(props) {
                         
                         </Grid>
                     </Grid>
+                    { user && user.captchaTicker % config.captchaTickerInterval == 0 ? (
+                        <Grid container spacing={gridSpacing} justifyContent="center">
+                            <Grid item>                         
+                                <HCaptcha
+                                sitekey={config.hCaptchaSiteKey}
+                                onVerify={(token,ekey) => handleCaptchaVerificationSuccess(token, ekey)}
+                                />
+                            </Grid>
+                        </Grid>) 
+                    : '' }
                     
-                   
 
                 </DialogContent>
                 <DialogActions sx={{ pr: 2.5 }}>
