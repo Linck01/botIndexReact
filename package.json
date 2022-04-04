@@ -2,7 +2,7 @@
     "name": "berry-material-react",
     "version": "1.2.0",
     "private": true,
-    "homepage": ".",
+    "homepage": "http://betify.gg",
     "dependencies": {
         "@emotion/react": "^11.1.5",
         "@emotion/styled": "^11.3.0",
