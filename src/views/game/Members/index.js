@@ -33,7 +33,7 @@ const Members = () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(config.apiHost + '/v1/members/', { params: { gameId: game.id, sortBy: '-currency', limit: 10 , page: membersPage.index } });
+            const response = await axios.get(config.gameHosts[game.serverId] + '/v1/members/', { params: { gameId: game.id, sortBy: '-currency', limit: 10 , page: membersPage.index } });
             await fct.addUsernamesToArray(response.data.results);
 
             await fct.sleep(500);

@@ -57,7 +57,7 @@ export default function AddBetDialog({...props}) {
             if (betType == 'catalogue') obj.catalogue_answers = catalogue_answers;
             if (betType == 'scale') obj.scale_options = scale_options;
 
-            const response = await axios.post(config.apiHost + '/v1/bets/', obj);
+            const response = await axios.post(config.gameHosts[game.serverId] + '/v1/bets/', obj);
             
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Bet', 
                 variant: 'alert', alertSeverity: 'success', close: true });

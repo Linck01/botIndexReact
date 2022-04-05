@@ -1,6 +1,7 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import fct from '../../../utils/fct.js';
+import config from '../../../config.js';
 
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -69,7 +70,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
         setIsLoading(true);
 
         try {
-            const res = await axios.get( game.server + '/v1/messages/',
+            const res = await axios.get(config.gameHosts[game.serverId] + '/v1/messages/',
                 { params: { gameId: game.id, sortBy: '-_createdAt', limit: 10 , page: 0 } });
 
             await fct.sleep(500);
@@ -118,7 +119,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
                 return;
             }
 
-            const res = await axios.post(game.server + '/v1/messages/', {
+            const res = await axios.post(config.gameHosts[game.serverId] + '/v1/messages/', {
                 userId: user.id,
                 gameId: game.id,
                 message: messageInputRef.current.querySelectorAll('input[type=text]')[0].value

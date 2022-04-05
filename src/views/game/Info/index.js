@@ -59,7 +59,7 @@ const GameInfo = () => {
         await fct.sleep(1000);
         try {
             const obj = { gameId: game.id, title, desc };
-            const response = await axios.post(config.apiHost + '/v1/bets/', obj);
+            const response = await axios.post(config.gameHosts[game.serverId] + '/v1/bets/', obj);
             
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully changed settings', 
                 variant: 'alert', alertSeverity: 'success', close: true });

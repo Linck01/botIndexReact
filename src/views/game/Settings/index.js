@@ -37,7 +37,7 @@ const GameSettings = () => {
         await fct.sleep(1000);
         try {
             const obj = { title, desc, isPublic, isEnded, startCurrency, currencyName, bannerUrl };
-            const response = await axios.patch(config.apiHost + '/v1/games/' + game.id, obj);
+            const response = await axios.patch(config.gameHosts[game.serverId] + '/v1/games/' + game.id, obj);
             
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully changed settings', 
                 variant: 'alert', alertSeverity: 'success', close: true });

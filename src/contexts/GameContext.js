@@ -82,9 +82,6 @@ export const GameProvider = ({ children }) => {
         try {
             console.log('Get game id' + id);
             const response = await axios.get(config.authHost + '/v1/games/' + id);
-            
-            if (process.env.NODE_ENV != 'production') 
-                response.data.server = 'http://localhost:3005';
 
             await fct.sleep(500);
 
@@ -175,7 +172,7 @@ export const GameProvider = ({ children }) => {
     const fetchMember = async (game,userId) => {
         try {
             console.log('Get member id ' + userId);
-            const response = await axios.get( game.server + '/v1/members/' + gameId + '/' + userId);
+            const response = await axios.get(config.gameHosts[game.serverId] + '/v1/members/' + gameId + '/' + userId);
 
             await fct.sleep(500);
             
@@ -335,7 +332,7 @@ export const GameProvider = ({ children }) => {
             if (!game)
                 return;
             
-            const socket = await initSocket(game.server);
+            const socket = await initSocket(config.gameHosts[game.serverId]);
             if (!socket)
                 return;
             setSocket(socket);
