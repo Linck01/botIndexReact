@@ -1,5 +1,5 @@
 const config = {
-    basename: '',
+    basename: '/',
     defaultPath: '/',
     fontFamily: `'Roboto', sans-serif`,
     borderRadius: 12,
@@ -20,5 +20,12 @@ const config = {
     hCaptchaSiteKey: '',
     captchaTickerInterval: 2,
 };
+
+if (process.env.NODE_ENV == 'production') {
+    config.apiHost = '';
+    config.authHost = '';
+} else {
+
+}
 
 export default config;
