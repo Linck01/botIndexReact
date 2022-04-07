@@ -3,10 +3,15 @@ import React from 'react';
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Button, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 
 // project imports
 import MainCard from '../../ui-component/cards/MainCard';
 import { gridSpacing } from '../../store/constant';
+import axios from '../../utils/axios';
+import config from '../../config';
+import { SNACKBAR_OPEN } from '../../store/actions';
+import fct from '../../utils/fct.js';
 
 // assets
 import CheckTwoToneIcon from '@material-ui/icons/CheckTwoTone';
@@ -16,6 +21,7 @@ import DirectionsBoatTwoToneIcon from '@material-ui/icons/DirectionsBoatTwoTone'
 import { IconBrandAppleArcade, IconPin, IconSpeakerphone } from '@tabler/icons';
 import logoDark from '../../assets/images/large.png';
 import logo from '../../assets/images/large.png';
+import GameCard1 from '../../ui-component/cards/GameCard1';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -82,12 +88,36 @@ const useStyles = makeStyles((theme) => ({
 const Price1 = () => {
     const classes = useStyles();
     const theme = useTheme();
-    console.log('EEEEEEEEEEEEEEEEE', process.env.NODE_ENV);
+    const [isLoading, setIsLoading] = React.useState(true);
+    const [games, setGames] = React.useState([]);
+    const dispatch = useDispatch();
+    
+    const getGames = async () => {
+        setIsLoading(true);
+
+        try {
+            const response = await axios.get(config.apiHost + '/v1/games/', { params: {isEnded: false, isPublic: true, sortBy: '-memberCount', limit: 6 , page: 1 } });
+
+            await fct.sleep(1000);
+            setGames(response.data.results);
+            setIsLoading(false);
+        } catch (e) {
+            setIsLoading(false);
+            console.log(e);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
+        }
+    }
+
+    React.useEffect(() => {
+        getGames();
+    }, []);
+
     const plans = [
         {
             active: true,
             icon: <IconBrandAppleArcade fontSize="large" color={theme.palette.info.main}/>,
-            title: '1. Create a Game',
+            title: '1. Create Game',
             description:
                 'Create or find a public game with the topics you like.',
             price: 69,
@@ -95,7 +125,7 @@ const Price1 = () => {
         {
             active: true,
             icon: <IconSpeakerphone fontSize="large" color={theme.palette.warning.main}/>,
-            title: '2. Add a Bet',
+            title: '2. Add Bet',
             description:
                 'Add a bet to your game, which you and your friends can bet on.',
             price: 129,
@@ -103,7 +133,7 @@ const Price1 = () => {
         {
             active: true,
             icon: <IconPin fontSize="large" color={theme.palette.success.main}/>,
-            title: '3. Place a Tip',
+            title: '3. Place Tip',
             description:
                 'Place a tip if you feel like you know the outcome of a bet.',
             price: 599,
@@ -163,6 +193,34 @@ const Price1 = () => {
                 );
             })}
         </Grid>
+        <br />
+        <br />
+
+        <Grid container spacing={gridSpacing} justifyContent={"center"}>
+            <Grid item xs={12} sm={12} md={12}>
+                <Typography variant="h1" align="center" color="secondary">
+                    Featured Games
+                </Typography>
+            </Grid>
+        </Grid>
+        <br />
+        <br />
+
+        {!isLoading && games.length > 0 ? (
+            <>
+            <Grid container spacing={gridSpacing}>
+                {games.map((game) => {
+                    return (
+                        <Grid item xs={12} lg={4} key={game.id}>              
+                            <GameCard1 game={game} />     
+                        </Grid>
+                    );
+                })}
+            </Grid>
+            <br />
+            </>
+        ) : ''}
+
         </>
     );
 };

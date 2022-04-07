@@ -50,7 +50,7 @@ export default function AddTipDialog(props) {
     const customization = useSelector((state) => state.customization);
     const { user, incrementCaptchaTicker } = useAuth();
     const [ answerDecimal, setAnswerDecimal ] = useState(bet.betType == 'scale' ? bet.scale_options.min : 0);
-    const [ captchaToken, setCaptchaToken ] = React.useState(null);
+    const [ captchaToken, setCaptchaToken ] = React.useState('');
 
     const handleCaptchaVerificationSuccess = (token, ekey) => {
         setCaptchaToken(token);
@@ -82,7 +82,10 @@ export default function AddTipDialog(props) {
         }
         
         try {
-            const req = { betId: bet.id, userId: user.id, gameId: bet.gameId, currency: amount, captchaToken};
+            const req = { betId: bet.id, userId: user.id, gameId: bet.gameId, currency: amount};
+            if (captchaToken != '')
+                req.captchaToken = captchaToken;
+
             if (bet.betType == 'catalogue') req.answerId = answerId;
             if (bet.betType == 'scale') req.answerDecimal = answerDecimal;
 
