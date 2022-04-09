@@ -49,10 +49,8 @@ const BigGamesPage = () => {
 
     return (
         <>
-        <br /><br />
-    
         {isLoading ? (
-            <> 
+            <><br /><br />
             <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>
                 <CircularProgress color="secondary" size="10em"  />
             </Grid>

@@ -10,17 +10,12 @@ f.sleep = (ms) => {
 }
 
 f.getBetProgress = (bet) => {
-    
-
-    
     //console.log('start: ' + start + '\n' + (new Date(start)).toString());
     //console.log('now: ' + now + '\n' + (new Date(now)).toString());
     //console.log('end: ' + end + '\n' + (new Date(end)).toString());
 
     //const later = DateTime.fromISO(date);
     //const i = Interval.fromDateTimes(later,now);
-
-    
 }
 
 f.paginate = (array, page_size, page_number) => {
@@ -130,12 +125,28 @@ f.formatDateTime = (isoString) => {
     return dt.toLocaleString(DateTime.DATETIME_MED);
 }
 
+/*f.addUsernamesToArray = async (arr) => {
+    const uniqueUserIds = [...new Set(arr.map((tip) => tip.userId))];
+    const responseUsers = (await axios.get(config.apiHost + '/v1/users/', {params: { id: uniqueUserIds, limit: 10 }})).data.results;
+    
+    let usr;
+    const newArray = [];
+    for (let a of arr) {
+        console.log('a',a);     
+        usr = responseUsers.find(u => a.userId ==y u.id);
+        console.log('user',usr);
+        newArray.push({...a, username: usr ? usr.username : 'n/a'});
+    }
+    console.log(newArray);
+    return newArray;
+}*/
+
 f.addUsernamesToArray = async (arr) => {
     const uniqueUserIds = [...new Set(arr.map((tip) => tip.userId))];
     const responseUsers = (await axios.get(config.apiHost + '/v1/users/', {params: { id: uniqueUserIds, limit: 10 }})).data.results;
     let usr;
     for (let a of arr) {
-        usr = responseUsers.find(u => a.userId = u.id);
+        usr = responseUsers.find(u => a.userId == u.id);
         a.username = usr ? usr.username : 'n/a';
     }
     return arr

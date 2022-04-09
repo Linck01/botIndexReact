@@ -14,18 +14,18 @@ const config = {
         timeout: '1 days'
     },
     apiHost: 'http://localhost:3005',
+    gameHosts: ['http://localhost:3005'],
     authHost: 'http://localhost:3005',
     tipListPageSize: 8,
     betsPageSize: 9,
     hCaptchaSiteKey: '',
-    captchaTickerInterval: 2,
+    captchaTickerInterval: 5,
 };
 
 if (process.env.NODE_ENV == 'production') {
-    config.apiHost = '';
-    config.authHost = '';
-} else {
-
+    config.apiHost = 'https://api.betify.gg';
+    config.gameHosts = ['https://api.betify.gg'];
+    config.authHost = 'https://api.betify.gg';
 }
 
 export default config;

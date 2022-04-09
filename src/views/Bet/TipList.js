@@ -11,7 +11,7 @@ import axios from '../../utils/axios';
 import TipListItem from './TipListItem';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import GameContext from '../../contexts/GameContext';
-
+//import fetch from 'node-fetch';
 
 //================================|| UI LIST - CUSTOM ||================================//
 
@@ -28,11 +28,11 @@ export default function CustomList(props) {
         setIsLoading(true);
 
         try {
-            await fct.sleep(1000);
-            let responseTips = (await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betPage.bet.id, sortBy: '-_updatedAt', limit: config.tipListPageSize , page: betPage.tipListPage.index }}));
- 
+            await fct.sleep(500);
+            const responseTips = await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betPage.bet.id, sortBy: '-_updatedAt', limit: config.tipListPageSize , page: betPage.tipListPage.index }});
+            await fct.sleep(500);
             await fct.addUsernamesToArray(responseTips.data.results);
-            
+
             setBetPage({...betPage, tipListPage: {...betPage.tipListPage,items:responseTips.data.results,maxIndex: responseTips.data.totalPages} });
             setIsLoading(false);
         } catch (e) {

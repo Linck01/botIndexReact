@@ -60,7 +60,7 @@ const BetDetails = () => {
             await fct.sleep(1000);
             let myTips = [];
             if (user) {
-                const responseMyTips = await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betId, userId: user.id, limit: 32}});
+                const responseMyTips = await axios.get(config.apiHost + '/v1/tips/', {params: {betId: betId, userId: user.id, limit: 512}});
                 myTips = responseMyTips.data.results;
                 //for (let tip of myTips) { tip.currency.$numberDecimal = parseFloat(tip.currency.$numberDecimal);tip.answerDecimal.$numberDecimal = parseFloat(tip.answerDecimal.$numberDecimal) }
             }

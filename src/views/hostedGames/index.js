@@ -70,11 +70,8 @@ const HostedGamesPage = () => {
         <>
             <AddGameDialog getHostedGames={getHostedGames}/>
  
-            <br /><br />
-      
             {isLoading ? (
-                <>
-                    
+                <><br /><br />  
                     <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>
                         <CircularProgress color="secondary" size="10em"  />
                     </Grid>
@@ -83,7 +80,7 @@ const HostedGamesPage = () => {
             
             
             {!isLoading && hostedGames.length > 0 ? (
-                <>
+                <><br />
                 <Grid container spacing={gridSpacing}>
                     {hostedGames.map( (game) => {
                         return (

@@ -48,7 +48,6 @@ const WidgetStatistics = (props) => {
                 <UserCountCard
                     primary="In Pot"
                     secondary={bet.inPot.$numberDecimal}
-                    
                     iconPrimary={EmojiEventsTwoToneIcon}
                     color={theme.palette.success.dark}
                 />

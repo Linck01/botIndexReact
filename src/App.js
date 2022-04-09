@@ -4,6 +4,8 @@ import { useSelector } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline, StyledEngineProvider } from '@material-ui/core';
 
+
+
 // routing
 import Routes from './routes';
 
@@ -21,6 +23,7 @@ import Snackbar from './ui-component/extended/Snackbar';
 import {JWTProvider} from './contexts/JWTContext';
 // import {Auth0Provider} from '../contexts/Auth0Context';
 import { GameProvider } from './contexts/GameContext';
+
 
 //-----------------------|| APP ||-----------------------//
 

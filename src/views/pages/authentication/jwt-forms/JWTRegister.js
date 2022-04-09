@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -34,6 +34,7 @@ import useScriptRef from '../../../../hooks/useScriptRef';
 import Google from './../../../../assets/images/icons/social-google.svg';
 import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from '../../../../utils/password-strength';
+import { SNACKBAR_OPEN } from '../../../../store/actions';
 
 // assets
 import Visibility from '@material-ui/icons/Visibility';
@@ -96,6 +97,7 @@ const JWTRegister = ({ ...others }) => {
     const [passwordMatch, setPasswordMatch] = React.useState(0);
     const [ captchaToken, setCaptchaToken ] = React.useState(null);
     const { register, sendVerificationEmail } = useAuth();
+    const dispatch = useDispatch();
 
     const handleCaptchaVerificationSuccess = (token, ekey) => {
         setCaptchaToken(token);
@@ -188,10 +190,15 @@ const JWTRegister = ({ ...others }) => {
                 validationSchema={Yup.object().shape({
                     username: Yup.string().max(24).required('Username is required'),
                     email: Yup.string().email('Must be a valid email').max(255).required('Email is required'),
-                    password: Yup.string().max(255).required('Password is required')
+                    password: Yup.string().max(255).required('Password is required'),
+                  
                 })}
                 onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                     try {
+                        if (!checked)
+                            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  'T&S need to be accepted.',
+                                variant: 'alert', alertSeverity: 'error', close: true });
+
                         const newUserCredential = await register(values.username, values.email, values.password, captchaToken);
 
                         //await sendVerificationEmail(values.username, values.email);
@@ -432,7 +439,7 @@ const JWTRegister = ({ ...others }) => {
                                     label={
                                         <Typography variant="subtitle1">
                                             Agree with &nbsp;
-                                            <Typography variant="subtitle1" component={Link} to="#">
+                                            <Typography variant="subtitle1" component={Link} to="/termsAndService">
                                                 Terms & Condition.
                                             </Typography>
                                         </Typography>

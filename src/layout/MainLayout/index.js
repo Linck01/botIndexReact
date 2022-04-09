@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -141,7 +142,7 @@ const MainLayout = ({ children }) => {
                     window.location.replace("https://google.com");
                 }}
                 >
-                This website uses cookies to enhance user experience.{" "}
+                This website uses cookies to enhance user experience. By using this website you agree to our <Link to="/termsAndService"></Link> <Link to="/termsAndServices">Terms and Conditions</Link> and <Link to="/privacyPolicy">Privacy Policy</Link>{" "}
                 {/*}<span style={{ fontSize: "10px" }}>This bit of text is smaller :O</span>{*/}
             </CookieConsent>
         </div>

@@ -306,7 +306,7 @@ export const GameProvider = ({ children }) => {
     
     const updateMyTipsWithNewTip = async (newTip) => {
         let newMyTips = [], replaced = false;
-
+        
         for (let tip of state.betPage.myTips) {
             if (tip.id == newTip.id) {
                 newMyTips.push(newTip)
@@ -314,9 +314,8 @@ export const GameProvider = ({ children }) => {
             } else
                 newMyTips.push(tip);
         }
-        if (!replaced)
+        if (!replaced && user && user.id == newTip.userId)
             newMyTips.push(newTip);
-        
         
         return newMyTips; 
     }
