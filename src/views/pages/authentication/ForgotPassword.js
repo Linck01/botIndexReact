@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
+import config from '../../../config';
 
 // material-ui
 import { useTheme } from '@material-ui/core';
@@ -28,10 +29,8 @@ const ForgotPassword = () => {
                         <Grid item sx={{ m: { xs: 1, sm: 3 }, mb: 0 }}>
                             <AuthCardWrapper>
                                 <Grid container spacing={2} alignItems="center" justifyContent="center">
-                                    <Grid item sx={{ mb: 3 }}>
-                                        <RouterLink to="#">
-                                            <Logo />
-                                        </RouterLink>
+                                    <Grid item sx={{ mb: 3 }}>      
+                                        <Logo />
                                     </Grid>
                                     <Grid item xs={12}>
                                         <Grid container alignItems="center" justifyContent="center" textAlign="center" spacing={2}>

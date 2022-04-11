@@ -9,7 +9,7 @@ import { Grid, Stack, Typography, useMediaQuery } from '@material-ui/core';
 import AuthWrapper1 from './AuthWrapper1';
 import AuthCardWrapper from './AuthCardWrapper';
 import Logo from './../../../ui-component/Logo';
-import FirebaseResetPassword from './firebase-forms/FirebaseResetPassword';
+import JWTResetPassword from './jwt-forms/JWTResetPassword';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
 
 // assets
@@ -29,35 +29,20 @@ const ResetPassword = () => {
                             <AuthCardWrapper>
                                 <Grid container spacing={2} alignItems="center" justifyContent="center">
                                     <Grid item sx={{ mb: 3 }}>
-                                        <RouterLink to="#">
-                                            <Logo />
-                                        </RouterLink>
+                                        <Logo />
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <Grid
-                                            container
-                                            direction={matchDownSM ? 'column-reverse' : 'row'}
-                                            alignItems="center"
-                                            justifyContent="center"
-                                        >
-                                            <Grid item>
-                                                <Stack alignItems="center" justifyContent="center" spacing={1}>
-                                                    <Typography
-                                                        color={theme.palette.secondary.main}
-                                                        gutterBottom
-                                                        variant={matchDownSM ? 'h3' : 'h2'}
-                                                    >
-                                                        Reset Password
-                                                    </Typography>
-                                                    <Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : ''}>
-                                                        Please choose your new password
-                                                    </Typography>
-                                                </Stack>
-                                            </Grid>
-                                        </Grid>
+                                        <Stack alignItems="center" justifyContent="center" spacing={1}>
+                                            <Typography color={theme.palette.secondary.main} gutterBottom variant={matchDownSM ? 'h3' : 'h2'}>
+                                                Reset password
+                                            </Typography>
+                                            {/*}<Typography variant="caption" fontSize="16px" textAlign={matchDownSM ? 'center' : ''}>
+                                                
+                                            </Typography>{*/}
+                                        </Stack>
                                     </Grid>
                                     <Grid item xs={12}>
-                                        <FirebaseResetPassword />
+                                        <JWTResetPassword />
                                     </Grid>
                                 </Grid>
                             </AuthCardWrapper>

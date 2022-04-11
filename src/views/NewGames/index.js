@@ -78,7 +78,7 @@ const NewGamesPage = () => {
         ) : ''}
 
         {!isLoading && games.length == 0 ? (
-            <>
+            <><br />
             <Grid container direction="column" spacing={2} alignItems="center">
                 <Grid item xs={12}>
                 <Typography variant="h3">No games to show.</Typography>

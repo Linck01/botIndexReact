@@ -6,7 +6,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import GameContext from '../../contexts/GameContext';
 import fct from '../../utils/fct.js';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import { useDispatch, useSelector } from 'react-redux';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 // project imports
@@ -16,13 +15,8 @@ import { SNACKBAR_OPEN } from '../../store/actions';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
-import SubCard from '../../ui-component/cards/SubCard';
-import { IconCirclePlus } from '@tabler/icons';
 
 import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone';
-import DescriptionTwoToneIcon from '@material-ui/icons/DescriptionTwoTone';
-import ListAltTwoToneIcon from '@material-ui/icons/ListAltTwoTone';
-
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -49,8 +43,8 @@ export default function AddTipDialog(props) {
     const [answerId, setAnswerId] = React.useState(-1);
     const customization = useSelector((state) => state.customization);
     const { user, incrementCaptchaTicker } = useAuth();
-    const [ answerDecimal, setAnswerDecimal ] = useState(bet.betType == 'scale' ? bet.scale_options.min : 0);
-    const [ captchaToken, setCaptchaToken ] = React.useState('');
+    const [answerDecimal, setAnswerDecimal] = useState(bet.betType == 'scale' ? bet.scale_options.min : 0);
+    const [captchaToken, setCaptchaToken] = React.useState('');
 
     const handleCaptchaVerificationSuccess = (token, ekey) => {
         setCaptchaToken(token);
@@ -173,7 +167,7 @@ export default function AddTipDialog(props) {
                         
                         </Grid>
                     </Grid>
-                    { user && user.captchaTicker % config.captchaTickerInterval == 0 ? (
+                    { user && user.premium < 1 && user.captchaTicker % config.captchaTickerInterval == 0 ? (
                         <Grid container spacing={gridSpacing} justifyContent="center">
                             <Grid item>                         
                                 <HCaptcha
@@ -192,8 +186,6 @@ export default function AddTipDialog(props) {
                     </Button>
                     <Button variant="contained" size="small" onClick={createTip} color="primary">
                         {isLoadingAddTip ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Create') }  
-
-
                     </Button>
                 </DialogActions>
             </Dialog>

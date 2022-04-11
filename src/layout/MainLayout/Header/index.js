@@ -133,7 +133,7 @@ const Header = ({ handleLeftDrawerToggle }) => {
             {!isLoggedIn ? <><LoginSection /></> : <></>}
             
             {/* notification & profile */}
-            {isLoggedIn ? <><NotificationSection /><ProfileSection /></> : <></>}
+            {isLoggedIn ? <>{/*}<NotificationSection />{*/}<ProfileSection /></> : <></>}
 
             {/* mobile header */}
             {/*}<Box sx={{ display: { xs: 'block', sm: 'none' } }}>

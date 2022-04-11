@@ -72,9 +72,9 @@ const HostedGamesPage = () => {
  
             {isLoading ? (
                 <><br /><br />  
-                    <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>
-                        <CircularProgress color="secondary" size="10em"  />
-                    </Grid>
+                <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>
+                    <CircularProgress color="secondary" size="10em"  />
+                </Grid>
                 </>
             ) : ''}
             
@@ -101,7 +101,7 @@ const HostedGamesPage = () => {
         
 
             {!isLoading && hostedGames.length == 0 ? (
-                <>
+                <><br /><br />
                     <Grid container direction="column" spacing={2} alignItems="center">
                         <Grid item xs={12}>
                         <Typography variant="h3">No games to show.</Typography>
