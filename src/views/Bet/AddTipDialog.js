@@ -61,8 +61,6 @@ export default function AddTipDialog(props) {
     const createTip = async () => {  
         setIsLoadingAddTip(true);
 
-        await fct.sleep(1000);
-
         if (!user) {
             setIsLoadingAddTip(false);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to send a tip.',
@@ -167,6 +165,7 @@ export default function AddTipDialog(props) {
                         
                         </Grid>
                     </Grid>
+                    
                     { user && user.premium < 1 && user.captchaTicker % config.captchaTickerInterval == 0 ? (
                         <Grid container spacing={gridSpacing} justifyContent="center">
                             <Grid item>                         

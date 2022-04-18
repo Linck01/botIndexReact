@@ -12,8 +12,11 @@ import AddTipDialog from './AddTipDialog';
 import CatalogueTipChart from './CatalogueTipChart';
 import ScaleTipChart from './ScaleTipChart';
 import TipStatsCards from './TipStatsCards';
-import FinalizeBetDialog from './FinalizeBetDialog';
+import SettlementBox from './SettlementBox';
+import SolveBetDialog from './SolveBetDialog';
 import AbortBetDialog from './AbortBetDialog';
+import EndBetDialog from './EndBetDialog';
+import DeleteBetDialog from './DeleteBetDialog';
 
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { gridSpacing } from '../../store/constant';
@@ -50,14 +53,14 @@ const BetDetails = () => {
     const [ isLoading, setIsLoading ] = useState(false);
     
 
+
     const getBetPage = async () => {
         try {
             setIsLoading(true);
-            await fct.sleep(1000);
+
             const responseBet = await axios.get(config.apiHost + '/v1/bets/' + betId);
             console.log('responseBet',responseBet);
             
-            await fct.sleep(1000);
             let myTips = [];
             if (user) {
                 const responseMyTips = await axios.get(config.apiHost + '/v1/tips/', {params: {betId: betId, userId: user.id, limit: 512}});
@@ -65,7 +68,7 @@ const BetDetails = () => {
                 //for (let tip of myTips) { tip.currency.$numberDecimal = parseFloat(tip.currency.$numberDecimal);tip.answerDecimal.$numberDecimal = parseFloat(tip.answerDecimal.$numberDecimal) }
             }
 
-            setBetPage({...betPage,bet: responseBet.data, myTips, status: fct.getStatus(responseBet.data)});
+            setBetPage({...betPage,bet: responseBet.data, myTips});
             setIsLoading(false);
         } catch (e) {
             setIsLoading(false);
@@ -79,6 +82,11 @@ const BetDetails = () => {
     useEffect(() => {
         getBetPage();
     }, []);
+
+    /*useEffect(() => {
+        //betHasEnded = '';
+        console.log('JJJJJJJJJJJJJJJJJJJJJJJJJJJJ');
+    }, [betPage.bet]);*/
 
     return (
         <>
@@ -97,26 +105,41 @@ const BetDetails = () => {
             <> 
             
             <TipStatsCards bet={betPage.bet} myTips={betPage.myTips}/>
-            <br />
+            <br /> 
             
-            {betPage.status.tag == 'inProgress' || betPage.status.tag == 'ended' ? (
+            {!betPage.bet.isSolved && !betPage.bet.isAborted && !fct.hasBetEnded(betPage.bet) ? (
                 <>
-               <Grid container spacing={gridSpacing} >
-                    {betPage.status.tag == 'inProgress' ? (
-                        <Grid item xs={12}><AddTipDialog bet={betPage.bet} /></Grid>   
-                    ): ''}
-                    {privileges.admin || privileges.mod ? (
-                        <Grid item xs={6}><FinalizeBetDialog bet={betPage.bet} /></Grid>   
-                    ): ''}
-
-                    {privileges.admin || privileges.mod ? (
-                        <Grid item xs={6}><AbortBetDialog bet={betPage.bet} /></Grid>
-                    ): ''}   
-                </Grid>
-                <br /><br />     
+               <Grid container spacing={gridSpacing}>  
+                    <Grid item xs={12}><AddTipDialog bet={betPage.bet} /></Grid>   
+                </Grid><br />
                 </>
             ) : ''}
-                        
+
+            {!betPage.bet.isSolved && !betPage.bet.isAborted && !fct.hasBetEnded(betPage.bet) && (privileges.admin || privileges.mod) ? (
+                <>
+               <Grid container spacing={gridSpacing} >  
+                    <Grid item xs={12}><EndBetDialog bet={betPage.bet} /></Grid>   
+                </Grid><br />
+                </>
+            ) : ''}
+
+            {betPage.bet.isPaid && (privileges.admin || privileges.mod) ? (
+                <>
+                <Grid container spacing={gridSpacing} >  
+                    <Grid item xs={12}><DeleteBetDialog bet={betPage.bet} /></Grid>   
+                </Grid><br />
+                </>
+            ) : ''}
+
+            {!betPage.bet.isSolved && !betPage.bet.isAborted && (privileges.admin || privileges.mod) ? (
+                <>
+               <Grid container spacing={gridSpacing} >  
+                    <Grid item xs={6}><SolveBetDialog bet={betPage.bet} /></Grid>
+                    <Grid item xs={6}><AbortBetDialog bet={betPage.bet} /></Grid>   
+                </Grid><br /> 
+                </>
+            ) : ''}
+           
             <Grid container spacing={gridSpacing} >
                 <Grid item xs={12} sm={12} md={5}>
                     <Grid container spacing={gridSpacing}>
@@ -145,6 +168,13 @@ const BetDetails = () => {
                 </Grid>
             </Grid>
             
+            {betPage.bet.isSolved || betPage.bet.isAborted ? (
+                <><br /><br />
+               <Grid container spacing={gridSpacing} >
+                    <Grid item xs={12}><SettlementBox bet={betPage.bet} /></Grid>   
+                </Grid> 
+                </>
+            ) : ''}
             
             
             <br /><br />

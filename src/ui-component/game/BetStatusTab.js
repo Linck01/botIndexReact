@@ -19,6 +19,7 @@ import {
 } from '@material-ui/core';
 
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { IconCalendarStats, IconCalendarOff, IconCheck, IconBell, IconBellOff, IconTrash } from '@tabler/icons';
 
 import GameContext from '../../contexts/GameContext';
 import fct from '../../utils/fct.js';
@@ -68,14 +69,58 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const getStatus = (bet) => {
+    const start = (new Date(bet._createdAt)).getTime();
+    const now = Date.now();
+    const end = (new Date(bet.timeLimit)).getTime();
+
+    let progress = 0;
+
+    if (end < now)
+        progress = 100;
+    else if (now < start)
+        progress = 0;
+    else
+        progress = Math.floor( ((now - start) / (end - start)) * 100 );
+    
+    let icon,title,color,tag;
+
+    if (bet.isAborted) {
+        icon = IconTrash;
+        tag = 'aborted';
+        title = 'Aborted';
+        color = 'errorDark';
+    //} else if (bet.isPaid) {
+    //    icon = IconCheck;
+    //    tag = 'isPaid';
+    //    title = 'Solved & Paid';
+    //    color = 'successDark';
+    } else if (bet.isSolved) {
+        icon = IconCheck;
+        tag = 'isSolved';
+        title = 'Solved';
+        color = 'successDark';
+    }  else if (progress < 100) {
+        icon = IconCalendarStats;
+        tag = 'inProgress';
+        title = 'In progress';
+        color = 'warningDark';
+    } else {
+        icon = IconCalendarOff;
+        tag = 'ended';
+        title = 'Ended';
+        color = 'infoDark';
+    }
+
+    return { progress, icon, title, color, tag };
+}
 
 
 const BetStatusTab = ({ bet }) => {
     const classes = useStyles();
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     const { colors } = useColors();
-    const status = fct.getStatus(bet);
-
+    const status = getStatus(bet);
 
     const { correctAnswerStrings, moreAnswersString } = fct.getCorrectAnswerStrings(bet, 40);
     
@@ -107,7 +152,7 @@ const BetStatusTab = ({ bet }) => {
                             <br />
                             <LinearProgress variant="determinate" value={status.progress} color="primary" style={{width: '90%'}} />
                             <Typography align="left" variant="subtitle1">
-                                {fct.timeLeftString(bet.timeLimit)}
+                                {!fct.hasBetEnded(bet) ? fct.timeLeftString(bet.timeLimit) : ''}
                             </Typography>
                         </Grid>
                         <Grid item xs={2}>

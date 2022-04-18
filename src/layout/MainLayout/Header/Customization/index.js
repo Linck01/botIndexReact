@@ -44,7 +44,7 @@ import theme5 from '../../../../assets/scss/_theme5.module.scss';
 import theme6 from '../../../../assets/scss/_theme6.module.scss';
 
 // assets
-import { IconChecks, IconSettings } from '@tabler/icons';
+import { IconChecks, IconMoon2, IconSettings } from '@tabler/icons';
 
 // concat 'px'
 function valueText(value) {
@@ -240,7 +240,7 @@ const Customization = () => {
                             className={classes.headerAvatar}
                             color="inherit" >
                             
-                            <IconSettings stroke={1.5} size="1.6rem" />
+                            <IconMoon2 stroke={1.5} size="1.6rem" />
                         </Avatar>
                         
                     </ButtonBase>

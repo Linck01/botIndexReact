@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink, useHistory } from 'react-router-dom';
+import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 // material-ui
@@ -122,6 +122,7 @@ const LoginSection = () => {
     const classes = useStyles();
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
+    const lastLocation = useLocation();
 
     const [sdm, setSdm] = React.useState(true);
     const [value, setValue] = React.useState('');
@@ -162,7 +163,7 @@ const LoginSection = () => {
     }, [open]);
     return (
         <React.Fragment>
-            <Link href="/login">
+            <Link href={'/login?fromLocation=' + lastLocation.pathname}>
             <Chip
                 classes={{ label: classes.profileLabel }}
                 className={classes.profileChip}

@@ -28,9 +28,7 @@ export default function CustomList(props) {
         setIsLoading(true);
 
         try {
-            await fct.sleep(500);
             const responseTips = await axios.get(config.apiHost + '/v1/tips/', {params: { betId: betPage.bet.id, sortBy: '-_updatedAt', limit: config.tipListPageSize , page: betPage.tipListPage.index }});
-            await fct.sleep(500);
             await fct.addUsernamesToArray(responseTips.data.results);
 
             setBetPage({...betPage, tipListPage: {...betPage.tipListPage,items:responseTips.data.results,maxIndex: responseTips.data.totalPages} });

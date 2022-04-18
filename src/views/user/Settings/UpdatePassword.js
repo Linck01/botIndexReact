@@ -42,7 +42,6 @@ const WidgetStatistics = (props) => {
     const updateSettings = async () => {
         setIsLoading(true);
 
-        await fct.sleep(1000);
         try {
             const obj = { password, newPassword };
             const response = await axios.patch(config.apiHost + '/v1/users/' + user.id, obj);

@@ -49,7 +49,6 @@ export default function AddBetDialog({...props}) {
     const createBet = async () => {  
         setIsLoading(true);
 
-        await fct.sleep(1000);
         try {
             const tempDate = new Date(timeLimit);
             tempDate.setSeconds(0);

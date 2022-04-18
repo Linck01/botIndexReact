@@ -31,10 +31,6 @@ const BetInfo = (props) => {
     const { bet } = props;
     const { game } = React.useContext(GameContext);
     const classes = useStyles();
-    const { colors } = useColors();
-    const status = fct.getStatus(bet);
-    
-    const { correctAnswerStrings, moreAnswersString } = fct.getCorrectAnswerStrings(bet, 200);
 
     useEffect(() => {
        

@@ -176,7 +176,7 @@ const ProfileSection = () => {
                         color="inherit"
                     */
                 }
-                label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
+                label={<IconSettings stroke={1.5} size="1.5rem" color={theme.palette.secondary.main} />}
                 variant="outlined"
                 ref={anchorRef}
                 aria-controls={open ? 'menu-list-grow' : undefined}
@@ -217,7 +217,7 @@ const ProfileSection = () => {
                                                 </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="subtitle2">Logged in as: {user ? user.email : ''}</Typography>
+                                                <Typography variant="subtitle2">Logged in as: {user ? user.username : ''}</Typography>
                                             </Grid>
                                         </Grid>
                                         { /* }

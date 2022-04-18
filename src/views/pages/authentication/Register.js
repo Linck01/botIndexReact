@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useLocation } from 'react-router-dom';
 
 // material-ui
 import { useTheme } from '@material-ui/core';
@@ -19,6 +19,7 @@ import AuthFooter from './../../../ui-component/cards/AuthFooter';
 const Register = () => {
     const theme = useTheme();
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
+    const location = useLocation();
 
     return (
         <AuthWrapper1>
@@ -66,7 +67,7 @@ const Register = () => {
                                         <Grid item container direction="column" alignItems="center" xs={12}>
                                             <Typography
                                                 component={RouterLink}
-                                                to="/login"
+                                                to={'/login' + location.search}
                                                 variant="subtitle1"
                                                 sx={{ textDecoration: 'none' }}
                                             >

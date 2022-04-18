@@ -75,12 +75,18 @@ export default function CustomList(props) {
     const { tip, bet } = props;
     const { game } = React.useContext(GameContext);
     const { colors } = useColors();
+    const [currencyDiffString, setCurrencyDiffString] = React.useState('');
 
-    let currencyDiffString = '';
-    if (bet.isPaid) {
-        const diffColor = parseFloat(tip.diff.$numberDecimal) < 0 ? 'error' : 'success';
-        currencyDiffString =  (<Typography align="left" style={{color:colors[diffColor],textAlign: 'center',fontSize:'0.7em'}} variant="">({parseFloat(tip.diff.$numberDecimal).toFixed(2)})</Typography>);
-    }
+    React.useEffect(() => {
+        if (bet.isPaid && tip.diff) {
+            const str = (<Typography align="left" 
+                style={{color:colors[parseFloat(tip.diff.$numberDecimal) < 0 ? 'error' : 'success'], textAlign: 'center', fontSize:'0.7em'}} 
+                variant="">({parseFloat(tip.diff.$numberDecimal).toFixed(2)})
+            </Typography>);
+
+            setCurrencyDiffString(str);
+        }
+    }, [tip,bet]);
 
     return (
         <>
@@ -88,7 +94,9 @@ export default function CustomList(props) {
             <Grid container spacing={2}>
                 <Grid xs={4} item style={{marginTop:'5px'}}>
                     <Typography align="left" component="div" variant="body1" style={{fontSize:'1.5em'}}>
-                        {game.currencyName} {tip.currency.$numberDecimal} &nbsp;{currencyDiffString} 
+                        {game.currencyName} 
+                        {tip.currency.$numberDecimal} &nbsp;
+                        {currencyDiffString}
                     </Typography>
                 </Grid>
                 <Grid xs={4} item >

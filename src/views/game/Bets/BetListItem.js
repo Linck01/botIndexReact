@@ -80,13 +80,7 @@ const BetListItem = ({ bet }) => {
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     //const util = require('util');
     //console.log(util.inspect(bets));
-    const { colors } = useColors();
-    const status = fct.getStatus(bet);
 
-
-    const { correctAnswerStrings, moreAnswersString } = fct.getCorrectAnswerStrings(bet, 40);
-
-    
     /*if (bet.betType == 'catalogue') {
 
     }

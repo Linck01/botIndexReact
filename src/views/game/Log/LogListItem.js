@@ -60,13 +60,12 @@ export default function CustomizedTimeline( props ) {
         <TimelineItem>
             <TimelineOppositeContent>
                 <Typography variant="body2" color="textSecondary">
-                    {fct.formatDateTime(log.createdAt)}
+                    {fct.formatDateTime(log._createdAt)}
                 </Typography>
             </TimelineOppositeContent>
             <TimelineSeparator>
                 <TimelineDot style={{ backgroundColor: color }}>
                     {icon}
-                    
                 </TimelineDot>
                 {log.logType != 'gameCreated' ? <TimelineConnector /> : ''}
             </TimelineSeparator>

@@ -48,8 +48,6 @@ export default function FormDialog({...props}) {
             const response = await axios.post(config.apiHost + '/v1/games/', { title });
             setIsLoading(true);
 
-            await fct.sleep(1000);
-
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Game', 
                 variant: 'alert', alertSeverity: 'success', close: true });
             

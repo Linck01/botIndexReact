@@ -34,7 +34,6 @@ const BigGamesPage = () => {
 
             const gameResponse = await axios.get(config.apiHost + '/v1/games/', {params: {ids: memberResponse.data.results.map(m => m.gameId), sortBy: '-memberCount', limit: 9 , page: page.index } });
 
-            await fct.sleep(1000);
             setGames(gameResponse.data.results);
             setPage({...page, maxIndex: gameResponse.data.totalPages});
             setIsLoading(false);

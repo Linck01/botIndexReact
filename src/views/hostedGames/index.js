@@ -11,7 +11,6 @@ import MainCard from '../../ui-component/cards/MainCard';
 import GameCard1 from '../../ui-component/cards/GameCard1';
 import { IconSearch } from '@tabler/icons';
 import SubCard from '../../ui-component/cards/SubCard';
-import useFetch from '../../hooks/useFetch';
 import { gridSpacing } from '../../store/constant';
 import MuiTypography from '@material-ui/core/Typography';
 import { SNACKBAR_OPEN } from '../../store/actions';
@@ -46,7 +45,6 @@ const HostedGamesPage = () => {
         try {
             const response = await axios.get(config.apiHost + '/v1/games/', { params: { userId: user.id, sortBy: 'createdAt', limit: 9 , page: page.index } });
 
-            await fct.sleep(1000);
             setHostedGames(response.data.results);
             setPage({...page, maxIndex: response.data.totalPages});
             setIsLoading(false);

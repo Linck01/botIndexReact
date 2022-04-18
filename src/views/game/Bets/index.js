@@ -40,7 +40,6 @@ const Bets = () => {
         try {
             const response = await axios.get(config.apiHost + '/v1/bets/', { params: { gameId: game.id, sortBy: '-_createdAt', limit: 5 , page: betsPage.index } });
 
-            await fct.sleep(500);
             setBetsPage({...betsPage, items: response.data.results,maxIndex: response.data.totalPages});
             setIsLoading(false);
         } catch (e) {

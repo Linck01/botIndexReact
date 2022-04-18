@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 // material-ui
@@ -35,6 +35,7 @@ import Google from './../../../../assets/images/icons/social-google.svg';
 import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from '../../../../utils/password-strength';
 import { SNACKBAR_OPEN } from '../../../../store/actions';
+import queryString from 'query-string';
 
 // assets
 import Visibility from '@material-ui/icons/Visibility';
@@ -98,6 +99,8 @@ const JWTRegister = ({ ...others }) => {
     const [ captchaToken, setCaptchaToken ] = React.useState(null);
     const { register, sendVerificationEmail } = useAuth();
     const dispatch = useDispatch();
+    const history = useHistory();
+    const location = useLocation();
 
     const handleCaptchaVerificationSuccess = (token, ekey) => {
         setCaptchaToken(token);
@@ -203,7 +206,8 @@ const JWTRegister = ({ ...others }) => {
 
                         //await sendVerificationEmail(values.username, values.email);
                         //await newUserCredential.user.sendEmailVerification();
-                        
+                        history.push(queryString.parse(location.search).fromLocation);
+
                         if (scriptedRef.current) {
                             setStatus({ success: true });
                             setSubmitting(false);

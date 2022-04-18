@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useLocation } from 'react-router-dom';
 
 // project imports
 import useAuth from '../../hooks/useAuth';
@@ -13,9 +13,10 @@ import useAuth from '../../hooks/useAuth';
  */
 const AuthGuard = ({ children }) => {
     const { isLoggedIn } = useAuth();
+    const lastLocation = useLocation();
 
     if (!isLoggedIn) {
-        return <Redirect to="/login" />;
+        return <Redirect to={'/login?fromLocation=' + lastLocation.pathname} />;
     }
 
     return children;

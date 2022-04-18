@@ -27,7 +27,6 @@ const NewGamesPage = () => {
         try {
             const response = await axios.get(config.apiHost + '/v1/games/', {params: {isEnded: false, isPublic: true ,sortBy: '-_createdAt', limit: 9 , page: page.index } });
 
-            await fct.sleep(1000);
             setGames(response.data.results);
             setPage({...page, maxIndex: response.data.totalPages});
             setIsLoading(false);

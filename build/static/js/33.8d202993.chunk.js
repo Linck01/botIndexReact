@@ -1,2 +1,0 @@
-(this["webpackJsonpberry-material-react"]=this["webpackJsonpberry-material-react"]||[]).push([[33],{639:function(e,a,r){"use strict";r.r(a);r(0);var t=r(172),c=r(117),i=r(1);a.default=function(){return Object(i.jsx)(c.a,{title:"Sample Card",children:Object(i.jsx)(t.a,{variant:"body2",children:"oldGamesPage"})})}}}]);
-//# sourceMappingURL=33.8d202993.chunk.js.map

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory, useLocation } from 'react-router-dom';
 
 // material-ui
 import { makeStyles } from '@material-ui/core/styles';
@@ -26,6 +26,7 @@ import { Formik } from 'formik';
 import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 import useAuth from '../../../../hooks/useAuth';
 import useScriptRef from '../../../../hooks/useScriptRef';
+import queryString from 'query-string';
 
 // assets
 import Visibility from '@material-ui/icons/Visibility';
@@ -47,8 +48,9 @@ const JWTLogin = (props, { ...others }) => {
     const classes = useStyles();
     const { login } = useAuth();
     const scriptedRef = useScriptRef();
-
+    const history = useHistory();
     const [checked, setChecked] = React.useState(true);
+    const location = useLocation();
 
     const [showPassword, setShowPassword] = React.useState(false);
     const handleClickShowPassword = () => {
@@ -73,6 +75,8 @@ const JWTLogin = (props, { ...others }) => {
             onSubmit={async (values, { setErrors, setStatus, setSubmitting }) => {
                 try { 
                     await login(values.email, values.password);
+
+                    history.push(queryString.parse(location.search).fromLocation);
 
                     if (scriptedRef.current) {
                         setStatus({ success: true });

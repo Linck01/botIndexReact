@@ -67,20 +67,16 @@ export default function AbortBetDialog(props) {
         setIsLoadingAddTip(true);
         let err = null;
 
-        await fct.sleep(1000);
-
         if (!user) {
             setIsLoadingAddTip(false);
-            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to send a tip!',
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to abort the bet!',
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
         
         try {
-            const req = { betId: bet.id, userId: user.id, gameId: bet.gameId, currency: amount};
-            if (bet.betType == 'catalogue') req.answerId = answerId;
-            if (bet.betType == 'scale') req.answerDecimal = answerDecimal;
+            const req = {};
 
-            const response = await axios.post(config.apiHost + '/v1/tips/', req);
+            const response = await axios.patch(config.apiHost + '/v1/bets/' + bet.id + '/abort', req);
             
         } catch (e) {
             setIsLoadingAddTip(false);
@@ -90,7 +86,7 @@ export default function AbortBetDialog(props) {
          }
 
         setIsLoadingAddTip(false);
-        dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Tip', 
+        dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully aborted bet.', 
                 variant: 'alert', alertSeverity: 'success', close: true });
     };
 
@@ -117,7 +113,7 @@ export default function AbortBetDialog(props) {
                         Cancel
                     </Button>
                     <Button variant="contained" size="small" onClick={createTip} color="primary">
-                        {isLoadingAddTip ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Abort') }  
+                        {isLoadingAddTip ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Accept') }  
                     </Button>
                 </DialogActions>
             </Dialog>

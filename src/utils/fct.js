@@ -1,7 +1,7 @@
 import { DateTime, Duration } from 'luxon';
 import config from '../config';
 import axios from '../utils/axios';
-import { IconCalendarStats, IconCalendarOff, IconCheck, IconBell, IconBellOff, IconTrash } from '@tabler/icons';
+
 
 const f = {};
 
@@ -22,50 +22,14 @@ f.paginate = (array, page_size, page_number) => {
     return array.slice((page_number - 1) * page_size, page_number * page_size);
 }
 
-f.getStatus = (bet) => {
-    const start = (new Date(bet._createdAt)).getTime();
+
+
+f.hasBetEnded = (bet) => {
     const now = Date.now();
     const end = (new Date(bet.timeLimit)).getTime();
+    let isEnded = now < end ? false : true;
 
-    let progress = 0;
-
-    if (end < now)
-        progress = 100;
-    else if (now < start)
-        progress = 0;
-    else
-        progress = Math.floor( ((now - start) / (end - start)) * 100 );
-    
-    let icon,title,color,tag;
-
-    if (bet.isAborted) {
-        icon = IconTrash;
-        tag = 'aborted';
-        title = 'Aborted';
-        color = 'errorDark';
-    } else if (bet.isPaid) {
-        icon = IconCheck;
-        tag = 'isPaid';
-        title = 'Solved & Paid';
-        color = 'successDark';
-    } else if (bet.isSolved) {
-        icon = IconCheck;
-        tag = 'isSolved';
-        title = 'Solved';
-        color = 'successDark';
-    }  else if (progress < 100) {
-        icon = IconCalendarStats;
-        tag = 'inProgress';
-        title = 'In progress';
-        color = 'warningDark';
-    } else {
-        icon = IconCalendarOff;
-        tag = 'ended';
-        title = 'Ended';
-        color = 'infoDark';
-    }
-
-    return { progress, icon, title, color, tag };
+    return isEnded;
 }
 
 f.getTimeDifference = (start,end) => {
@@ -115,8 +79,7 @@ f.secondsToMHD = (seconds) => {
     if (numseconds != 0)
         return numseconds + 's';
 
-
-    return 'n/a';
+    return '0s';
 }
 
 

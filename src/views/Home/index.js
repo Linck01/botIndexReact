@@ -98,7 +98,6 @@ const Price1 = () => {
         try {
             const response = await axios.get(config.apiHost + '/v1/games/', { params: {isEnded: false, isPublic: true, sortBy: '-memberCount', limit: 6 , page: 1 } });
 
-            await fct.sleep(1000);
             setGames(response.data.results);
             setIsLoading(false);
         } catch (e) {

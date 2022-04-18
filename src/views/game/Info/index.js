@@ -56,7 +56,6 @@ const GameInfo = () => {
     const updateSettings = async () => {
         setIsLoading(true);
 
-        await fct.sleep(1000);
         try {
             const obj = { gameId: game.id, title, desc };
             const response = await axios.post(config.gameHosts[game.serverId] + '/v1/bets/', obj);

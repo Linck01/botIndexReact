@@ -2,6 +2,7 @@ import React from 'react';
 
 import AdvancedSettings from './AdvancedSettings';
 import MainSettings from './MainSettings';
+import DeleteGameDialog from './DeleteGameDialog';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
 
@@ -34,7 +35,6 @@ const GameSettings = () => {
     const updateSettings = async () => {
         setIsLoading(true);
 
-        await fct.sleep(1000);
         try {
             const obj = { title, desc, isPublic, isEnded, startCurrency, currencyName, bannerUrl };
             const response = await axios.patch(config.gameHosts[game.serverId] + '/v1/games/' + game.id, obj);
@@ -60,6 +60,8 @@ const GameSettings = () => {
         <Button style={{width:'100%'}} variant="outlined" color="secondary" onClick={updateSettings}>
             { isLoading ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Update') }
         </Button>
+        <br /><br />
+        <DeleteGameDialog /> 
         </>
         
     );

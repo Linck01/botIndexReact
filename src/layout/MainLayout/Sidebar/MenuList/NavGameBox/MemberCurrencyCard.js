@@ -45,19 +45,23 @@ const MemberCurrencyCard = (props) => {
 
     const { colors } = useColors();
     const theme = useTheme();
-    const [ favorited, setFavorited ] = React.useState(user && member ? member.isFavoritedGame : false);
+    const [ favorited, setFavorited ] = React.useState(member ? member.isFavoritedGame : false);
     const dispatch = useDispatch();
 
-    const changeIsFavoritedGame = async () => {   
+    const changeIsFavoritedGame = async () => {
         setFavorited(!favorited);
         await updateFavorited();
-        
     }
 
+    React.useEffect(() => {
+        if (member)
+            setFavorited(member.isFavoritedGame);
+
+    }, [member]);
+    
     const updateFavorited = async () => {
         //setIsLoading(true);
 
-        await fct.sleep(1000);
         try {
             const obj = { isFavoritedGame: !favorited };
             const response = await axios.patch(config.apiHost + '/v1/members/' + game.id + '/' + user.id, obj);
@@ -83,7 +87,7 @@ const MemberCurrencyCard = (props) => {
                         </Typography>  
                     </Grid>
                     <Grid item xs={2}>
-                        {user && member ? (<IconHeart onClick={changeIsFavoritedGame} style={{width: '1.9em',height: '1.9em', stroke: colors.errorMain, fill: favorited ? colors.errorMain : 'none'}} />) : ''}
+                        {member ? (<IconHeart onClick={changeIsFavoritedGame} style={{width: '1.9em',height: '1.9em', stroke: colors.errorMain, fill: favorited ? colors.errorMain : 'none'}} />) : ''}
                                                             
                     </Grid>
                     <Grid item xs={12}>
@@ -91,7 +95,7 @@ const MemberCurrencyCard = (props) => {
                         
                         </Typography>
                         <Typography variant="caption" color="inherit" style={{fontSize: '1.5em'}}>
-                            {user && member ? parseFloat(member.currency.$numberDecimal).toFixed(2) : '1000'}
+                            {member ? parseFloat(member.currency.$numberDecimal).toFixed(2) : '1000'}
                         </Typography>
                         <Typography variant="caption" color="inherit" style={{fontSize: '1.5em',marginLeft:'5px'}}>
                             {game.currencyName}
