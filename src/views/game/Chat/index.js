@@ -104,19 +104,12 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     // handle new message form
 
     const handleOnSend = async () => {
-        try {
-            if (!user) {
-                dispatch({
-                    type: SNACKBAR_OPEN,
-                    open: true,
-                    message: 'You need to be logged in to write messages.' ,
-                    variant: 'alert',
-                    alertSeverity: 'error',
-                    close: true
-                });
-                return;
-            }
+        if (!user) {
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to send a message!',
+                variant: 'alert', alertSeverity: 'error', close: true });
+        }
 
+        try {
             const res = await axios.post(config.gameHosts[game.serverId] + '/v1/messages/', {
                 userId: user.id,
                 gameId: game.id,
@@ -126,16 +119,8 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
             messageInputRef.current.querySelectorAll('input[type=text]')[0].value = '';
 
         } catch (e) {
-            console.log(e);
-            
-            dispatch({
-                type: SNACKBAR_OPEN,
-                open: true,
-                message: 'Error while sending a message. ' ,
-                variant: 'alert',
-                alertSeverity: 'error',
-                close: true
-            });
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
         }
     };
 

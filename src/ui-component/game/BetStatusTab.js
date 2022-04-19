@@ -121,8 +121,6 @@ const BetStatusTab = ({ bet }) => {
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     const { colors } = useColors();
     const status = getStatus(bet);
-
-    const { correctAnswerStrings, moreAnswersString } = fct.getCorrectAnswerStrings(bet, 40);
     
     return (
         <Grid container spacing={1}>
@@ -140,10 +138,12 @@ const BetStatusTab = ({ bet }) => {
                     {fct.formatDateTime(bet._createdAt)} - {fct.formatDateTime(bet.timeLimit)}
                 </Typography>
                 
-                {bet.isSolved ? correctAnswerStrings.map(a => (
+                {bet.isSolved ? fct.getCorrectAnswerStrings(bet, 40).correctAnswerStrings.map(a => (
                     <React.Fragment key={a}>
-                        <Chip label={a} variant="outlined" style={{color: colors.successDark, borderColor: colors.successDark}} /> 
-                        <Typography align="left" variant="caption" color="primary" className={classes.tableSubContent}>{moreAnswersString}</Typography>
+                        <Chip label={a} variant="outlined" style={{color: colors.successDark, borderColor: colors.successDark, marginTop: '5px'}} /> 
+                        <Typography align="left" variant="caption" color="primary" className={classes.tableSubContent}>
+                            {fct.getCorrectAnswerStrings(bet, 40).moreAnswersString}
+                        </Typography>
                     </React.Fragment>
                 )) : (
 

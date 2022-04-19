@@ -269,7 +269,7 @@ export const GameProvider = ({ children }) => {
             const memberTips = tips.filter(t => t.userId == state.member.userId);
             let memberInc = 0;
             for(let tip of memberTips)
-                memberInc += parseFloat(tip.currency.$numberDecimal);
+                memberInc += parseFloat(tip.currency.$numberDecimal) + parseFloat(tip.diff.$numberDecimal);
             
             if (memberInc != 0) setMember({...state.member, currency: {$numberDecimal: (parseFloat(state.member.currency.$numberDecimal) + memberInc).toString()}});
         }

@@ -123,14 +123,6 @@ const BetDetails = () => {
                 </>
             ) : ''}
 
-            {betPage.bet.isPaid && (privileges.admin || privileges.mod) ? (
-                <>
-                <Grid container spacing={gridSpacing} >  
-                    <Grid item xs={12}><DeleteBetDialog bet={betPage.bet} /></Grid>   
-                </Grid><br />
-                </>
-            ) : ''}
-
             {!betPage.bet.isSolved && !betPage.bet.isAborted && (privileges.admin || privileges.mod) ? (
                 <>
                <Grid container spacing={gridSpacing} >  
@@ -172,10 +164,17 @@ const BetDetails = () => {
                 <><br /><br />
                <Grid container spacing={gridSpacing} >
                     <Grid item xs={12}><SettlementBox bet={betPage.bet} /></Grid>   
-                </Grid> 
+                </Grid><br />
                 </>
             ) : ''}
             
+            {betPage.bet.isPaid && (privileges.admin || privileges.mod) ? (
+                <>
+                <Grid container spacing={gridSpacing} >  
+                    <Grid item xs={12}><DeleteBetDialog bet={betPage.bet} /></Grid>   
+                </Grid><br />
+                </>
+            ) : ''}
             
             <br /><br />
             </>

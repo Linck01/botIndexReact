@@ -30,20 +30,11 @@ const HostedGamesPage = () => {
 
     const dispatch = useDispatch();
 
-    const userProfile = {
-        id: '#9Card_Madyson',
-        avatar: 'user-5.png',
-        profile: 'profile-back-9.png',
-        name: 'Madyson',
-        role: 'Product Tactics Facilitator',
-        status: 'Active'
-    };
-
     const getHostedGames = async () => {
         setIsLoading(true);
 
         try {
-            const response = await axios.get(config.apiHost + '/v1/games/', { params: { userId: user.id, sortBy: 'createdAt', limit: 9 , page: page.index } });
+            const response = await axios.get(config.apiHost + '/v1/games/', { params: { userId: user.id, sortBy: '-_createdAt', limit: 9 , page: page.index } });
 
             setHostedGames(response.data.results);
             setPage({...page, maxIndex: response.data.totalPages});
