@@ -4,8 +4,6 @@ import { useSelector } from 'react-redux';
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline, StyledEngineProvider } from '@material-ui/core';
 
-
-
 // routing
 import Routes from './routes';
 

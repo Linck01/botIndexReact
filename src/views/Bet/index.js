@@ -20,6 +20,7 @@ import DeleteBetDialog from './DeleteBetDialog';
 
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { gridSpacing } from '../../store/constant';
+import {Helmet} from "react-helmet";
 
 // material-ui
 import { Grid, makeStyles, CircularProgress} from '@material-ui/core';
@@ -91,6 +92,13 @@ const BetDetails = () => {
     return (
         <>
         
+        {betPage.bet ? (
+            <Helmet>
+                <meta charSet="utf-8" />
+                <title>{betPage.bet.title}</title>
+            </Helmet>
+        ) : ''}
+
         {isLoading ? (
             <>
             <br /><br /><br />
