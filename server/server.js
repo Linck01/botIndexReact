@@ -6,13 +6,7 @@ const path = require('path');
 const fs = require('fs');
 const html = fs.readFileSync(path.join(__dirname, './build', 'index.html'),'utf8');
 
-app.get('/game/:gameId/bet/:betId', function(req, res) {
-  console.log('Bet page visited!');
-
-  return res.send(html);
-});
-
-app.get('/game/:gameId/*', async function(req, res) {
+const gameController = async function(req, res) {
   console.log('Game page visited!');
   
   let game = null;
@@ -33,7 +27,18 @@ app.get('/game/:gameId/*', async function(req, res) {
   }
 
   return res.send(htmlCopy);
+}
+
+app.get('/game/:gameId/bet/:betId', function(req, res) {
+  console.log('Bet page visited!');
+
+  return res.send(html);
 });
+
+app.get('/game/:gameId/*', gameController);
+app.get('/game/:gameId', gameController);
+
+
 
 app.get('/games/*', function(req, res) {return res.send(html);});
 app.get('/user/*', function(req, res) { return res.send(html);});
