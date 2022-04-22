@@ -19,15 +19,15 @@ const gameController = async function(req, res) {
   
   let htmlCopy = html;
   if (game) {
-    htmlCopy = htmlCopy.replace(/\$OG_TITLE/g, game.title);
-    htmlCopy = htmlCopy.replace(/\$OG_DESCRIPTION/g, game.desc);
-    htmlCopy = htmlCopy.replace(/\$OG_IMAGE/g, game.bannerUrl);
-
     htmlCopy = htmlCopy.replace(/<title>.*<\/title>/g, '<title>'+game.title+'</title>');
+    
     htmlCopy = htmlCopy.replace(/<meta name="title" content=".*" \/>/g, '<meta name="title" content="'+ game.title +'" />');
     htmlCopy = htmlCopy.replace(/<meta name="description" content=".*" \/>/g, '<meta name="title" content="'+ game.desc +'" />');
     htmlCopy = htmlCopy.replace(/<meta name="keywords" content=".*" \/>/g, '<meta name="title" content="'+ game.title.split(' ').concat(game.desc.split(' ')).join(',') +'" />');
 
+    htmlCopy = htmlCopy.replace(/<meta property="og:title" content=".*" \/>/g, '<meta property="og:title" content="'+ game.title +'" />');
+    htmlCopy = htmlCopy.replace(/<meta property="og:description" content=".*" \/>/g, '<meta property="og:description" content="'+ game.desc +'" />');
+    htmlCopy = htmlCopy.replace(/<meta property="og:image" content=".*" \/>/g, '<meta property="og:image" content="'+ game.bannerUrl +'" />');
   }
 
   return res.send(htmlCopy);
