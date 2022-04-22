@@ -12,6 +12,7 @@ import AuthCardWrapper from './AuthCardWrapper';
 import Logo from './../../../ui-component/Logo';
 import JWTForgotPassword from './jwt-forms/JWTForgotPassword';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
+import { Helmet } from "react-helmet";
 
 // assets
 
@@ -22,6 +23,10 @@ const ForgotPassword = () => {
     const matchDownSM = useMediaQuery(theme.breakpoints.down('sm'));
 
     return (
+        <>
+        <Helmet>
+            <title>Forgot Password</title>
+        </Helmet>
         <AuthWrapper1>
             <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
                 <Grid item xs={12}>
@@ -78,6 +83,7 @@ const ForgotPassword = () => {
                 </Grid>
             </Grid>
         </AuthWrapper1>
+        </>
     );
 };
 

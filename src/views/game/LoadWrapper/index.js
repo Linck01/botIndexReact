@@ -1,7 +1,8 @@
 import React, { createContext, useEffect, useReducer } from 'react';
-
+import config from '../../../config';
 import GameContext from '../../../contexts/GameContext';
 import Loader from '../../../ui-component/Loader';
+import { Helmet } from "react-helmet";
 /*
 import { useParams } from 'react-router-dom';
 
@@ -26,7 +27,17 @@ export const GameLoadWrapper = ({ children }) => {
     if (!game) 
         return <Loader />;
     
-    return <>{children}</>;
+    return (
+    <>
+       
+        <Helmet>
+            <title>{game.title}</title>
+            <meta name='description' content={game.desc} />
+            <meta name='keywords' content={game.title.split(' ').concat(config.genericKeywords).join(',')} />
+        </Helmet>
+      
+        {children}
+    </>);
 };
 
 export default GameLoadWrapper;

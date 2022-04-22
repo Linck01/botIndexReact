@@ -18,7 +18,6 @@ import GameLoadWrapper from '../views/game/LoadWrapper';
 const HomePage = Loadable(lazy(() => import('../views/Home/')));
 const bigGamesPage = Loadable(lazy(() => import('../views/BigGames')));
 const newGamesPage = Loadable(lazy(() => import('../views/NewGames')));
-const oldGamesPage = Loadable(lazy(() => import('../views/OldGames')));
 
 const gameBetsPage = Loadable(lazy(() => import('../views/game/Bets')));
 const gameChatPage = Loadable(lazy(() => import('../views/game/Chat')));
@@ -29,10 +28,9 @@ const gameMembersPage = Loadable(lazy(() => import('../views/game/Members')));
 const gameBetPage = Loadable(lazy(() => import('../views/Bet')));
 
 const hostedGames = Loadable(lazy(() => import('../views/HostedGames')));
-const favoritedGames = Loadable(lazy(() => import('../views/favoritedGames')));
+const favoriteGames = Loadable(lazy(() => import('../views/favoriteGames')));
 const userSettingsPage = Loadable(lazy(() => import('../views/user/Settings')));
 
-const infoPage = Loadable(lazy(() => import('../views/Info')));
 const termsAndConditions = Loadable(lazy(() => import('../views/pages/other/TermsAndConditions')));
 const privacyPolicy = Loadable(lazy(() => import('../views/pages/other/PrivacyPolicy')));
 const aboutPage = Loadable(lazy(() => import('../views/About')));
@@ -41,7 +39,6 @@ const ErrorPage = Loadable(lazy(() => import('../views/pages/maintenance/Error.j
 const AuthLogin = Loadable(lazy(() => import('../views/pages/authentication/Login')));
 const AuthRegister = Loadable(lazy(() => import('../views/pages/authentication/Register')));
 const AuthForgotPassword = Loadable(lazy(() => import('../views/pages/authentication/ForgotPassword')));
-const AuthCheckMail = Loadable(lazy(() => import('../views/pages/authentication/CheckMail')));
 const AuthResetPassword = Loadable(lazy(() => import('../views/pages/authentication/ResetPassword')));
 const AuthCodeVerification = Loadable(lazy(() => import('../views/pages/authentication/CodeVerification')));
 
@@ -54,7 +51,6 @@ const Routes = () => {
         
         <Switch>
             {/* MainLayout routes */}
-            
             <Route exact path={['/game/:gameId/', '/game/:gameId/bets', '/game/:gameId/members', '/game/:gameId/settings', '/game/:gameId/log', '/game/:gameId/info', '/game/:gameId/chat', '/game/:gameId/bet/:betId']}>
                 <GameProvider>
                     <MainLayout>
@@ -81,16 +77,14 @@ const Routes = () => {
 
                         <Route exact path={'/games/big/'} component={bigGamesPage} />
                         <Route exact path={'/games/new/'} component={newGamesPage} />
-                        <Route exact path={'/games/old/'} component={oldGamesPage} />
 
-                        <Route exact path={'/info/'} component={infoPage}  />
                         <Route exact path={'/termsAndService/'} component={termsAndConditions} />
                         <Route exact path={'/privacyPolicy/'} component={privacyPolicy} />
                         <Route exact path={'/about/'} component={aboutPage}  />
 
                         <AuthGuard>
                             <Route exact path={'/games/hosted'} component={hostedGames} />
-                            <Route exact path={'/games/favorite'} component={favoritedGames} />
+                            <Route exact path={'/games/favorite'} component={favoriteGames} />
                             <Route exact path={'/user/settings'} component={userSettingsPage} />
                         </AuthGuard>
                     </Switch>
@@ -98,21 +92,13 @@ const Routes = () => {
             </Route>
 
             {/* MinimalLayout routes */}
-
-            <Route exact path={[
-                '/login',
-                '/register',
-                '/forgot-password',
-                '/check-mail',
-                '/reset-password',
-                '/code-verification',]}>
+            <Route exact path={['/login','/register','/forgot-password','/check-mail','/reset-password','/code-verification',]}>
                 <MinimalLayout>
                     <Switch>
                         <GuestGuard>
                             <Route path="/login" component={AuthLogin} />
                             <Route path="/register" component={AuthRegister} />
                             <Route path="/forgot-password" component={AuthForgotPassword} />
-                            <Route path="/check-mail" component={AuthCheckMail} />
                             <Route path="/reset-password" component={AuthResetPassword} />
                             <Route path="/code-verification" component={AuthCodeVerification} />
                         </GuestGuard>
@@ -121,7 +107,6 @@ const Routes = () => {
             </Route>
         
             {/* 404 route */}
-
             <Route>
                 <MinimalLayout>
                     <Route component={ErrorPage} />  

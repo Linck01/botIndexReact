@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { ThemeProvider } from '@material-ui/core/styles';
 import { CssBaseline, StyledEngineProvider } from '@material-ui/core';
-
+import { Helmet } from "react-helmet";
 // routing
 import Routes from './routes';
 
@@ -29,6 +29,13 @@ const App = () => {
     const customization = useSelector((state) => state.customization);
 
     return (
+        <>
+        <Helmet>
+            <title>Betify.gg - Bet anything</title>
+            <meta name="title" content="Betify.gg - Bet anything" />
+            <meta name="description" content="Bet and wager for fun about anything with anyone."/>
+            <meta name="keywords" content="bet, wager, anything, friends, custom bet, custom"/>
+        </Helmet>
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme(customization)}>
                 <CssBaseline />
@@ -42,6 +49,7 @@ const App = () => {
                 </Locales>
             </ThemeProvider>
         </StyledEngineProvider>
+        </>
     );
 };
 

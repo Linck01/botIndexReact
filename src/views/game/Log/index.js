@@ -26,6 +26,7 @@ import axios from '../../../utils/axios';
 import config from '../../../config';
 import { useDispatch, useSelector } from 'react-redux';
 import { SNACKBAR_OPEN } from '../../../store/actions';
+import { Helmet } from "react-helmet";
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -72,7 +73,9 @@ export default function CustomizedTimeline() {
 
     return (
         <>
-
+        <Helmet>
+            <title>{game.title} - Log</title>
+        </Helmet>
         {isLoading ? (         
             <>
             <br />

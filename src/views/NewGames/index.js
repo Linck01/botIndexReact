@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
+import { Helmet } from "react-helmet";
 
 //==============================|| SAMPLE PAGE ||==============================//
 
@@ -48,6 +49,12 @@ const NewGamesPage = () => {
 
     return (
         <>
+        <Helmet>
+            <title>New Games</title>
+            <meta name='description' content='Games that have been recently created.' />
+            <meta name='keywords' content='new games,new,recent games,recent,recently,created, recently created' />
+        </Helmet>
+
         {isLoading ? (
             <><br /><br />
             <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>

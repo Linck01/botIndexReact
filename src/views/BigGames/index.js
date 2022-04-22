@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
+import { Helmet } from "react-helmet";
 
 //==============================|| SAMPLE PAGE ||==============================//
 
@@ -48,6 +49,12 @@ const BigGamesPage = () => {
 
     return (
         <>
+        <Helmet>
+            <title>Popular Games</title>
+            <meta name='description' content='The most popular games on betifyGG.' />
+            <meta name='keywords' content='popular,big,users,most,biggest' />
+        </Helmet>
+
         {isLoading ? (
             <><br /><br />
             <Grid item xs={12} lg={12} style={{ textAlign: 'center' }}>

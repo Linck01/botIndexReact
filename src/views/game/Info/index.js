@@ -36,7 +36,7 @@ import PinDropTwoToneIcon from '@material-ui/icons/PinDropTwoTone';
 import MailTwoToneIcon from '@material-ui/icons/MailTwoTone';
 
 import Avatar3 from '../../../assets/images/users/avatar-3.png';
-
+import { Helmet } from "react-helmet";
 
 //-----------------------|| PROFILE 1 - PROFILE ||-----------------------//
 
@@ -74,6 +74,9 @@ const GameInfo = () => {
    
     return (
         <>
+        <Helmet>
+            <title>{game.title} - Info</title>
+        </Helmet>
         <GameStatsCards />
         <br /><br />
         <GameMainInfo title={title} setTitle={setTitle} desc={desc} setDesc={setDesc}/>

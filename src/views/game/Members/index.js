@@ -14,6 +14,7 @@ import { SNACKBAR_OPEN } from '../../../store/actions';
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import config from '../../../config';
+import { Helmet } from "react-helmet";
 // project imports
 
 
@@ -58,7 +59,10 @@ const Members = () => {
 
     return (
         <>  
-        
+        <Helmet>
+            <title>{game.title} - Members</title>
+        </Helmet>
+
         {isLoading ? (         
             <>
             <br />

@@ -6,11 +6,15 @@ import { Typography } from '@material-ui/core';
 
 // project imports
 import MainCard from '../../../../ui-component/cards/MainCard';
+import { Helmet } from "react-helmet";
 
 //==============================|| SAMPLE PAGE ||==============================//
 
-const SamplePage = () => {
-    return (
+const SamplePage = () => { return (
+    <>
+    <Helmet>
+        <title>Privacy Policy</title>
+    </Helmet>
         <MainCard title="Privacy Policy for BetifyGG">
             <Typography variant="body2">
             <h1></h1>
@@ -110,7 +114,7 @@ const SamplePage = () => {
 <p>BetifyGG does not knowingly collect any Personal Identifiable Information from children under the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you to contact us immediately and we will do our best efforts to promptly remove such information from our records.</p>
             </Typography>
         </MainCard>
-    );
-};
+    </>
+)};
 
 export default SamplePage;

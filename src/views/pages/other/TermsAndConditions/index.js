@@ -5,11 +5,15 @@ import { Typography } from '@material-ui/core';
 
 // project imports
 import MainCard from '../../../../ui-component/cards/MainCard';
+import { Helmet } from "react-helmet";
 
 //==============================|| SAMPLE PAGE ||==============================//
 
-const SamplePage = () => {
-    return (
+const SamplePage = () => { return (
+    <>
+    <Helmet>
+        <title>Terms and Conditions</title>
+    </Helmet>
         <MainCard title="Terms and Conditions">
             <Typography variant="body2">
             <h2><strong></strong></h2>
@@ -137,7 +141,7 @@ const SamplePage = () => {
 <p>As long as the website and the information and services on the website are provided free of charge, we will not be liable for any loss or damage of any nature.</p>
             </Typography>
         </MainCard>
-    );
-};
+    </>
+)};
 
 export default SamplePage;

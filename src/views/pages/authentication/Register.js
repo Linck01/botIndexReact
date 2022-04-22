@@ -11,6 +11,7 @@ import AuthCardWrapper from './AuthCardWrapper';
 import Logo from './../../../ui-component/Logo';
 import JWTRegister from './jwt-forms/JWTRegister';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
+import { Helmet } from "react-helmet";
 
 // assets
 
@@ -22,6 +23,10 @@ const Register = () => {
     const location = useLocation();
 
     return (
+        <>
+        <Helmet>
+            <title>Register</title>
+        </Helmet>
         <AuthWrapper1>
             <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
                 <Grid item xs={12}>
@@ -85,6 +90,7 @@ const Register = () => {
                 </Grid>
             </Grid>
         </AuthWrapper1>
+        </>
     );
 };
 

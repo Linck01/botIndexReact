@@ -20,6 +20,7 @@ import MainCard from './../../../ui-component/cards/MainCard';
 import SecondaryAction from './../../../ui-component/cards/CardSecondaryAction';
 import Transitions from '../../../ui-component/extended/Transitions';
 import image from '../../../assets/images/profile/img-profile-bg.png';
+import { Helmet } from "react-helmet";
 
 // assets
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
@@ -60,7 +61,11 @@ const Bets = () => {
     }, [betsPage.index]);
 
     return (
-        <>  
+        <>
+        <Helmet>
+            <title>{game.title} - Bets</title>
+        </Helmet>
+
         {(privileges.admin || privileges.mod) ? (        
             <>
             <AddBetDialog/>

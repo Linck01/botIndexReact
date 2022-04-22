@@ -2,6 +2,7 @@ import React, { useState, useContext, useRef, useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
 import fct from '../../../utils/fct.js';
 import config from '../../../config.js';
+import { Helmet } from "react-helmet";
 
 // material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -154,8 +155,10 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
 
     return (
         
-       <>
-
+        <>
+            <Helmet>
+                <title>{game.title} - Chat</title>
+            </Helmet>
         
 
             {/*}<Grid container spacing={0.5}>

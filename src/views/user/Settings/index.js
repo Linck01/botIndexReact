@@ -11,6 +11,7 @@ import axios from '../../../utils/axios';
 import config from '../../../config';
 import useAuth from '../../../hooks/useAuth';
 import { Button, CircularProgress } from '@material-ui/core';
+import { Helmet } from "react-helmet";
 
 //-----------------------|| PROFILE 1 - PROFILE ||-----------------------//
 

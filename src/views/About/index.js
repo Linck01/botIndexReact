@@ -2,15 +2,20 @@ import React from 'react';
 
 // material-ui
 import { Typography, Link } from '@material-ui/core';
+import { Helmet } from "react-helmet";
 
 // project imports
 import MainCard from '../../ui-component/cards/MainCard';
 
 //==============================|| SAMPLE PAGE ||==============================//
 
-const SamplePage = () => {
-    return (
+const SamplePage = () => { return (
     <>
+        <Helmet>
+            <title>About</title>
+            <meta name='description' content='About betifyGG - Where to contact us and get support.' />
+            <meta name='keywords' content='betifyGG,about,info,support,contact' />
+        </Helmet>
         <MainCard title="Community Contact">
             <Typography variant="body2">
                 If you need support, have questions or in case you are looking for members, please join our community Discord server via:<br /><br /> 
@@ -44,8 +49,7 @@ const SamplePage = () => {
                 </Typography>
             </Typography>
         </MainCard>
-        </>
-    );
-};
+    </>
+)};
 
 export default SamplePage;

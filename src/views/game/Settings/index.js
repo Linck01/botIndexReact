@@ -5,6 +5,7 @@ import MainSettings from './MainSettings';
 import DeleteGameDialog from './DeleteGameDialog';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
+import { Helmet } from "react-helmet";
 
 // project imports
 import { gridSpacing } from '../../../store/constant';
@@ -53,6 +54,10 @@ const GameSettings = () => {
    
     return (
         <>
+        <Helmet>
+            <title>{game.title} - Settings</title>
+        </Helmet>
+
         <MainSettings title={title} setTitle={setTitle} desc={desc} setDesc={setDesc} bannerUrl={bannerUrl} setBannerUrl={setBannerUrl}/>
         <br /><br />
         <AdvancedSettings currencyName={currencyName} setCurrencyName={setCurrencyName} startCurrency={startCurrency} setStartCurrency={setStartCurrency} password={password} setPassword={setPassword} isPublic={isPublic} setIsPublic={setIsPublic} isEnded={isEnded} setIsEnded={setIsEnded} />

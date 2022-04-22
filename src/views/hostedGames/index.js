@@ -19,6 +19,7 @@ import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
 import AddGameDialog from './AddGameDialog';
+import { Helmet } from "react-helmet";
 
 //==============================|| SAMPLE PAGE ||==============================//
 
@@ -57,6 +58,12 @@ const HostedGamesPage = () => {
 
     return (
         <>
+            <Helmet>
+                <title>Hosted Games</title>
+                <meta name='description' content='The games hosted by you.' />
+                <meta name='keywords' content='hosted,hosted games,own games,my games' />
+            </Helmet>
+
             <AddGameDialog getHostedGames={getHostedGames}/>
  
             {isLoading ? (

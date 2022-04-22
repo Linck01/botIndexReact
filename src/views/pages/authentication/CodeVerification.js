@@ -4,6 +4,7 @@ import { Link as RouterLink } from 'react-router-dom';
 // material-ui
 import { useTheme } from '@material-ui/core';
 import { Button, Divider, Grid, Stack, Typography, useMediaQuery } from '@material-ui/core';
+import { Helmet } from "react-helmet";
 
 // project imports
 import AuthWrapper1 from './AuthWrapper1';
@@ -29,6 +30,10 @@ const CodeVerification = () => {
     };
 
     return (
+        <>
+        <Helmet>
+            <title>Code Verification</title>
+        </Helmet>
         <AuthWrapper1>
             <Grid container direction="column" justifyContent="flex-end" sx={{ minHeight: '100vh' }}>
                 <Grid item xs={12}>
@@ -115,6 +120,7 @@ const CodeVerification = () => {
                 </Grid>
             </Grid>
         </AuthWrapper1>
+        </>
     );
 };
 
