@@ -7,9 +7,8 @@ const fs = require('fs');
 const html = fs.readFileSync(path.join(__dirname, './build', 'index.html'),'utf8');
 
 const gameController = async function(req, res) {
-  console.log('Game page visited!');
-  
   let game = null;
+
   try {
     const apiResponse = await axios.get('https://api.betify.gg/v1/games/' + req.params.gameId);
     game = apiResponse.data;
@@ -33,16 +32,39 @@ const gameController = async function(req, res) {
   return res.send(htmlCopy);
 }
 
-app.get('/game/:gameId/bet/:betId', function(req, res) {
-  console.log('Bet page visited!');
+const betController = async function(req, res) {
+  let game = null, bet = null;
+  
+  try {
+    const apiResponseGame = await axios.get('https://api.betify.gg/v1/games/' + req.params.gameId);
+    game = apiResponseGame.data;
 
-  return res.send(html);
-});
+    const apiResponseBet = await axios.get('https://api.betify.gg/v1/bets/' + req.params.betId);
+    bet = apiResponseBet.data;
+  } catch (e) {
+    console.log(e.response.statusText);
+  }
+  
+  let htmlCopy = html;
+  if (game && bet) {
+    htmlCopy = htmlCopy.replace(/<title>.*?<\/title>/g, '<title>'+game.title+'</title>');
+
+    htmlCopy = htmlCopy.replace(/<meta name="title" content=".*?"\/>/g, '<meta name="title" content="'+ bet.title +'"/>');
+    htmlCopy = htmlCopy.replace(/<meta name="description" content=".*?"\/>/g, '<meta name="description" content="'+ bet.desc +'"/>');
+    htmlCopy = htmlCopy.replace(/<meta name="keywords" content=".*?"\/>/g, '<meta name="keywords" content="'+ bet.title.split(' ').concat(bet.desc.split(' ')).join(',') +'"/>');
+
+    htmlCopy = htmlCopy.replace(/<meta property="og:title" content=".*?"\/>/g, '<meta property="og:title" content="'+ bet.title +'"/>');
+    htmlCopy = htmlCopy.replace(/<meta property="og:description" content=".*?"\/>/g, '<meta property="og:description" content="'+ bet.desc +'"/>');
+    htmlCopy = htmlCopy.replace(/<meta property="og:image" content=".*?"\/>/g, '<meta property="og:image" content="'+ game.bannerUrl +'"/>');
+  }
+  console.log(htmlCopy);
+  return res.send(htmlCopy);
+}
+
+app.get('/game/:gameId/bet/:betId', betController);
 
 app.get('/game/:gameId/*', gameController);
 app.get('/game/:gameId', gameController);
-
-
 
 app.get('/games/*', function(req, res) {return res.send(html);});
 app.get('/user/*', function(req, res) { return res.send(html);});
@@ -111,5 +133,4 @@ app.get('*', function(req, res) {
 	res.send(html);
 });*/
 
-console.log(fs.readdirSync(path.join(__dirname, './build')));
 app.listen(port, () => console.log(`Listening on port ${port}`));
