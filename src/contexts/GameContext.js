@@ -66,6 +66,7 @@ const GameContext = createContext({
     setChat: () => Promise.resolve(),
     setLogsPage: () => Promise.resolve(),
     setMembersPage: () => Promise.resolve(),
+    setGame: () => Promise.resolve(),
     
 });
 
@@ -427,7 +428,7 @@ export const GameProvider = ({ children }) => {
         return <Loader />;
     } */
 
-    return <GameContext.Provider value={{ ...state, setBetsPage, setChat, setBetPage, setLogsPage, setMembersPage }}>{children}</GameContext.Provider>;
+    return <GameContext.Provider value={{ ...state, setBetsPage, setChat, setBetPage, setLogsPage, setMembersPage, setGame }}>{children}</GameContext.Provider>;
 };
 
 export default GameContext;

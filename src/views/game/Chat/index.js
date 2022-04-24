@@ -66,6 +66,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     const customization = useSelector((state) => state.customization);
     const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const [isLoading, setIsLoading] = useState(true);
+    const [isLoadingSend, setIsLoadingSend] = useState(false);
 
     const getMessages = async () => {
         setIsLoading(true);
@@ -105,11 +106,15 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     // handle new message form
 
     const handleOnSend = async () => {
+        if (isLoadingSend)
+            return;
+
         if (!user) {
             return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to send a message!',
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
 
+        setIsLoadingSend(true);
         try {
             const res = await axios.post(config.gameHosts[game.serverId] + '/v1/messages/', {
                 userId: user.id,
@@ -118,8 +123,9 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
             });
 
             messageInputRef.current.querySelectorAll('input[type=text]')[0].value = '';
-
+            setIsLoadingSend(false);
         } catch (e) {
+            setIsLoadingSend(false);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
         }

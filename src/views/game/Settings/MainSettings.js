@@ -2,10 +2,10 @@ import React from 'react';
 
 // material-ui
 import { useTheme } from '@material-ui/core/styles';
-import { Grid, Typography, TextField } from '@material-ui/core';
+import { Grid, Typography, TextField, MenuItem } from '@material-ui/core';
 
 import { gridSpacing } from '../../../store/constant';
-
+import languages from '../../../utils/locales/languages.json';
 import GameContext from '../../../contexts/GameContext';
 // assets
 
@@ -15,7 +15,7 @@ import GameContext from '../../../contexts/GameContext';
 const WidgetStatistics = (props) => {
     const theme = useTheme();
     const { game } = React.useContext(GameContext);
-    const { title, setTitle, desc, setDesc, bannerUrl, setBannerUrl } = props;
+    const { title, setTitle, desc, setDesc, bannerUrl, setBannerUrl, language, setLanguage } = props;
     
     return (
         <>
@@ -57,7 +57,22 @@ const WidgetStatistics = (props) => {
                             onChange={(e) => setBannerUrl(e.target.value)}
                         />
                 </Grid>
-               
+                <Grid item xs={12} md={12}>
+                    <TextField
+                    id="outlined-select-currency"
+                    select
+                    fullWidth
+                    label="Language"
+                    value={language}
+                    onChange={(e) => setLanguage(e.target.value)}
+                    variant="outlined" >
+                    {Object.keys(languages).map((key, index) => (
+                        <MenuItem key={key} value={key}>
+                            {languages[key][0]}
+                        </MenuItem>
+                    ))}
+                    </TextField>
+                </Grid>
             </Grid> 
         
             {/*}

@@ -26,17 +26,18 @@ import AnswerScale from './AnswerScale';
 
 export default function AddBetDialog({...props}) {
     const { game } = useContext(GameContext);
-    const [ open, setOpen ] = React.useState(false);
-    const [ isLoading, setIsLoading ] = useState(false);
+    const [open, setOpen] = React.useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
 
-    const [ desc, setDesc ] = React.useState('');
-    const [ title, setTitle ] = React.useState('');
-    const [ timeLimit, setTimeLimit ] = React.useState(new Date());
-    const [ betType, setBetType ] = React.useState('catalogue');
+    const [desc, setDesc] = React.useState('');
+    const [title, setTitle] = React.useState('');
+    
+    const [timeLimit, setTimeLimit] = React.useState(new Date());
+    const [betType, setBetType] = React.useState('catalogue');
 
-    const [ catalogue_answers, setCatalogue_answers ] = React.useState([{title:'',odds:2},{title:'',odds:2}]);
-    const [ scale_options, setScale_options ] = React.useState({step: 1, min: 2, max: 10, odds: 2, winRate: 50});
+    const [catalogue_answers, setCatalogue_answers] = React.useState([{title:'',odds:2},{title:'',odds:2}]);
+    const [scale_options, setScale_options] = React.useState({step: 1, min: 2, max: 10, odds: 2, winRate: 50});
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -47,6 +48,9 @@ export default function AddBetDialog({...props}) {
     };
 
     const createBet = async () => {  
+        if (isLoading)
+            return;
+
         setIsLoading(true);
 
         try {
@@ -61,14 +65,33 @@ export default function AddBetDialog({...props}) {
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Bet', 
                 variant: 'alert', alertSeverity: 'success', close: true });
 
-            setIsLoading(false);
             setOpen(false);
+            setIsLoading(false);
         } catch (e) {
             setIsLoading(false);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
          }
     };
+
+    useEffect(() => {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate()+1);
+        setTimeLimit(tomorrow);
+    }, []);
+
+    const upHandler = ({ key }) => {
+        if (key == 'Enter' && open == true) {
+            createBet();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("keyup", upHandler);
+        return () => {
+            window.removeEventListener("keyup", upHandler);
+        };
+    }, [open,title]);
 
     return (
         <Grid container justifyContent="center">
@@ -89,7 +112,7 @@ export default function AddBetDialog({...props}) {
                    
                     <Grid container spacing={1}>
                         <Grid item xs={12} lg={6}>
-                            <TextField fullWidth onChange={(e) => setTitle(e.target.value)} id="outlined-basic" label="Title" />
+                            <TextField value={title} fullWidth onChange={(e) => setTitle(e.target.value)} id="outlined-basic" label="Title" />
                         </Grid>
                         <Grid item xs={12} lg={6}>
                             <CustomDateTime value={timeLimit} setValue={setTimeLimit}></CustomDateTime>

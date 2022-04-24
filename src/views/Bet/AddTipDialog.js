@@ -36,7 +36,7 @@ export default function AddTipDialog(props) {
     const classes = useStyles();
     const { game, refreshMember } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
-    const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const { getBet, bet } = props;
     const [amount, setAmount] = React.useState(0);
@@ -58,17 +58,33 @@ export default function AddTipDialog(props) {
         setOpen(false);
     };
 
-    const createTip = async () => {  
-        setIsLoadingAddTip(true);
+    const upHandler = ({ key }) => {
+        if (key == 'Enter' && open == true) {
+            createTip();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("keyup", upHandler);
+        return () => {
+            window.removeEventListener("keyup", upHandler);
+        };
+    }, [open,amount,answerId,answerDecimal]);
+
+    const createTip = async () => { 
+        if (isLoading)
+            return;
+        
+        setIsLoading(true);
 
         if (!user) {
-            setIsLoadingAddTip(false);
+            setIsLoading(false);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Please log in to send a tip.',
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
 
         if (amount <= 0) {
-            setIsLoadingAddTip(false);
+            setIsLoading(false);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Tip amount must be greater than 0.',
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
@@ -85,13 +101,14 @@ export default function AddTipDialog(props) {
             incrementCaptchaTicker();
 
         } catch (e) {
-            setIsLoadingAddTip(false);
+            setIsLoading(false);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
-         }
+        }
 
-        setIsLoadingAddTip(false);
-        handleClose()
+        handleClose();
+        setIsLoading(false);
+        
         dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Tip', 
                 variant: 'alert', alertSeverity: 'success', close: true });
     };
@@ -114,7 +131,7 @@ export default function AddTipDialog(props) {
                    
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12} lg={12}>
-                            <TextField fullWidth id="outlined-basic-size-small" onChange={e => setAmount(e.target.value)}
+                            <TextField value={amount} fullWidth id="outlined-basic-size-small" onChange={e => setAmount(e.target.value)}
                                 label={'Amount'} type='number' size="small"  inputProps={{ maxLength: 10 }} />
                         </Grid>
                         
@@ -184,7 +201,7 @@ export default function AddTipDialog(props) {
                         Cancel
                     </Button>
                     <Button variant="contained" size="small" onClick={createTip} color="primary">
-                        {isLoadingAddTip ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Create') }  
+                        {isLoading ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Create') }  
                     </Button>
                 </DialogActions>
             </Dialog>

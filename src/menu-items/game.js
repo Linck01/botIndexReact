@@ -2,7 +2,7 @@
 import { FormattedMessage } from 'react-intl';
 
 // assets
-import { IconMail, IconNotebook, IconInfoCircle, IconEdit } from '@tabler/icons';
+import { IconMail, IconNotebook, IconInfoCircle, IconEdit, IconUser, IconTrophy, IconHistory } from '@tabler/icons';
 
 //-----------------------|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||-----------------------//
 
@@ -16,22 +16,15 @@ export const game = {
             title: <FormattedMessage id="bets" />,
             type: 'item',
             url: '/',
-            icon: IconInfoCircle,
+            icon: IconTrophy,
             breadcrumbs: false
-        },
-        {
-            id: 'log',
-            title: <FormattedMessage id="log" />,
-            type: 'item',
-            url: '/',
-            icon: IconMail,
         },
         {
             id: 'members',
             title: <FormattedMessage id="members" />,
             type: 'item',
             url: '/',
-            icon: IconMail,
+            icon: IconUser,
         },
         {
             id: 'chat',
@@ -40,13 +33,20 @@ export const game = {
             url: '/',
             icon: IconNotebook,
         },
-        /*{
+        {
+            id: 'log',
+            title: <FormattedMessage id="log" />,
+            type: 'item',
+            url: '/',
+            icon: IconHistory,
+        },
+        {
             id: 'info',
             title: <FormattedMessage id="info" />,
             type: 'item',
             url: '/',
-            icon: IconMail,
-        },*/
+            icon: IconInfoCircle,
+        },
         {
             id: 'settings',
             title: <FormattedMessage id="settings" />,

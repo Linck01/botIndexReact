@@ -25,7 +25,7 @@ const WidgetStatistics = (props) => {
 
     return (
         <Grid container spacing={gridSpacing}>
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={6} md={6}>
                 <UserCountCard
                     primary="Members"
                     secondary={game.memberCount.toString()}
@@ -33,15 +33,15 @@ const WidgetStatistics = (props) => {
                     color={theme.palette.secondary.main}
                 />
             </Grid>
-            <Grid item xs={12} lg={4} sm={6}>
+            {/*}<Grid item xs={6} md={4}>
                 <UserCountCard
                     primary="???"
                     secondary={'???'}
                     iconPrimary={DescriptionTwoToneIcon}
                     color={theme.palette.primary.dark}
                 />
-            </Grid>
-            <Grid item xs={12} lg={4} sm={6}>
+            </Grid>{*/}
+            <Grid item xs={6} md={6}>
                 <UserCountCard
                     primary="Bets"
                     secondary={game.betCount.toString()}

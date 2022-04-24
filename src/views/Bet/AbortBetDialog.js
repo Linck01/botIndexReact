@@ -63,7 +63,7 @@ export default function AbortBetDialog(props) {
         setAmount(event.target.value);
     };
 
-    const createTip = async () => {  
+    const abortBet = async () => {  
         setIsLoadingAddTip(true);
         let err = null;
 
@@ -112,7 +112,7 @@ export default function AbortBetDialog(props) {
                     <Button onClick={handleClose} color="error">
                         Cancel
                     </Button>
-                    <Button variant="contained" size="small" onClick={createTip} color="primary">
+                    <Button variant="contained" size="small" onClick={abortBet} color="primary">
                         {isLoadingAddTip ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Accept') }  
                     </Button>
                 </DialogActions>

@@ -39,7 +39,9 @@ export default function FormDialog({...props}) {
     };
 
     const createGame = async () => {
-        let err = null;
+        if (isLoading)
+            return;
+
         setIsLoading(true);
 
         const title = addGameTitleRef.current.querySelectorAll('input')[0].value;
@@ -61,6 +63,19 @@ export default function FormDialog({...props}) {
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
     };
+
+    const upHandler = ({ key }) => {
+        if (key == 'Enter' && open == true) {
+            createGame();
+        }
+    };
+
+    useEffect(() => {
+        window.addEventListener("keyup", upHandler);
+        return () => {
+            window.removeEventListener("keyup", upHandler);
+        };
+    }, [open]);
 
     return (
         <Grid container justifyContent="center">

@@ -2,24 +2,13 @@ import React from 'react';
 
 import GameStatsCards from './GameStatsCards';
 import GameMainInfo from './GameMainInfo';
+import GameTopMembers from './GameTopMembers';
+import GameTopBets from './GameTopBets';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
 
 // material-ui
-import {
-    Box,
-    CardContent,
-    Chip,
-    Divider,
-    Grid,
-    LinearProgress,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemSecondaryAction,
-    ListItemText,
-    Typography
-} from '@material-ui/core';
+import { Grid, CircularProgress } from '@material-ui/core';
 
 // project imports
 import Avatar from '../../../ui-component/extended/Avatar';
@@ -43,46 +32,63 @@ import { Helmet } from "react-helmet";
 const GameInfo = () => {
     const { game } = React.useContext(GameContext);
     const dispatch = useDispatch();
-    const [ startCurrency, setStartCurrency ] =  React.useState(game.startCurrency.$numberDecimal);
-    const [ password, setPassword ] = React.useState('');
-    const [ title, setTitle ] = React.useState(game.title);
-    const [ desc, setDesc ] = React.useState(game.desc);
     const [ isLoading, setIsLoading ] = React.useState(true);
-    
-    const [ switches, setSwitches ] = React.useState({
-        isPublic: game.isPublic,
-    });
+    const [ topMembers, setTopMembers ] = React.useState([]);
+    const [ topBets, setTopBets ] = React.useState([]);
 
-    const updateSettings = async () => {
+    const getTopMembersAndBets = async () => {
         setIsLoading(true);
 
         try {
-            const obj = { gameId: game.id, title, desc };
-            const response = await axios.post(config.gameHosts[game.serverId] + '/v1/bets/', obj);
-            
-            dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully changed settings', 
-                variant: 'alert', alertSeverity: 'success', close: true });
+            const responseMembers = await axios.get(config.gameHosts[game.serverId] + '/v1/members/', { params: { gameId: game.id, sortBy: '-currency', limit: 3 , page: 1 } });
+            await fct.addUsernamesToArray(responseMembers.data.results);
+            setTopMembers(responseMembers.data.results);
+
+            const responseBets = await axios.get(config.gameHosts[game.serverId] + '/v1/bets/', { params: { gameId: game.id, sortBy: '-inPot', limit: 3 , page: 1 } });
+            setTopBets(responseBets.data.results);
 
             setIsLoading(false);
-        } catch (e) { 
+        } catch (e) {
             setIsLoading(false);
+            console.log(e);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
-         }
+        }
+    }
+    
+    React.useEffect(() => {
+        getTopMembersAndBets();
+    }, []);
 
-    };
-   
     return (
         <>
         <Helmet>
             <title>{game.title} - Info</title>
         </Helmet>
-        <GameStatsCards />
-        <br /><br />
-        <GameMainInfo title={title} setTitle={setTitle} desc={desc} setDesc={setDesc}/>
-    
-        </>
-        
+
+        {isLoading ? (         
+            <>
+            <br />
+            <Grid container justifyContent="center">     
+                <CircularProgress color="secondary" size="10em"  /> 
+            </Grid>
+            </>       
+        ) : ''}
+
+        {!isLoading ? (         
+            <>
+            <br />
+            <GameStatsCards />
+            <br /><br />
+            <GameMainInfo/>
+            <br /><br />
+            <GameTopMembers topMembers={topMembers} />
+            <br /><br />
+            <GameTopBets topBets={topBets} />
+            </>       
+        ) : ''}
+
+        </>   
     );
 };
 
