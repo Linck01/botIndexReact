@@ -57,7 +57,7 @@ export default function AddTipDialog(props) {
     const handleClose = () => {
         setOpen(false);
     };
-
+    /*
     const upHandler = ({ key }) => {
         if (key == 'Enter' && open == true) {
             createTip();
@@ -69,7 +69,7 @@ export default function AddTipDialog(props) {
         return () => {
             window.removeEventListener("keyup", upHandler);
         };
-    }, [open,amount,answerId,answerDecimal]);
+    }, [open,amount,answerId,answerDecimal]);*/
 
     const createTip = async () => { 
         if (isLoading)

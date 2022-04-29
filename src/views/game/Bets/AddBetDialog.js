@@ -80,6 +80,7 @@ export default function AddBetDialog({...props}) {
         setTimeLimit(tomorrow);
     }, []);
 
+    /*
     const upHandler = ({ key }) => {
         if (key == 'Enter' && open == true) {
             createBet();
@@ -91,7 +92,7 @@ export default function AddBetDialog({...props}) {
         return () => {
             window.removeEventListener("keyup", upHandler);
         };
-    }, [open,title]);
+    }, [open,title]);*/
 
     return (
         <Grid container justifyContent="center">

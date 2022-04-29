@@ -64,6 +64,7 @@ export default function FormDialog({...props}) {
         }
     };
 
+    /*
     const upHandler = ({ key }) => {
         if (key == 'Enter' && open == true) {
             createGame();
@@ -75,7 +76,7 @@ export default function FormDialog({...props}) {
         return () => {
             window.removeEventListener("keyup", upHandler);
         };
-    }, [open]);
+    }, [open]);*/
 
     return (
         <Grid container justifyContent="center">
