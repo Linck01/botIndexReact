@@ -52,17 +52,17 @@ const ScaleAnswerBox = ( props ) => {
     const [selectedIndex, setSelectedIndex] = React.useState(null);
     const [isLoading, setIsLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
-    const [settlement, setSettlement] = React.useState(null);
+    const [settlementTips, setSettlementTips] = React.useState(null);
 
     const handleClickOpen = async () => {
         setOpen(true);
-        if (settlement == null) {
+        if (settlementTips == null) {
             setIsLoading(true);
 
-            const response = await axios.get(config.apiHost + '/v1/bets/' + bet.id + '/settlement');
+            const response = await axios.get(config.apiHost + '/v1/bets/' + bet.id + '/settlementTips');
             console.log(response);
 
-            setSettlement(response.data);
+            setSettlementTips(response.data);
             setIsLoading(false);
         }       
     };
@@ -97,7 +97,7 @@ const ScaleAnswerBox = ( props ) => {
                 
                 <Grid container spacing={gridSpacing}>
                     <Grid item xs={12} lg={12}>
-                        <pre>{settlement != null ? JSON.stringify(settlement,null,2) : ''}</pre>
+                        <pre>{settlementTips != null ? JSON.stringify(settlementTips,null,2) : ''}</pre>
                         {/*}<TextField fullWidth id="outlined-basic-size-small" onChange={e => setAmount(e.target.value)}
                             label={'Amount'} type='number' size="small"  inputProps={{ maxLength: 10 }} />{*/}
                     </Grid>

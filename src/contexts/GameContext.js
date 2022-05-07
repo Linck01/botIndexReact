@@ -294,7 +294,6 @@ export const GameProvider = ({ children }) => {
         
         if (user && user.id == member.userId) 
             setMember(member);
-           
     }
 
     const handleSocketNewBet = async (bet) => {
@@ -318,7 +317,7 @@ export const GameProvider = ({ children }) => {
 
     const updateTipListItemsWithUpdatedTips = async (tips) => {
         let newItems = [], foundTip;
-        console.log(state.betPage.tipListPage.items,tips);
+
         for (let oldTip of state.betPage.tipListPage.items) {
             foundTip = tips.find(t => t._id == oldTip.id);
             if (foundTip)
@@ -346,21 +345,15 @@ export const GameProvider = ({ children }) => {
     }
 
     const updateTipListItemsWithNewTip = async (newTip) => {
-        let newItems = [],replaced = false;
-        for (let tip of state.betPage.tipListPage.items) {
-            if (tip.id == newTip.id) {
-                newItems.unshift(newTip)
-                replaced = true;
-            } else
-                newItems.push(tip);
-        }
+        let newItems = [];
+        for (let tip of state.betPage.tipListPage.items)
+            newItems.push(tip);
         
-        if (!replaced && state.betPage.tipListPage.index == 1) {
+        if (state.betPage.tipListPage.index == 1) {
             newItems.unshift(newTip);
 
             if (state.betPage.tipListPage.items.length >= config.tipListPageSize) 
                 newItems.pop();
-                
         }
             
         await fct.addUsernamesToArray(newItems);
@@ -369,16 +362,12 @@ export const GameProvider = ({ children }) => {
     }
     
     const updateMyTipsWithNewTip = async (newTip) => {
-        let newMyTips = [], replaced = false;
+        let newMyTips = [];
         
-        for (let tip of state.betPage.myTips) {
-            if (tip.id == newTip.id) {
-                newMyTips.push(newTip)
-                replaced = true;
-            } else
+        for (let tip of state.betPage.myTips)
                 newMyTips.push(tip);
-        }
-        if (!replaced && user && user.id == newTip.userId)
+        
+        if (user && user.id == newTip.userId)
             newMyTips.push(newTip);
         
         return newMyTips; 

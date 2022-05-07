@@ -70,33 +70,33 @@ const ScaleAnswerBox = ( props ) => {
 
     return (
         <>
-               {/*}<PerfectScrollbar className={classes.ScrollHeight}>{*/}
-                   
-                        <Table stickyHeader>
-                            <TableHead>
-                                <TableRow>
-                                    <TableCell align='center'>Interval</TableCell>
-                                    <TableCell align='center'>Members</TableCell>
-                                    <TableCell align='center'>In pot</TableCell>
-                                    <TableCell align='center'>Staked</TableCell>
-                                    
-                                </TableRow>
-                            </TableHead>
-                            <TableBody>
-                                {bet.scale_answers.map((interval, index) => (
-                                    <TableRow hover key={interval._id}>
-                                        <TableCell align='center'>{'>'} {interval.from.$numberDecimal}</TableCell> 
-                                        <TableCell align='center'>{interval.memberCount}</TableCell>
-                                        <TableCell align='center'>{interval.inPot.$numberDecimal}</TableCell>
-                                        <TableCell align='center'> {stakedIntervals[index]}</TableCell>
-                                    </TableRow>
-                                ))}
-                            </TableBody>
-                        </Table>
+            {/*}<PerfectScrollbar className={classes.ScrollHeight}>{*/}
                 
-                {/*}</PerfectScrollbar>{*/}
+                <Table stickyHeader>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell align='center'>Interval</TableCell>
+                            <TableCell align='center'>Odds</TableCell>
+                            <TableCell align='center'>Members</TableCell>
+                            <TableCell align='center'>In pot</TableCell>
+                            <TableCell align='center'>Staked</TableCell>
+                            
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {bet.scale_answers.map((interval, index) => (
+                            <TableRow hover key={interval._id}>
+                                <TableCell align='center'>{'>'} {interval.from.$numberDecimal}</TableCell>
+                                <TableCell align='center'>{interval.odds.$numberDecimal}</TableCell>
+                                <TableCell align='center'>{interval.memberCount}</TableCell>
+                                <TableCell align='center'>{interval.inPot.$numberDecimal}</TableCell>
+                                <TableCell align='center'> {stakedIntervals[index]}</TableCell>
+                            </TableRow>
+                        ))}
+                    </TableBody>
+                </Table>
             
-
+            {/*}</PerfectScrollbar>{*/}
         </>
     );
 };

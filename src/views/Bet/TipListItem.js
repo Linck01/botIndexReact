@@ -99,7 +99,7 @@ export default function CustomList(props) {
                         {currencyDiffString}
                     </Typography>
                 </Grid>
-                <Grid xs={4} item >
+                <Grid xs={4} item>
                     <Typography align="left" component="div" variant="h5">
                         {tip.username}
                     </Typography>
@@ -107,12 +107,13 @@ export default function CustomList(props) {
                         <FiberManualRecordIcon className={classes.textActive} /> &nbsp;
                         {bet.betType == 'catalogue' ? bet.catalogue_answers[tip.answerId].title : ''}
                         {bet.betType == 'scale' ? tip.answerDecimal.$numberDecimal : ''}
+                        <small>&nbsp;(x{tip.odds.$numberDecimal})</small>
                     </Typography> 
                 </Grid>
             
                 <Grid xs={4} item>
                     <Typography align="center" component="div" variant="caption">
-                        <WatchLaterTwoToneIcon className={classes.timeIcon} />{fct.timeAgoString(tip._updatedAt)}      
+                        <WatchLaterTwoToneIcon className={classes.timeIcon} />{fct.timeAgoString(tip._createdAt)}      
                     </Typography>
                     <Typography align="center" component="div" variant="caption">
                         {fct.formatDateTime(tip._updatedAt)}

@@ -96,7 +96,7 @@ const JWTRegister = ({ ...others }) => {
     const [strength, setStrength] = React.useState(0);
     const [level, setLevel] = React.useState('');
     const [passwordMatch, setPasswordMatch] = React.useState(0);
-    const [ captchaToken, setCaptchaToken ] = React.useState(null);
+    const [ captchaToken, setCaptchaToken ] = React.useState('');
     const { register, sendVerificationEmail } = useAuth();
     const dispatch = useDispatch();
     const history = useHistory();

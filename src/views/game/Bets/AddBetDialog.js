@@ -2,7 +2,7 @@
 // material-ui
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, 
     DialogTitle, TextField, Typography, FormControl, FormControlLabel, 
-    Grid, Radio, RadioGroup, CircularProgress } from '@material-ui/core';
+    Grid, Radio, RadioGroup, CircularProgress, Checkbox } from '@material-ui/core';
 
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import GameContext from '../../../contexts/GameContext';
@@ -32,7 +32,9 @@ export default function AddBetDialog({...props}) {
 
     const [desc, setDesc] = React.useState('');
     const [title, setTitle] = React.useState('');
-    
+    const [dynamicOdds, setDynamicOdds] = React.useState(false);
+    const [dynamicOddsPower, setDynamicOddsPower] = React.useState(game.startCurrency.$numberDecimal);
+
     const [timeLimit, setTimeLimit] = React.useState(new Date());
     const [betType, setBetType] = React.useState('catalogue');
 
@@ -47,7 +49,7 @@ export default function AddBetDialog({...props}) {
         setOpen(false);
     };
 
-    const createBet = async () => {  
+    const createBet = async () => {
         if (isLoading)
             return;
 
@@ -56,7 +58,7 @@ export default function AddBetDialog({...props}) {
         try {
             const tempDate = new Date(timeLimit);
             tempDate.setSeconds(0);
-            const obj = { gameId: game.id, betType, title, desc, timeLimit: tempDate };
+            const obj = {gameId: game.id, betType, title, desc, timeLimit: tempDate, dynamicOdds, dynamicOddsPower};
             if (betType == 'catalogue') obj.catalogue_answers = catalogue_answers;
             if (betType == 'scale') obj.scale_options = scale_options;
 
@@ -129,24 +131,37 @@ export default function AddBetDialog({...props}) {
                                     rows={3}
                                 />
                         </Grid>
-                        
-                    </Grid>
-                    
-                    <br /><br /><br />
-
-                    <Grid container justifyContent="center" spacing={3}>
-                        <FormControl>
-                            <RadioGroup
-                                row
-                                aria-label="gender"
-                                value={betType}
-                                onChange={(e) => setBetType(e.target.value)}
-                                name="row-radio-buttons-group"
-                            >
-                                <FormControlLabel value="catalogue" control={<Radio />} label="Catalogue" />
-                                <FormControlLabel value="scale" control={<Radio />} label="Scale" />
-                            </RadioGroup>
-                        </FormControl>
+                        <Grid item xs={6}>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        checked={dynamicOdds}
+                                        onChange={(event) => setDynamicOdds(event.target.checked)}
+                                        name="checked"
+                                        color="primary"
+                                    />
+                                }
+                                label={
+                                    <Typography variant="subtitle2">Dynamic Odds</Typography>
+                                }
+                            />
+                        </Grid>
+                        {dynamicOdds ? (<Grid item xs={6}><TextField value={dynamicOddsPower} fullWidth onChange={e => setDynamicOddsPower(e.target.value)}
+                                label={'Dynamic odds power'} type='number' size="small" inputProps={{ maxLength: 10 }} /></Grid>) : ''}
+                        <Grid item xs={12}>
+                            <FormControl>
+                                <RadioGroup
+                                    row
+                                    aria-label="gender"
+                                    value={betType}
+                                    onChange={(e) => setBetType(e.target.value)}
+                                    name="row-radio-buttons-group"
+                                >
+                                    <FormControlLabel value="catalogue" control={<Radio />} label="Catalogue" />
+                                    <FormControlLabel value="scale" control={<Radio />} label="Scale" />
+                                </RadioGroup>
+                            </FormControl>
+                        </Grid>
                     </Grid>
 
                     <br />
