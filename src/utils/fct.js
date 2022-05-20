@@ -71,11 +71,11 @@ f.secondsToMHD = (seconds) => {
     if (numyears != 0)
         return numyears + 'y';
     if (numdays != 0)
-        return numdays + 'd';
+        return numdays + 'd ' + numhours + 'h';
     if (numhours != 0)
-        return numhours + 'h';
+        return numhours + 'h ' + numminutes + 'm';
     if (numminutes != 0)
-        return numminutes + 'm';
+        return numminutes + 'm ' + numseconds + 's';
     if (numseconds != 0)
         return numseconds + 's';
 
@@ -86,6 +86,11 @@ f.secondsToMHD = (seconds) => {
 f.formatDateTime = (isoString) => {
     const dt = DateTime.fromISO(isoString);
     return dt.toLocaleString(DateTime.DATETIME_MED);
+}
+
+f.formatDate = (isoString) => {
+    const dt = DateTime.fromISO(isoString);
+    return dt.toLocaleString(DateTime.DATE_MED);
 }
 
 /*f.addUsernamesToArray = async (arr) => {
@@ -144,6 +149,33 @@ f.getCorrectAnswerStrings = (bet, maxCharacters) => {
     }
 
     return {correctAnswerStrings, moreAnswersString}
+}
+
+f.getActualOdds = (bet) => {
+    let answers;
+    if (bet.betType == 'catalogue')
+        answers = bet.catalogue_answers;
+    else if (bet.betType == 'scale') 
+        answers = bet.scale_answers;
+
+    if (!bet.dynamicOdds)
+        return answers.map(a => parseFloat(a.odds.$numberDecimal));
+
+    const average = answers.reduce((prev,curr) => prev + parseFloat(curr.inPot.$numberDecimal),0) / answers.length;
+
+    let differenceToAverage, actualOdds = [];
+    
+    for (let answer of answers) {
+        differenceToAverage = average - parseFloat(answer.inPot.$numberDecimal);
+
+        if (differenceToAverage >= 0) 
+            actualOdds.push(1 + (parseFloat(answer.odds.$numberDecimal) - 1) * (1 + differenceToAverage / parseFloat(bet.dynamicOddsPower.$numberDecimal)));
+        else
+            actualOdds.push(1 + (parseFloat(answer.odds.$numberDecimal) - 1) / (1 + Math.abs(differenceToAverage) / parseFloat(bet.dynamicOddsPower.$numberDecimal)));
+
+    }
+
+    return actualOdds;
 }
 
 

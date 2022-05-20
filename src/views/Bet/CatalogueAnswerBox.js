@@ -43,9 +43,6 @@ const CatalogueAnswerBox = ( props ) => {
     const classes = useStyles();
     const dispatch = useDispatch();
     const { bet, myTips } = props;
-    const [selectedIndex, setSelectedIndex] = React.useState(null);
-    const [isLoadingSelectedIndex, setIsLoadingSelectedIndex] = React.useState(true);
-
 
     return (
         <>
@@ -56,7 +53,9 @@ const CatalogueAnswerBox = ( props ) => {
                             <TableHead>
                                 <TableRow >
                                     <TableCell align='center'>Title</TableCell>
-                                    <TableCell align='center'>Odds</TableCell>
+                                    
+                                    {bet.dynamicOdds ? <TableCell align='center'>Base Odds</TableCell> : <TableCell align='center'>Odds</TableCell>}
+                                    {bet.dynamicOdds ? <TableCell align='center'>Dynamic Odds</TableCell> : ''}
                                     <TableCell align='center'>Members</TableCell>
                                     <TableCell align='center'>In pot</TableCell>
                                     <TableCell align='center'>Staked</TableCell>
@@ -68,11 +67,12 @@ const CatalogueAnswerBox = ( props ) => {
                                 {bet.catalogue_answers.map((answer, index) => (
                                     <TableRow hover key={answer._id}>
                                         <TableCell align='center'>{answer.title}</TableCell>
-                                        <TableCell align='center'>{answer.odds.$numberDecimal}</TableCell>
+                                        {bet.dynamicOdds ? <TableCell align='center'>{+parseFloat(answer.odds.$numberDecimal).toFixed(3)}</TableCell> : ''}
+                                        <TableCell align='center'>{+parseFloat(fct.getActualOdds(bet)[index]).toFixed(3)}</TableCell>
                                         <TableCell align='center'>{answer.memberCount}</TableCell>
-                                        <TableCell align='center'>{answer.inPot.$numberDecimal}</TableCell>
+                                        <TableCell align='center'>{+parseFloat(answer.inPot.$numberDecimal).toFixed(3)}</TableCell>
                                         <TableCell align='center'>
-                                            {myTips.filter((t) => t.answerId == index).length == 1 ? myTips.filter((t) => t.answerId == index)[0].currency.$numberDecimal : '0'}
+                                            {myTips.filter((t) => t.answerId == index).length == 1 ? +parseFloat(myTips.filter((t) => t.answerId == index)[0].currency.$numberDecimal).toFixed(3) : '0'}
                                         </TableCell>
                                         
                                     </TableRow>

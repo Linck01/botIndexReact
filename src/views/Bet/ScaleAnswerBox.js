@@ -49,24 +49,29 @@ const ScaleAnswerBox = ( props ) => {
     const { bet, myTips } = props;
     const [selectedIndex, setSelectedIndex] = React.useState(null);
     const [isLoadingSelectedIndex, setIsLoadingSelectedIndex] = React.useState(true);
-    
-    const stakedIntervals = [];
-    let myTipsInInterval;
-    for (let i = 0; i < bet.scale_answers.length;i++) {
-        myTipsInInterval = myTips.filter((t) => {
-            const isBigger = parseFloat(t.answerDecimal.$numberDecimal) >= parseFloat(bet.scale_answers[i].from.$numberDecimal);
+    const [stakedIntervals, setStakedIntervals] = React.useState([]);
 
-            if (bet.scale_answers[i+1])
-                return isBigger && parseFloat(t.answerDecimal.$numberDecimal) < parseFloat(bet.scale_answers[i+1].from.$numberDecimal);
-            else {
-                return isBigger;
-            }
-        });
-        
-        stakedIntervals.push(myTipsInInterval.reduce( function(a, b) {
-            return a + parseFloat(b.currency.$numberDecimal);
-        }, 0));
-    }
+    useEffect(() => {
+        let myTipsInInterval;
+        const tmpStakedIntervals = [];
+        for (let i = 0; i < bet.scale_answers.length;i++) {
+            myTipsInInterval = myTips.filter((t) => {
+                const isBigger = parseFloat(t.answerDecimal.$numberDecimal) >= parseFloat(bet.scale_answers[i].from.$numberDecimal);
+
+                if (bet.scale_answers[i+1])
+                    return isBigger && parseFloat(t.answerDecimal.$numberDecimal) < parseFloat(bet.scale_answers[i+1].from.$numberDecimal);
+                else {
+                    return isBigger;
+                }
+            });
+            
+            tmpStakedIntervals.push(myTipsInInterval.reduce( function(a, b) {
+                return a + parseFloat(b.currency.$numberDecimal);
+            }, 0));
+
+            setStakedIntervals(tmpStakedIntervals);
+        }
+    }, [myTips]);
 
     return (
         <>
@@ -87,10 +92,10 @@ const ScaleAnswerBox = ( props ) => {
                         {bet.scale_answers.map((interval, index) => (
                             <TableRow hover key={interval._id}>
                                 <TableCell align='center'>{'>'} {interval.from.$numberDecimal}</TableCell>
-                                <TableCell align='center'>{interval.odds.$numberDecimal}</TableCell>
+                                <TableCell align='center'>{+parseFloat(fct.getActualOdds(bet)[index]).toFixed(3)}</TableCell>
                                 <TableCell align='center'>{interval.memberCount}</TableCell>
-                                <TableCell align='center'>{interval.inPot.$numberDecimal}</TableCell>
-                                <TableCell align='center'> {stakedIntervals[index]}</TableCell>
+                                <TableCell align='center'>{+parseFloat(interval.inPot.$numberDecimal).toFixed(3)}</TableCell>
+                                <TableCell align='center'> {+parseFloat(stakedIntervals[index]).toFixed(3)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

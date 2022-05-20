@@ -31,7 +31,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import SubCard from '../../../../ui-component/cards/SubCard';
 import AnimateButton from '../../../../ui-component/extended/AnimateButton';
-import { MENU_TYPE, PRESET_COLORS, SET_BORDER_RADIUS, SET_FONT_FAMILY, SET_OUTLINED_FILLED } from '../../../../store/actions'; // THEME_RTL
+import { MENU_TYPE, PRESET_COLORS, SET_BORDER_RADIUS, SET_FONT_FAMILY, SET_OUTLINED_FILLED, SET_CUSTOMIZATION } from '../../../../store/actions'; // THEME_RTL
 import { gridSpacing } from '../../../../store/constant';
 
 // color import
@@ -102,22 +102,26 @@ const Customization = () => {
     const theme = useTheme();
     const classes = useStyles();
     const dispatch = useDispatch();
+
     const customization = useSelector((state) => state.customization);
+
 
     // drawer on/off
     const [open, setOpen] = React.useState(false);
     const handleToggle = () => {
+        if (open)
+            localStorage.setItem('customization', JSON.stringify(customization));
         setOpen(!open);
     };
 
     // state - layout type
-    const [navType, setNavType] = React.useState(customization.navType);
+    /*const [navType, setNavType] = React.useState(customization.navType);
     useEffect(() => {
         dispatch({ type: MENU_TYPE, navType: navType });
     }, [dispatch, navType]);
 
     // state - preset color
-    const [presetColor, setPresetColor] = React.useState(customization.presetColor);
+    /*const [presetColor, setPresetColor] = React.useState(customization.presetColor);
     useEffect(() => {
         dispatch({ type: PRESET_COLORS, presetColor: presetColor });
     }, [dispatch, presetColor]);
@@ -141,7 +145,7 @@ const Customization = () => {
     useEffect(() => {
         dispatch({ type: SET_OUTLINED_FILLED, outlinedFilled: outlinedFilled });
     }, [dispatch, outlinedFilled]);
-
+    
     // state - RTL layout
     // const [rtlLayout, setRtlLayout] = React.useState(customization.rtlLayout);
     // const handleRtlLayout = (event) => {
@@ -155,7 +159,7 @@ const Customization = () => {
     // useEffect(() => {
     //     dispatch({ type: THEME_RTL, rtlLayout: rtlLayout });
     // }, [dispatch, rtlLayout]);
-
+    
     let initialFont;
     switch (customization.fontFamily) {
         case `'Inter', sans-serif`:
@@ -169,7 +173,7 @@ const Customization = () => {
             initialFont = 'Roboto';
             break;
     }
-
+    
     // state - font family
     const [fontFamily, setFontFamily] = React.useState(initialFont);
     useEffect(() => {
@@ -188,7 +192,7 @@ const Customization = () => {
         }
         dispatch({ type: SET_FONT_FAMILY, fontFamily: newFont });
     }, [dispatch, fontFamily]);
-
+    */
     const colorOptions = [
         {
             id: 'default',
@@ -226,6 +230,12 @@ const Customization = () => {
             secondary: theme.palette.mode === 'dark' ? theme6.darkSecondaryMain : theme6.secondaryMain
         }
     ];
+
+    useEffect(() => {
+        const storedCustomization = JSON.parse(localStorage.getItem('customization'));
+        if (storedCustomization)
+            dispatch({ type: SET_CUSTOMIZATION, customization: storedCustomization });
+    }, []);
 
     return (
         <React.Fragment>
@@ -267,8 +277,8 @@ const Customization = () => {
                                     <RadioGroup
                                         row
                                         aria-label="layout"
-                                        value={navType}
-                                        onChange={(e) => setNavType(e.target.value)}
+                                        value={customization.navType}
+                                        onChange={(e) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, navType: e.target.value} }) }
                                         name="row-radio-buttons-group"
                                     >
                                         <FormControlLabel
@@ -315,8 +325,8 @@ const Customization = () => {
                                             <PresetColor
                                                 key={index}
                                                 color={color}
-                                                presetColor={presetColor}
-                                                setPresetColor={setPresetColor}
+                                                presetColor={customization.presetColor}
+                                                setPresetColor={ (e) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, presetColor: e} })}
                                             />
                                         );
                                     })}
@@ -329,8 +339,8 @@ const Customization = () => {
                                 <FormControl>
                                     <RadioGroup
                                         aria-label="font-family"
-                                        value={fontFamily}
-                                        onChange={(e) => setFontFamily(e.target.value)}
+                                        value={customization.fontFamily}
+                                        onChange={(e) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, fontFamily: e.target.value} }) }
                                         name="row-radio-buttons-group"
                                     >
                                         <FormControlLabel
@@ -375,8 +385,8 @@ const Customization = () => {
                                     </Grid>
                                     <Grid item xs>
                                         <Slider
-                                            value={borderRadius}
-                                            onChange={handleBorderRadius}
+                                            value={customization.borderRadius}
+                                            onChange={(e, newValue) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, borderRadius: newValue} }) }
                                             getAriaValueText={valueText}
                                             valueLabelDisplay="on"
                                             aria-labelledby="discrete-slider-small-steps"
@@ -407,14 +417,14 @@ const Customization = () => {
                                     <Grid item>
                                         <Stack spacing={2}>
                                             <Switch
-                                                checked={outlinedFilled}
-                                                onChange={handleOutlinedFilled}
+                                                checked={customization.outlinedFilled}
+                                                onChange={(e) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, outlinedFilled: e.target.checked} }) }
                                                 inputProps={{ 'aria-label': 'controlled' }}
                                             />
                                             <TextField
                                                 fullWidth
                                                 id="outlined-basic"
-                                                label={outlinedFilled ? 'With Background' : 'Without Background'}
+                                                label={customization.outlinedFilled ? 'With Background' : 'Without Background'}
                                             />
                                         </Stack>
                                     </Grid>

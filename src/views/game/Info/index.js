@@ -35,10 +35,9 @@ const GameInfo = () => {
     const [ isLoading, setIsLoading ] = React.useState(true);
     const [ topMembers, setTopMembers ] = React.useState([]);
     const [ topBets, setTopBets ] = React.useState([]);
+    const [ adminUsername, setAdminUsername ] = React.useState('');
 
     const getTopMembersAndBets = async () => {
-        setIsLoading(true);
-
         try {
             const responseMembers = await axios.get(config.gameHosts[game.serverId] + '/v1/members/', { params: { gameId: game.id, sortBy: '-currency', limit: 3 , page: 1 } });
             await fct.addUsernamesToArray(responseMembers.data.results);
@@ -46,18 +45,33 @@ const GameInfo = () => {
 
             const responseBets = await axios.get(config.gameHosts[game.serverId] + '/v1/bets/', { params: { gameId: game.id, sortBy: '-inPot', limit: 3 , page: 1 } });
             setTopBets(responseBets.data.results);
-
-            setIsLoading(false);
         } catch (e) {
-            setIsLoading(false);
             console.log(e);
             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
                 variant: 'alert', alertSeverity: 'error', close: true });
         }
     }
+
+    const getAdminUsername = async () => {
+        try {
+            const res = await fct.addUsernamesToArray([{userId: game.userId}]);
+            setAdminUsername(res[0].username);
+        } catch (e) {
+            console.log(e);
+            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                variant: 'alert', alertSeverity: 'error', close: true });
+        }
+    }
+
+    const init = async () => {
+        setIsLoading(true);
+        await getTopMembersAndBets();
+        await getAdminUsername();
+        setIsLoading(false);
+    }
     
     React.useEffect(() => {
-        getTopMembersAndBets();
+        init();
     }, []);
 
     return (
@@ -68,19 +82,18 @@ const GameInfo = () => {
 
         {isLoading ? (         
             <>
-            <br />
+            <br /><br />
             <Grid container justifyContent="center">     
                 <CircularProgress color="secondary" size="10em"  /> 
             </Grid>
             </>       
         ) : ''}
 
-        {!isLoading ? (         
+        {!isLoading ? (
             <>
-            <br />
             <GameStatsCards />
-            <br /><br />
-            <GameMainInfo/>
+            <br /><br /> 
+            <GameMainInfo adminUsername={adminUsername}/>
             <br /><br />
             <GameTopMembers topMembers={topMembers} />
             <br /><br />

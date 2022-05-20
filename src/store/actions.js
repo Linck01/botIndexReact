@@ -17,6 +17,7 @@ export const THEME_RTL = '@customization/THEME_RTL';
 export const SET_FONT_FAMILY = '@customization/SET_FONT_FAMILY';
 export const SET_BORDER_RADIUS = '@customization/SET_BORDER_RADIUS';
 export const SET_OUTLINED_FILLED = '@customization/SET_OUTLINED_FILLED';
+export const SET_CUSTOMIZATION = '@customization/SET_CUSTOMIZATION';
 
 // action - snackbar
 export const SNACKBAR_OPEN = '@snackbar/SNACKBAR_OPEN';

@@ -3,6 +3,7 @@ import React from 'react';
 import AdvancedSettings from './AdvancedSettings';
 import MainSettings from './MainSettings';
 import DeleteGameDialog from './DeleteGameDialog';
+import TopUpStartCurrencyDialog from './TopUpStartCurrencyDialog';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
 import { Helmet } from "react-helmet";
@@ -68,6 +69,8 @@ const GameSettings = () => {
             { isLoading ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Update') }
         </Button>
         <br /><br />
+        <TopUpStartCurrencyDialog />
+        <br />
         <DeleteGameDialog /> 
         </>
         

@@ -2,21 +2,27 @@ import React from 'react';
 
 // material-ui
 import { useTheme } from '@material-ui/core/styles';
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography, CircularProgress, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText,Divider,} from '@material-ui/core';
 import languages from '../../../utils/locales/languages.json';
+import fct from '../../../utils/fct.js';
+import { SNACKBAR_OPEN } from '../../../store/actions';
+
 
 import { gridSpacing } from '../../../store/constant';
+import { useDispatch } from 'react-redux';
 
 import GameContext from '../../../contexts/GameContext';
 // assets
 
+import { IconCrown, IconBan, IconLanguage, IconCalendar } from '@tabler/icons';
 
 //===========================|| WIDGET STATISTICS ||===========================//
 
 const WidgetStatistics = (props) => {
     const theme = useTheme();
     const { game } = React.useContext(GameContext);
-    
+    const { adminUsername } = props;
+
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12} lg={12}>
@@ -26,7 +32,43 @@ const WidgetStatistics = (props) => {
                 {game.desc}
             </Grid>
             <Grid item xs={12} lg={12}>
-                <Typography variant="h5">Language:</Typography> {languages[game.language][0]}
+                <List component="nav" aria-label="main mailbox folders">
+                    <ListItem button>
+                        <ListItemIcon>
+                            <IconCrown sx={{ fontSize: '1.3rem' }} />
+                        </ListItemIcon>
+                        <ListItemText primary={<Typography variant="subtitle1">Admin</Typography>} />
+                        <ListItemSecondaryAction>
+                            <Typography variant="subtitle2" align="right">
+                            {adminUsername}
+                            </Typography>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                    <Divider />
+                    <ListItem button>
+                        <ListItemIcon>
+                            <IconLanguage sx={{ fontSize: '1.3rem' }} />
+                        </ListItemIcon>
+                        <ListItemText primary={<Typography variant="subtitle1">Language</Typography>} />
+                        <ListItemSecondaryAction>
+                            <Typography variant="subtitle2" align="right">
+                                {languages[game.language][0]}
+                            </Typography>
+                        </ListItemSecondaryAction>
+                    </ListItem>
+                    <Divider /> 
+                    <ListItem button>
+                        <ListItemIcon>
+                            <IconCalendar sx={{ fontSize: '1.3rem' }} />
+                        </ListItemIcon>
+                        <ListItemText primary={<Typography variant="subtitle1">Created</Typography>} />
+                        <ListItemSecondaryAction>
+                            <Typography variant="subtitle2" align="right">
+                                {fct.formatDateTime(game._createdAt)}
+                            </Typography>
+                        </ListItemSecondaryAction>
+                    </ListItem>      
+                </List>
             </Grid>
         </Grid>
     );

@@ -18,7 +18,7 @@ import useAuth from '../../../../../hooks/useAuth';
 const useStyles = makeStyles((theme) => ({
     socialHoverCard: {
         position: 'relative',
-        background: theme.palette.mode === 'dark' ? theme.palette.secondary.main : theme.palette.secondary.light,
+        background: theme.palette.mode === 'dark' ? theme.palette.secondary.main : theme.palette.secondary.main,
         color: '#fff',
         '&:hover svg': {
             opacity: '1',
@@ -63,6 +63,10 @@ const MemberCurrencyCard = (props) => {
         //setIsLoading(true);
 
         try {
+            if (!user)
+                return dispatch({ type: SNACKBAR_OPEN, open: true, message:  'Please log in to favorite a game.',
+                    variant: 'alert', alertSeverity: 'error', close: true });
+
             const obj = { isFavoritedGame: !favorited };
             const response = await axios.patch(config.apiHost + '/v1/members/' + game.id + '/' + user.id, obj);
             console.log(response);
@@ -87,8 +91,7 @@ const MemberCurrencyCard = (props) => {
                         </Typography>  
                     </Grid>
                     <Grid item xs={2}>
-                        {member ? (<IconHeart onClick={changeIsFavoritedGame} style={{width: '1.9em',height: '1.9em', stroke: colors.errorMain, fill: favorited ? colors.errorMain : 'none'}} />) : ''}
-                                                            
+                        <IconHeart onClick={changeIsFavoritedGame} style={{width: '1.9em',height: '1.9em', stroke: colors.errorMain, fill: favorited ? colors.errorMain : 'none'}} />                    
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="caption" color="inherit" style={{fontSize: '1.5em'}}>

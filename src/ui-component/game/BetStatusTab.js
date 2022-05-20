@@ -120,8 +120,19 @@ const BetStatusTab = ({ bet }) => {
     const classes = useStyles();
     const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     const { colors } = useColors();
-    const status = getStatus(bet);
+    const [status,setStatus] = React.useState(getStatus(bet));
     
+    const statusLoop = async () => {
+        while (status && status.tag == 'inProgress') {
+            await fct.sleep(1000);
+            setStatus(getStatus(bet));
+        }
+    }
+
+    React.useEffect(() => {
+        statusLoop();
+    }, []);
+
     return (
         <Grid container spacing={1}>
             <Grid item xs={3} textAlign="center">

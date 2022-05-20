@@ -102,7 +102,7 @@ const BetDetails = () => {
 
         {isLoading ? (
             <>
-            <br /><br /><br />
+            <br /><br />
             <Grid container justifyContent="center">
                 <CircularProgress color="secondary" size="10em"  />
             </Grid>

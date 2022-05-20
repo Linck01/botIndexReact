@@ -82,7 +82,7 @@ export default function DeleteGameDialog(props) {
 
             <Dialog fullWidth={true} open={open} onClose={handleClose} aria-labelledby="form-dialog-title" >
                 <DialogTitle id="form-dialog-title">
-                    <Typography style={{fontSize:'1.7em',fontWeight: 'bold'}}>End game</Typography>
+                    <Typography style={{fontSize:'1.7em',fontWeight: 'bold'}}>Delete game</Typography>
                 </DialogTitle>
                 <DialogContent>
                     <DialogContentText>

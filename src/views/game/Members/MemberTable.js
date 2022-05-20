@@ -10,12 +10,10 @@ import { Paper, Typography, Grid, Table,
     TableRow,  } from '@material-ui/core';
 
 import GameContext from '../../../contexts/GameContext';
+//import useAuth from '../../../hooks/useAuth';
 // assets
-import FastfoodIcon from '@material-ui/icons/FastfoodTwoTone';
-import LaptopMacIcon from '@material-ui/icons/LaptopMacTwoTone';
-import HotelIcon from '@material-ui/icons/HotelTwoTone';
-import RepeatIcon from '@material-ui/icons/RepeatTwoTone';
 import fct from '../../../utils/fct.js';
+import MemberTableRow from './MemberTableRow';
 
 // style constant
 const useStyles = makeStyles((theme) => ({
@@ -26,10 +24,11 @@ const useStyles = makeStyles((theme) => ({
 
 //==============================|| UI TIMELINE - CUSTOMIZED ||==============================//
 
-export default function CustomizedTimeline( props ) {
+export default function MemberTable( props ) {
     const { membersPage } = props;
     const classes = useStyles();
-    const { game } = React.useContext(GameContext);
+    const { game, privileges } = React.useContext(GameContext);
+    //const { user } = useAuth();
 
     return (
         <>
@@ -40,15 +39,13 @@ export default function CustomizedTimeline( props ) {
                         <TableCell align='center'>Title</TableCell>
                         <TableCell align='center'>{game.currencyName}</TableCell>
                         <TableCell align='center'>Playing since</TableCell>
+                        {privileges.admin || privileges.mod ? <TableCell align='center'>Ban</TableCell> : ''}
+                        {privileges.admin ? <TableCell align='center'>Mod</TableCell> : ''}
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {membersPage.items.map((member, index) => (
-                        <TableRow hover key={member.id}>
-                            <TableCell align='center'>{member.username}</TableCell>
-                            <TableCell align='center'>{member.currency.$numberDecimal}</TableCell>
-                            <TableCell align='center'>{fct.formatDateTime(member._createdAt)}</TableCell>
-                        </TableRow>
+                        <MemberTableRow member={member} />
                     ))}
                 </TableBody>
             </Table>

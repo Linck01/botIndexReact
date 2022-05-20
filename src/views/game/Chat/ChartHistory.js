@@ -18,12 +18,13 @@ const ChartHistory = ({ theme, data, scrollBarEl }) => {
     const { user } = useAuth();
 
     const scrollToBottom = useCallback(() => {
-        if (scrollBarEl) scrollBarEl.scrollTop = 100;
+        if (scrollBarEl) scrollBarEl.scrollTop = scrollBarEl.scrollHeight;
     }, [el]);
 
     useEffect(() => {
         scrollToBottom();
-    }, [data.length, scrollToBottom]);
+        console.log('scrollToBottom');
+    }, [data.length, scrollBarEl]);
 
     return (
    
@@ -33,7 +34,7 @@ const ChartHistory = ({ theme, data, scrollBarEl }) => {
                         <React.Fragment key={index}>
                             {/*console.log(JSON.stringify(history))*/}
                            <Grid container direction="column" spacing={1}>
-                                <Grid item style={{marginBottom: '2%'}}>                
+                                <Grid item style={{marginBottom: '2px'}}>                
                                     <Typography variant="title" color="secondary.200" >
                                         {history.user.username + ': '}
                                     </Typography>

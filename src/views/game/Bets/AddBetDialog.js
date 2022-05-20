@@ -33,7 +33,7 @@ export default function AddBetDialog({...props}) {
     const [desc, setDesc] = React.useState('');
     const [title, setTitle] = React.useState('');
     const [dynamicOdds, setDynamicOdds] = React.useState(false);
-    const [dynamicOddsPower, setDynamicOddsPower] = React.useState(game.startCurrency.$numberDecimal);
+    const [dynamicOddsPower, setDynamicOddsPower] = React.useState(parseFloat(game.startCurrency.$numberDecimal) / 2);
 
     const [timeLimit, setTimeLimit] = React.useState(new Date());
     const [betType, setBetType] = React.useState('catalogue');
@@ -147,7 +147,7 @@ export default function AddBetDialog({...props}) {
                             />
                         </Grid>
                         {dynamicOdds ? (<Grid item xs={6}><TextField value={dynamicOddsPower} fullWidth onChange={e => setDynamicOddsPower(e.target.value)}
-                                label={'Dynamic odds power'} type='number' size="small" inputProps={{ maxLength: 10 }} /></Grid>) : ''}
+                                label={'Average estimated tip'} type='number' size="small" inputProps={{ maxLength: 10 }} /></Grid>) : ''}
                         <Grid item xs={12}>
                             <FormControl>
                                 <RadioGroup

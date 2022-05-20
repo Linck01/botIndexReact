@@ -28,7 +28,7 @@ const WidgetStatistics = (props) => {
 
     return (
         <Grid container spacing={gridSpacing}>
-            <Grid item xs={12} lg={4}>
+            <Grid item xs={12} md={4}>
                 <UserCountCard
                     primary="Participants"
                     secondary={bet.memberCount.toString()}
@@ -36,7 +36,7 @@ const WidgetStatistics = (props) => {
                     color={theme.palette.secondary.main}
                 />
             </Grid>
-            <Grid item xs={12} lg={4} sm={6}>
+            <Grid item xs={6} md={4}>
                 <UserCountCard
                     primary="Staked"
                     secondary={staked.toString()}
@@ -44,7 +44,7 @@ const WidgetStatistics = (props) => {
                     color={theme.palette.primary.dark}
                 />
             </Grid>
-            <Grid item xs={12} lg={4} sm={6}>
+            <Grid item xs={6} md={4}>
                 <UserCountCard
                     primary="In Pot"
                     secondary={bet.inPot.$numberDecimal}
@@ -52,8 +52,6 @@ const WidgetStatistics = (props) => {
                     color={theme.palette.success.dark}
                 />
             </Grid>
-
-         
         </Grid>
     );
 };

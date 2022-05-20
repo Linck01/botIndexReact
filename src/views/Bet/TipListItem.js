@@ -107,7 +107,7 @@ export default function CustomList(props) {
                         <FiberManualRecordIcon className={classes.textActive} /> &nbsp;
                         {bet.betType == 'catalogue' ? bet.catalogue_answers[tip.answerId].title : ''}
                         {bet.betType == 'scale' ? tip.answerDecimal.$numberDecimal : ''}
-                        <small>&nbsp;(x{tip.odds.$numberDecimal})</small>
+                        <small>&nbsp;(x{+parseFloat(tip.odds.$numberDecimal).toFixed(3)})</small>
                     </Typography> 
                 </Grid>
             

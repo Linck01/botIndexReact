@@ -20,13 +20,16 @@ export const initialState = {
 
 const customizationReducer = (state = initialState, action) => {
     switch (action.type) {
+        case actionTypes.SET_CUSTOMIZATION:
+            return {
+                ...action.customization,
+            };
         case actionTypes.MENU_OPEN:
             const id = action.id;
             return {
                 ...state,
                 isOpen: [id]
             };
-
         case actionTypes.MENU_TYPE:
             return {
                 ...state,

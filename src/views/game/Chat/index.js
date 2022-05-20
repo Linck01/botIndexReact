@@ -73,7 +73,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
 
         try {
             const res = await axios.get(config.gameHosts[game.serverId] + '/v1/messages/',
-                { params: { gameId: game.id, sortBy: '-_createdAt', limit: 10 , page: 0 } });
+                { params: { gameId: game.id, sortBy: '-_createdAt', limit: 100 , page: 0 } });
             
             setChat({...chat, isInitialized: true, items: res.data.results.reverse()});
             setIsLoading(false);
