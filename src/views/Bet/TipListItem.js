@@ -80,7 +80,7 @@ export default function CustomList(props) {
     React.useEffect(() => {
         if (bet.isPaid && tip.diff) {
             const str = (<Typography align="left" 
-                style={{color:colors[parseFloat(tip.diff.$numberDecimal) < 0 ? 'error' : 'success'], textAlign: 'center', fontSize:'0.7em'}} 
+                style={{color: parseFloat(tip.diff.$numberDecimal) < 0 ? theme.palette.error.main : theme.palette.success.main, textAlign: 'center', fontSize:'0.7em'}} 
                 variant="">({parseFloat(tip.diff.$numberDecimal).toFixed(2)})
             </Typography>);
 
@@ -107,7 +107,7 @@ export default function CustomList(props) {
                         <FiberManualRecordIcon className={classes.textActive} /> &nbsp;
                         {bet.betType == 'catalogue' ? bet.catalogue_answers[tip.answerId].title : ''}
                         {bet.betType == 'scale' ? tip.answerDecimal.$numberDecimal : ''}
-                        <small>&nbsp;(x{+parseFloat(tip.odds.$numberDecimal).toFixed(3)})</small>
+                        <small>&nbsp;(x{+parseFloat(tip.odds.$numberDecimal).toFixed(2)})</small>
                     </Typography> 
                 </Grid>
             

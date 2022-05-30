@@ -104,7 +104,7 @@ const BetListItem = ({ bet }) => {
                             
                         <Grid item xs={4} md={4}>
                                 <Typography variant="caption">In Pot</Typography>
-                                <Typography variant="h6">{bet.inPot.$numberDecimal}</Typography>
+                                <Typography variant="h6">{+parseFloat(bet.inPot.$numberDecimal).toFixed(2)}</Typography>
                             </Grid>
 
                 

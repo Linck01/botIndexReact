@@ -28,7 +28,6 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-
 //==============================|| UI TIMELINE - CUSTOMIZED ||==============================//
 
 export default function MemberTableRow( props ) {
@@ -71,11 +70,11 @@ export default function MemberTableRow( props ) {
     return (
         <TableRow hover key={member.id}>
             <TableCell align='center'>
-                {member.isModerator || (user && game.userId == user.id) ? <><IconCrown stroke={1.5} size="0.8rem" color={theme.palette.warning.main}/>&nbsp;</> : ''}
+                {member.isModerator || (user && game.userId == member.userId) ? <><IconCrown stroke={1.5} size="0.8rem" color={theme.palette.warning.main}/>&nbsp;</> : ''}
                 {member.isBanned ? <><IconBan stroke={1.5} size="0.8rem" color={theme.palette.error.main}/>&nbsp;</> : ''}
                 {member.username}
                 </TableCell>
-            <TableCell align='center'>{member.currency.$numberDecimal}</TableCell>
+            <TableCell align='center'>{+parseFloat(member.currency.$numberDecimal).toFixed(2)}</TableCell>
             <TableCell align='center'>{fct.formatDate(member._createdAt)}</TableCell>
 
             {privileges.admin ?

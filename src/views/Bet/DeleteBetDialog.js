@@ -69,7 +69,7 @@ export default function DeleteBetDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="info" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} variant="outlined" color="error" onClick={handleClickOpen}>
                 Delete bet
             </Button>
 

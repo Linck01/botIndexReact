@@ -92,10 +92,10 @@ const ScaleAnswerBox = ( props ) => {
                         {bet.scale_answers.map((interval, index) => (
                             <TableRow hover key={interval._id}>
                                 <TableCell align='center'>{'>'} {interval.from.$numberDecimal}</TableCell>
-                                <TableCell align='center'>{+parseFloat(fct.getActualOdds(bet)[index]).toFixed(3)}</TableCell>
+                                <TableCell align='center'>{+parseFloat(fct.getActualOdds(bet)[index]).toFixed(2)}</TableCell>
                                 <TableCell align='center'>{interval.memberCount}</TableCell>
-                                <TableCell align='center'>{+parseFloat(interval.inPot.$numberDecimal).toFixed(3)}</TableCell>
-                                <TableCell align='center'> {+parseFloat(stakedIntervals[index]).toFixed(3)}</TableCell>
+                                <TableCell align='center'>{+parseFloat(interval.inPot.$numberDecimal).toFixed(2)}</TableCell>
+                                <TableCell align='center'> {+parseFloat(stakedIntervals[index]).toFixed(2)}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

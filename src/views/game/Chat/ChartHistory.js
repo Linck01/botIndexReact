@@ -27,27 +27,24 @@ const ChartHistory = ({ theme, data, scrollBarEl }) => {
     }, [data.length, scrollBarEl]);
 
     return (
-   
-            <Grid container spacing={gridSpacing} ref={wrapper}>
-                {data.map((history, index) => {
-                    return (
-                        <React.Fragment key={index}>
-                            {/*console.log(JSON.stringify(history))*/}
-                           <Grid container direction="column" spacing={1}>
-                                <Grid item style={{marginBottom: '2px'}}>                
-                                    <Typography variant="title" color="secondary.200" >
-                                        {history.user.username + ': '}
-                                    </Typography>
-                                    <Typography variant="subheading">
-                                        {history.message}
-                                    </Typography>
-                                </Grid>
+        <Grid container spacing={gridSpacing} ref={wrapper}>
+            {data.map((history, index) => {
+                return (
+                    <React.Fragment key={index}>
+                        <Grid container direction="column" spacing={1}>
+                            <Grid item style={{marginBottom: '2px'}}>                
+                                <Typography variant="title" color="secondary.200" >
+                                    {history.user.username + ': '}
+                                </Typography>
+                                <Typography variant="subheading">
+                                    {history.message}
+                                </Typography>
                             </Grid>
-                        </React.Fragment>
-                    );
-                })}
-            </Grid>
-      
+                        </Grid>
+                    </React.Fragment>
+                );
+            })}
+        </Grid>  
     );
 };
 

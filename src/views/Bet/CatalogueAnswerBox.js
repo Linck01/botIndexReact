@@ -67,12 +67,12 @@ const CatalogueAnswerBox = ( props ) => {
                                 {bet.catalogue_answers.map((answer, index) => (
                                     <TableRow hover key={answer._id}>
                                         <TableCell align='center'>{answer.title}</TableCell>
-                                        {bet.dynamicOdds ? <TableCell align='center'>{+parseFloat(answer.odds.$numberDecimal).toFixed(3)}</TableCell> : ''}
-                                        <TableCell align='center'>{+parseFloat(fct.getActualOdds(bet)[index]).toFixed(3)}</TableCell>
+                                        {bet.dynamicOdds ? <TableCell align='center'>{+parseFloat(answer.odds.$numberDecimal).toFixed(2)}</TableCell> : ''}
+                                        <TableCell align='center'>{+parseFloat(fct.getActualOdds(bet)[index]).toFixed(2)}</TableCell>
                                         <TableCell align='center'>{answer.memberCount}</TableCell>
-                                        <TableCell align='center'>{+parseFloat(answer.inPot.$numberDecimal).toFixed(3)}</TableCell>
+                                        <TableCell align='center'>{+parseFloat(answer.inPot.$numberDecimal).toFixed(2)}</TableCell>
                                         <TableCell align='center'>
-                                            {myTips.filter((t) => t.answerId == index).length == 1 ? +parseFloat(myTips.filter((t) => t.answerId == index)[0].currency.$numberDecimal).toFixed(3) : '0'}
+                                            {myTips.filter((t) => t.answerId == index).length == 1 ? +parseFloat(myTips.filter((t) => t.answerId == index)[0].currency.$numberDecimal).toFixed(2) : '0'}
                                         </TableCell>
                                         
                                     </TableRow>

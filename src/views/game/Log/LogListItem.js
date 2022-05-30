@@ -44,7 +44,7 @@ export default function CustomizedTimeline( props ) {
     if (log.logType == 'betCreated') {
         color = colors.warningDark;
         icon = <IconPlus  />;
-    } else if (log.logType == 'betPaidOut') {
+    } else if (log.logType == 'betSolved') {
         color = colors.successDark;
         icon = <IconCheck  />;
     } else if (log.logType == 'betAborted') {

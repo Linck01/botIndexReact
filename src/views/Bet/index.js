@@ -124,19 +124,28 @@ const BetDetails = () => {
                 </>
             ) : ''}
 
-            {!betPage.bet.isSolved && !betPage.bet.isAborted && !fct.hasBetEnded(betPage.bet) && (privileges.admin || privileges.mod) ? (
+            {!betPage.bet.isSolved && !betPage.bet.isAborted && (privileges.admin || privileges.mod) ? (
                 <>
-               <Grid container spacing={gridSpacing} >  
-                    <Grid item xs={12}><EndBetDialog bet={betPage.bet} /></Grid>   
-                </Grid><br />
+                    {!fct.hasBetEnded(betPage.bet) ? (
+                        <Grid container spacing={gridSpacing} >
+                            <Grid item xs={4}><EndBetDialog bet={betPage.bet} /></Grid>
+                            <Grid item xs={4}><SolveBetDialog bet={betPage.bet} /></Grid>
+                            <Grid item xs={4}><AbortBetDialog bet={betPage.bet} /></Grid>
+                        </Grid>
+                    ) : (
+                        <Grid container spacing={gridSpacing} >
+                            <Grid item xs={6}><SolveBetDialog bet={betPage.bet} /></Grid>
+                            <Grid item xs={6}><AbortBetDialog bet={betPage.bet} /></Grid>
+                        </Grid>
+                    )}
+                <br />
                 </>
             ) : ''}
 
             {!betPage.bet.isSolved && !betPage.bet.isAborted && (privileges.admin || privileges.mod) ? (
                 <>
                <Grid container spacing={gridSpacing} >  
-                    <Grid item xs={6}><SolveBetDialog bet={betPage.bet} /></Grid>
-                    <Grid item xs={6}><AbortBetDialog bet={betPage.bet} /></Grid>   
+                       
                 </Grid><br /> 
                 </>
             ) : ''}
