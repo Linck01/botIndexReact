@@ -81,7 +81,7 @@ const UserProfileCard = (props) => {
                     <Grid item xs={12}>
                         {game.currencyName}
 
-                        {!game.isSolved ? (
+                        {!game.isEnded ? (
                             <Chip label="Active" size="small" className={classes.active} />
                         ) : (
                             <Chip label="Solved" size="small" className={classes.reject} />
