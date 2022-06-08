@@ -59,7 +59,7 @@ export function theme(customization) {
         divider: '',
         customization: customization
     };
-
+    
     switch (customization.navType) {
         case 'dark':
             themeOption.paper = color.darkLevel2;
@@ -87,7 +87,7 @@ export function theme(customization) {
             themeOption.heading = color.grey900;
             break;
     }
-
+    console.log('themeOption.darkTextPrimary',themeOption.darkTextPrimary, 'color.darkTextPrimary', color.darkTextPrimary);
     return createTheme({
         direction: customization.rtlLayout ? 'rtl' : 'ltr',
         palette: themePalette(themeOption),
