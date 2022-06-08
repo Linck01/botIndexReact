@@ -45,6 +45,10 @@ export function theme(customization) {
             color = colors;
     }
 
+    for (let c in color)
+        if (color[c].length == 4)
+            color[c] = color[c][0] + color[c][1] + color[c][1] + color[c][2] + color[c][2] + color[c][3] + color[c][3];
+    console.log(color);
     let themeOption = {
         colors: color,
         heading: '',
