@@ -74,7 +74,6 @@ export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
     let { gameId } = useParams();
     const { user } = useAuth();
-    console.log('GAMECONTEXT id' + gameId);
 
     /*
     *  Game

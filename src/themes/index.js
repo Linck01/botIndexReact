@@ -48,7 +48,7 @@ export function theme(customization) {
     for (let c in color)
         if (color[c].length == 4)
             color[c] = color[c][0] + color[c][1] + color[c][1] + color[c][2] + color[c][2] + color[c][3] + color[c][3];
-    console.log(color);
+
     let themeOption = {
         colors: color,
         heading: '',
@@ -91,7 +91,7 @@ export function theme(customization) {
             themeOption.heading = color.grey900;
             break;
     }
-    console.log('themeOption.darkTextPrimary',themeOption.darkTextPrimary, 'color.darkTextPrimary', color.darkTextPrimary);
+
     return createTheme({
         direction: customization.rtlLayout ? 'rtl' : 'ltr',
         palette: themePalette(themeOption),

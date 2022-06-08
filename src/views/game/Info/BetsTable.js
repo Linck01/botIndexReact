@@ -30,7 +30,7 @@ export default function CustomizedTimeline( props ) {
     const { membersPage } = props;
     const classes = useStyles();
     const { game } = React.useContext(GameContext);
-    console.log('AAAAAAAAAAAAA', membersPage);
+
     return (
         <>
         <TableContainer>
