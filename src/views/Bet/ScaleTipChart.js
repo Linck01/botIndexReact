@@ -85,7 +85,7 @@ const ApexAreaChart = (props) => {
                 data: bet.scale_answers.map(a => parseFloat(a.memberCount))
             },
         ]);
-        console.log(primary, grey200, darkLight, theme.palette.warning.main, theme.palette.secondary.main);
+
         setOptions((prevState) => ({
             ...prevState,
             colors: [theme.palette.warning.main, theme.palette.secondary.main],

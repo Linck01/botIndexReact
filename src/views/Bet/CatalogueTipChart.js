@@ -82,7 +82,7 @@ const ApexPolarChart = (props) => {
             values = bet.catalogue_answers.map((a) => a.inPot.$numberDecimal);
         
         setSeries(values);
-        console.log(primary, grey200, darkLight, answerColors);
+
         setOptions((prevState) => ({
             ...prevState,
             colors: answerColors,
