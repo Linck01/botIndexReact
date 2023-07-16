@@ -5,6 +5,7 @@ const config = {
     borderRadius: 12,
     outlinedFilled: true,
     theme: 'dark',
+    genericKeywords: ['bet', 'wager'],
     presetColor: 'theme1', // default, theme1, theme2, theme3, theme4, theme5, theme6
     // 'en' - English, 'fr' - French, 'ro' - Romanian, 'zh' - Chinese
     i18n: 'en',
@@ -20,6 +21,7 @@ const config = {
     betsPageSize: 9,
     hCaptchaSiteKey: '',
     captchaTickerInterval: 5,
+    appUrl: ''
 };
 
 if (process.env.NODE_ENV == 'production') {
