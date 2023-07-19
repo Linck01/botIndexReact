@@ -1,20 +1,10 @@
 import React from 'react';
-
-// material-ui
 import { useTheme } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
-
-
 import UserCountCard from '../../../ui-component/cards/UserCountCard';
-
 import { gridSpacing } from '../../../store/constant';
-
 import GameContext from '../../../contexts/GameContext';
-// assets
-
 import AccountCircleTwoTone from '@material-ui/icons/AccountCircleTwoTone';
-
-import DescriptionTwoToneIcon from '@material-ui/icons/DescriptionTwoTone';
 import EmojiEventsTwoToneIcon from '@material-ui/icons/EmojiEventsTwoTone';
 
 //===========================|| WIDGET STATISTICS ||===========================//

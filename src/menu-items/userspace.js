@@ -1,11 +1,6 @@
 import React from 'react';
-import config from '../config.js';
-// third-party
 import { FormattedMessage } from 'react-intl';
-
-// assets
 import { IconServer, IconDeviceGamepad } from '@tabler/icons';
-
 
 //-----------------------|| APPLICATION MENU ITEMS ||-----------------------//
 

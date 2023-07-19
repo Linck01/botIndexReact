@@ -1,25 +1,8 @@
 
-// material-ui
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Typography, FormControl, FormControlLabel, Grid, Radio, RadioGroup } from '@material-ui/core';
-
-import React, {useState, useEffect, useRef, useContext} from 'react';
-import GameContext from '../../../contexts/GameContext';
-import fct from '../../../utils/fct.js';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import { useDispatch } from 'react-redux';
-// project imports
-
-
-import { SNACKBAR_OPEN } from '../../../store/actions';
-import useAuth from '../../../hooks/useAuth';
-import axios from '../../../utils/axios';
-import config from '../../../config';
-import CustomDateTime from './CustomDateTime';
-import SubCard from '../../../ui-component/cards/SubCard';
+import { Button, TextField, Typography, Grid } from '@material-ui/core';
+import React, { useEffect } from 'react';
 import { IconCirclePlus } from '@tabler/icons';
 import { gridSpacing } from '../../../store/constant';
-
-//===============================|| UI DIALOG - FORMS ||===============================//
 
 export default function AnswerCatalogue({...props}) {
     const { catalogue_answers, setCatalogue_answers } = props;

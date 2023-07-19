@@ -1,12 +1,6 @@
 import React from 'react';
-import config from '../config.js';
-// third-party
 import { FormattedMessage } from 'react-intl';
-
-// assets
-import { IconCalendar, IconBrandAppleArcade, IconUsers } from '@tabler/icons';
-
-
+import { IconBrandAppleArcade, IconUsers } from '@tabler/icons';
 
 const tags = () => {
     return 

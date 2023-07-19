@@ -13,7 +13,9 @@ export const initialState = {
     presetColor: config.presetColor,
     locale: config.i18n,
     rtlLayout: config.rtlLayout,
-    opened: true
+    opened: true,
+    showSolvedBets: true,
+    showAbortedBets: true,
 };
 
 //-----------------------|| CUSTOMIZATION REDUCER ||-----------------------//
@@ -30,11 +32,16 @@ const customizationReducer = (state = initialState, action) => {
                 ...state,
                 isOpen: [id]
             };
-        case actionTypes.MENU_TYPE:
+        case actionTypes.SET_MENU:
             return {
                 ...state,
-                navType: action.navType
-            };
+                opened: action.opened
+        };/*
+        case actionTypes.MENU_TYPE:
+        return {
+            ...state,
+            navType: action.navType
+        }; 
         case actionTypes.PRESET_COLORS:
             return {
                 ...state,
@@ -50,11 +57,7 @@ const customizationReducer = (state = initialState, action) => {
                 ...state,
                 rtlLayout: action.rtlLayout
             };
-        case actionTypes.SET_MENU:
-            return {
-                ...state,
-                opened: action.opened
-            };
+        
         case actionTypes.SET_FONT_FAMILY:
             return {
                 ...state,
@@ -69,7 +72,7 @@ const customizationReducer = (state = initialState, action) => {
             return {
                 ...state,
                 outlinedFilled: action.outlinedFilled
-            };
+            };*/
         default:
             return state;
     }

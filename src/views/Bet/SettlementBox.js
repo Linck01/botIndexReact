@@ -1,30 +1,10 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import axios from '../../utils/axios';
-import fct from '../../utils/fct.js';
 import config from '../../config';
-import { SNACKBAR_OPEN } from '../../store/actions';
-import SubCard from '../../ui-component/cards/SubCard';
-import { Button, Box, CardMedia, Grid, Stack, Switch, Typography, makeStyles, Pagination, CircularProgress, Divider, TextField, Table,
-    Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow, 
-    CardActions,
-    CardContent,
-     } from '@material-ui/core';
-import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
-import MainCard from '../../ui-component/cards/MainCard';
-import PerfectScrollbar from 'react-perfect-scrollbar';
+import { Button, Grid, Typography, makeStyles, CircularProgress,
+    Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import { gridSpacing } from '../../store/constant';
-const util = require('util');
-
-// material-ui
-
-//-----------------------|| CUSTOM DATETIME ||-----------------------//
 
 const useStyles = makeStyles((theme) => ({
     btnTable: {
@@ -60,7 +40,6 @@ const ScaleAnswerBox = ( props ) => {
             setIsLoading(true);
 
             const response = await axios.get(config.apiHost + '/v1/bets/' + bet.id + '/settlementTips');
-            console.log(response);
 
             setSettlementTips(response.data);
             setIsLoading(false);

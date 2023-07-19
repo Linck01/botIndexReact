@@ -40,7 +40,6 @@ const FirebaseForgotPassword = ({ ...others }) => {
 
         try {
             const response = await axios.post(config.apiHost + '/v1/auth/reset-password', { userId, code });
-            console.log(response);
 
             setIsLoading(false);
             setSuccessfullReset(true);
@@ -53,7 +52,6 @@ const FirebaseForgotPassword = ({ ...others }) => {
     };
 
     useEffect(() => {
-        console.log(params.get('userId'));
         if (params.has('userId') && params.has('code')) 
             sendResetPassword(params.get('userId'),params.get('code'));
         else

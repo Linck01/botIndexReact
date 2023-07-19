@@ -1,49 +1,24 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import fct from '../../../utils/fct.js';
 import config from '../../../config.js';
 import { Helmet } from "react-helmet";
-
-// material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-    CardContent,
-    Drawer,
-    ClickAwayListener,
-    Grid,
-    IconButton,
-    Popper,
-    TextField,
-    useMediaQuery,
-    Divider,
-    MenuItem,
-    Menu,
-    CircularProgress
-} from '@material-ui/core';
-
-import MoreHorizTwoToneIcon from '@material-ui/icons/MoreHorizTwoTone';
-import { SNACKBAR_OPEN, NEW_MESSAGES } from '../../../store/actions';
-// third-party
+import { CardContent, ClickAwayListener, Grid, IconButton, Popper,
+    TextField, useMediaQuery, CircularProgress } from '@material-ui/core';
+import { SNACKBAR_OPEN } from '../../../store/actions';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Picker, { SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react';
-
-// project imports
 import ChartHistory from './ChartHistory';
 import MainCard from '../../../ui-component/cards/MainCard';
 import axios from '../../../utils/axios';
-import { appDrawerWidth as drawerWidth, gridSpacing } from '../../../store/constant';
 import useAuth from '../../../hooks/useAuth';
 import GameContext from '../../../contexts/GameContext';
-
-// assets
 import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone';
 import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
 import MoodTwoToneIcon from '@material-ui/icons/MoodTwoTone';
-import utils from 'util';
 
 const avatarImage = require.context('../../../assets/images/users', true);
 
-// style constant
 const useStyles = makeStyles((theme) => ({
     ScrollHeight: {
         width: '100%',
@@ -52,8 +27,6 @@ const useStyles = makeStyles((theme) => ({
         minHeight: '10px'
     }
 }));
-
-//-----------------------|| APPLICATION CHAT ||-----------------------//
 
 const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     const classes = useStyles();
@@ -196,7 +169,6 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
             }}>
             <PerfectScrollbar className={classes.ScrollHeight} containerRef={ref => {setScrollBarEl(ref);}}>
                 <CardContent>
-                    {console.log('chat',chat)}
                     {isLoading ? (
                         <>
                         <br />

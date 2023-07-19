@@ -1,33 +1,16 @@
 import React from 'react';
-
 import GameStatsCards from './GameStatsCards';
 import GameMainInfo from './GameMainInfo';
 import GameTopMembers from './GameTopMembers';
 import GameTopBets from './GameTopBets';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
-
-// material-ui
 import { Grid, CircularProgress } from '@material-ui/core';
-
-// project imports
-import Avatar from '../../../ui-component/extended/Avatar';
-import SubCard from '../../../ui-component/cards/SubCard';
-import { gridSpacing } from '../../../store/constant';
 import GameContext from '../../../contexts/GameContext';
 import fct from '../../../utils/fct.js';
 import axios from '../../../utils/axios';
 import config from '../../../config';
-
-// assets
-import PhonelinkRingTwoToneIcon from '@material-ui/icons/PhonelinkRingTwoTone';
-import PinDropTwoToneIcon from '@material-ui/icons/PinDropTwoTone';
-import MailTwoToneIcon from '@material-ui/icons/MailTwoTone';
-
-import Avatar3 from '../../../assets/images/users/avatar-3.png';
 import { Helmet } from "react-helmet";
-
-//-----------------------|| PROFILE 1 - PROFILE ||-----------------------//
 
 const GameInfo = () => {
     const { game } = React.useContext(GameContext);

@@ -1,30 +1,13 @@
 import React from 'react';
-
-// material-ui
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Grid, Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,  } from '@material-ui/core';
-
+import { Table, TableBody, TableCell, TableContainer, TableHead,
+    TableRow } from '@material-ui/core';
 import GameContext from '../../../contexts/GameContext';
-// assets
-import FastfoodIcon from '@material-ui/icons/FastfoodTwoTone';
-import LaptopMacIcon from '@material-ui/icons/LaptopMacTwoTone';
-import HotelIcon from '@material-ui/icons/HotelTwoTone';
-import RepeatIcon from '@material-ui/icons/RepeatTwoTone';
 import fct from '../../../utils/fct.js';
 
-// style constant
 const useStyles = makeStyles((theme) => ({
-    aaa: {
-       
-    }
-}));
 
-//==============================|| UI TIMELINE - CUSTOMIZED ||==============================//
+}));
 
 export default function CustomizedTimeline( props ) {
     const { membersPage } = props;

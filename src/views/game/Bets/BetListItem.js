@@ -1,34 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-
-// material-ui
-import {
-    AvatarGroup,
-    Button,
-    Grid,
-    LinearProgress,
-    makeStyles,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
-    Typography,
-    ListItem,
-    useMediaQuery,
-    Divider,
-    Chip
-} from '@material-ui/core';
-
+import { Button, Grid, makeStyles, Typography, Divider } from '@material-ui/core';
 import { gridSpacing } from '../../../store/constant';
-
 import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
-
 import GameContext from '../../../contexts/GameContext';
 import fct from '../../../utils/fct.js';
 import BetStatusTab from '../../../ui-component/game/BetStatusTab';
-import useColors from '../../../hooks/useColors.js';
-
 
 const useStyles = makeStyles((theme) => ({
     successBadge: {
@@ -121,7 +98,7 @@ const BetListItem = ({ bet }) => {
                                     size="small"
                                     className={classes.btnTable}
                                     startIcon={<ChatBubbleTwoToneIcon />}>
-                                    Details
+                                    View Bet
                                 </Button>
                             </Link>        
                                 

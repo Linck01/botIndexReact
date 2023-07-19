@@ -1,16 +1,9 @@
 import React from 'react';
-
-// material-ui
 import { useTheme } from '@material-ui/core/styles';
 import { Grid, Typography, TextField, MenuItem } from '@material-ui/core';
-
 import { gridSpacing } from '../../../store/constant';
 import languages from '../../../utils/locales/languages.json';
 import GameContext from '../../../contexts/GameContext';
-// assets
-
-
-//===========================|| WIDGET STATISTICS ||===========================//
 
 const WidgetStatistics = (props) => {
     const theme = useTheme();

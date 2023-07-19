@@ -1,27 +1,7 @@
 import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { Link, useParams } from 'react-router-dom';
-import axios from '../../utils/axios';
+import { useDispatch } from 'react-redux';
 import fct from '../../utils/fct.js';
-import config from '../../config';
-import { SNACKBAR_OPEN } from '../../store/actions';
-import SubCard from '../../ui-component/cards/SubCard';
-import { Button, Box, CardMedia, Grid, Stack, Switch, Typography, makeStyles, Pagination, CircularProgress, Divider, TextField, Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow, 
-    CardActions,
-    CardContent,
-     } from '@material-ui/core';
-import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
-import MainCard from '../../ui-component/cards/MainCard';
-import PerfectScrollbar from 'react-perfect-scrollbar';
-
-// material-ui
-
-//-----------------------|| CUSTOM DATETIME ||-----------------------//
+import { makeStyles, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
     btnTable: {

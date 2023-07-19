@@ -1,18 +1,7 @@
-import React, {useState, useEffect, useRef} from 'react';
-import fct from '../../utils/fct.js';
-
-// material-ui
-import { Typography, Grid, Button, InputAdornment, OutlinedInput, CircularProgress, Pagination } from '@material-ui/core';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-
-
-// project imports
-import MainCard from '../../ui-component/cards/MainCard';
+import React, {useState, useEffect } from 'react';
+import { Typography, Grid, CircularProgress, Pagination } from '@material-ui/core';
 import GameCard1 from '../../ui-component/cards/GameCard1';
-import { IconSearch } from '@tabler/icons';
-import SubCard from '../../ui-component/cards/SubCard';
 import { gridSpacing } from '../../store/constant';
-import MuiTypography from '@material-ui/core/Typography';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
@@ -20,8 +9,6 @@ import axios from '../../utils/axios';
 import config from '../../config';
 import AddGameDialog from './AddGameDialog';
 import { Helmet } from "react-helmet";
-
-//==============================|| SAMPLE PAGE ||==============================//
 
 const HostedGamesPage = () => {
     const [isLoading, setIsLoading] = useState(true);

@@ -1,14 +1,9 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-
-// material-ui
 import { useTheme } from '@material-ui/core/styles';
 import useColors from '../../hooks/useColors';
-
-// third-party
 import ReactApexChart from 'react-apexcharts';
 
-// chart options
 const polarChartOptions = {
     chart: {
         width: 450,

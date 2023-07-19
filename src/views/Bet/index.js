@@ -17,18 +17,12 @@ import SolveBetDialog from './SolveBetDialog';
 import AbortBetDialog from './AbortBetDialog';
 import EndBetDialog from './EndBetDialog';
 import DeleteBetDialog from './DeleteBetDialog';
-
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { gridSpacing } from '../../store/constant';
 import { Helmet } from "react-helmet";
-
-// material-ui
 import { Grid, makeStyles, CircularProgress} from '@material-ui/core';
-
 import GameContext from '../../contexts/GameContext';
 import useAuth from '../../hooks/useAuth';
-
-//-----------------------|| UTILITIES - ANIMATION ||-----------------------//
 
 const useStyles = makeStyles((theme) => ({
     btnTable: {

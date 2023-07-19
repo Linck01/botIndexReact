@@ -1,13 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
-// material-ui
 import { makeStyles } from '@material-ui/core/styles';
-
-// project import
 import MainCard from './../../../ui-component/cards/MainCard';
 
-// style constant
 const useStyles = makeStyles((theme) => ({
     card: {
         maxWidth: '475px',

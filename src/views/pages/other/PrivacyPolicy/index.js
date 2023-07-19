@@ -1,14 +1,7 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-// material-ui
 import { Typography } from '@material-ui/core';
-
-// project imports
 import MainCard from '../../../../ui-component/cards/MainCard';
 import { Helmet } from "react-helmet";
-
-//==============================|| SAMPLE PAGE ||==============================//
 
 const SamplePage = () => { return (
     <>

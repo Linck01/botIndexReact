@@ -1,9 +1,6 @@
-import React, {useState, useEffect, useRef} from 'react';
-import fct from '../../utils/fct.js';
+import React, { useState, useEffect } from 'react';
 import { Helmet } from "react-helmet";
-
-// material-ui
-import { Typography, Grid, Button, InputAdornment, OutlinedInput, CircularProgress, Pagination } from '@material-ui/core';
+import { Typography, Grid, CircularProgress, Pagination } from '@material-ui/core';
 import GameCard1 from '../../ui-component/cards/GameCard1';
 import { gridSpacing } from '../../store/constant';
 import { SNACKBAR_OPEN } from '../../store/actions';
@@ -11,8 +8,6 @@ import { useDispatch } from 'react-redux';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
-
-//==============================|| SAMPLE PAGE ||==============================//
 
 const BigGamesPage = () => {
     const [isLoading, setIsLoading] = useState(true);

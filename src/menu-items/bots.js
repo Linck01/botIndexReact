@@ -1,12 +1,8 @@
 import React from 'react';
 import config from '../config.js';
-// third-party
 import { FormattedMessage } from 'react-intl';
-
-// assets
 import { IconUserCheck, IconBasket, IconMessages, IconMail, IconCalendar, IconNfc } from '@tabler/icons';
 
-// constant
 const icons = {
     IconUserCheck: IconUserCheck,
     IconBasket: IconBasket,

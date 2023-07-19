@@ -1,26 +1,14 @@
 import React from 'react';
-
-// material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, Divider, Grid, List, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
+import { Grid, List, Typography } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-
-// project imports
 import MainCard from '../../ui-component/cards/MainCard';
 import { gridSpacing } from '../../store/constant';
 import axios from '../../utils/axios';
 import config from '../../config';
 import { SNACKBAR_OPEN } from '../../store/actions';
-import fct from '../../utils/fct.js';
-
-// assets
-import CheckTwoToneIcon from '@material-ui/icons/CheckTwoTone';
-import TwoWheelerTwoToneIcon from '@material-ui/icons/TwoWheelerTwoTone';
-import AirportShuttleTwoToneIcon from '@material-ui/icons/AirportShuttleTwoTone';
-import DirectionsBoatTwoToneIcon from '@material-ui/icons/DirectionsBoatTwoTone';
 import { IconBrandAppleArcade, IconPin, IconSpeakerphone } from '@tabler/icons';
 import logoDark from '../../assets/images/large.png';
-import logo from '../../assets/images/large.png';
 import GameCard1 from '../../ui-component/cards/GameCard1';
 
 // style constant

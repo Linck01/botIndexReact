@@ -1,15 +1,8 @@
 import * as PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
 import useAuth from '../../../hooks/useAuth';
-import MuiTypography from '@material-ui/core/Typography';
-
-// material-ui
-import { Card, CardContent, Grid, Typography } from '@material-ui/core';
-
-// project imports
+import { Grid, Typography } from '@material-ui/core';
 import { gridSpacing } from '../../../store/constant';
-
-//-----------------------|| CHAT MESSAGE HISTORY ||-----------------------//
 
 const ChartHistory = ({ theme, data, scrollBarEl }) => {
     // scroll to bottom when new message is sent or received
@@ -23,7 +16,6 @@ const ChartHistory = ({ theme, data, scrollBarEl }) => {
 
     useEffect(() => {
         scrollToBottom();
-        console.log('scrollToBottom');
     }, [data.length, scrollBarEl]);
 
     return (

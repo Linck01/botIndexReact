@@ -1,22 +1,13 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import config from '../../../config';
-
-// material-ui
 import { useTheme } from '@material-ui/core';
 import { Divider, Grid, Typography, useMediaQuery } from '@material-ui/core';
-
-// project imports
 import AuthWrapper1 from './AuthWrapper1';
 import AuthCardWrapper from './AuthCardWrapper';
 import Logo from './../../../ui-component/Logo';
 import JWTForgotPassword from './jwt-forms/JWTForgotPassword';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
 import { Helmet } from "react-helmet";
-
-// assets
-
-//============================|| AUTH3 - FORGOT PASSWORD ||============================//
 
 const ForgotPassword = () => {
     const theme = useTheme();

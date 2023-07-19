@@ -1,8 +1,5 @@
-// third-party
 import { FormattedMessage } from 'react-intl';
-
-// assets
-import { IconMail, IconNotebook, IconInfoCircle } from '@tabler/icons';
+import { IconInfoCircle } from '@tabler/icons';
 
 //-----------------------|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||-----------------------//
 

@@ -1,28 +1,15 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import React, {useState, useEffect, useContext} from 'react';
 import GameContext from '../../../contexts/GameContext';
 import fct from '../../../utils/fct.js';
 import MemberTable from './MemberTable';
 
-import { Divider, Typography, CardMedia, Stack, Switch, Pagination, Grid, Button, InputAdornment, OutlinedInput, CircularProgress, Box, Collapse, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import { useDispatch, useSelector } from 'react-redux';
-// project imports
-import SubCard from '../../../ui-component/cards/SubCard';
-import { gridSpacing } from '../../../store/constant';
+import { Typography, Pagination, Grid, CircularProgress } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 import { Helmet } from "react-helmet";
-// project imports
-
-
-//-----------------------|| PROFILE 1 - PROFILE ||-----------------------//
-
-
-
-
 
 const Members = () => {
     const { game, socket, privileges, membersPage, setMembersPage  } = useContext(GameContext);
@@ -49,7 +36,6 @@ const Members = () => {
     }
 
     const handlePageChange = async (a,b,c) => {
-        console.log(a,b,c);
         setMembersPage({...membersPage, index: b});
     }
 

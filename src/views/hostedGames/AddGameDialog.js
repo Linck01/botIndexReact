@@ -1,26 +1,12 @@
 
 // material-ui
-import { Button, Dialog, DialogActions, DialogContent, 
-    DialogContentText, DialogTitle, TextField, Typography, 
-    Grid, CircularProgress } from '@material-ui/core';
-
-import React, {useState, useEffect, useRef, useContext} from 'react';
-import GameContext from '../../contexts/GameContext';
-import fct from '../../utils/fct.js';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, 
+    Typography, Grid, CircularProgress } from '@material-ui/core';
+import React, {useState, useRef} from 'react';
 import { useDispatch } from 'react-redux';
-// project imports
-
-
 import { SNACKBAR_OPEN } from '../../store/actions';
-import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
-
-import SubCard from '../../ui-component/cards/SubCard';
-import { IconCirclePlus } from '@tabler/icons';
-
-//===============================|| UI DIALOG - FORMS ||===============================//
 
 export default function FormDialog({...props}) {
     const [open, setOpen] = React.useState(false);

@@ -1,34 +1,18 @@
 import React from 'react';
-
-// material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Paper, Typography, Grid, Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,  } from '@material-ui/core';
-
+import { TableCell, TableRow,  } from '@material-ui/core';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
-
-
 import GameContext from '../../../contexts/GameContext';
 import useAuth from '../../../hooks/useAuth';
-// assets
-
 import fct from '../../../utils/fct.js';
 import { IconCrown, IconBan } from '@tabler/icons';
 
 const useStyles = makeStyles((theme) => ({
-    aaa: {
-       
-    }
-}));
 
-//==============================|| UI TIMELINE - CUSTOMIZED ||==============================//
+}));
 
 export default function MemberTableRow( props ) {
     const { member } = props;
@@ -55,7 +39,6 @@ export default function MemberTableRow( props ) {
 
         try {
             const response = await axios.patch(config.apiHost + '/v1/members/' + game.id + '/' + member.userId, obj);
-            console.log(response);
             //dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully changed settings', 
             //    variant: 'alert', alertSeverity: 'success', close: true });
 

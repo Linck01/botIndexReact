@@ -1,26 +1,13 @@
 import React from 'react';
-
-// material-ui
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Grid } from '@material-ui/core';
-import {
-    Timeline,
-    TimelineItem,
-    TimelineSeparator,
-    TimelineConnector,
-    TimelineContent,
-    TimelineDot,
-    TimelineOppositeContent
-} from '@material-ui/lab';
-
+import { Paper, Typography } from '@material-ui/core';
+import { TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent,
+    TimelineDot, TimelineOppositeContent } from '@material-ui/lab';
 import fct from '../../../utils/fct.js';
 import GameContext from '../../../contexts/GameContext';
-// assets
-
 import useColors from '../../../hooks/useColors.js';
-import { IconCalendarStats, IconCalendarOff, IconCheck, IconBell, IconBellOff, IconTrash, IconPlus, IconActivity } from '@tabler/icons';
+import { IconCheck, IconTrash, IconPlus, IconActivity, IconMoneybag, IconUserPlus } from '@tabler/icons';
 
-// style constant
 const useStyles = makeStyles((theme) => ({
     paper: {
         padding: '20px',
@@ -30,8 +17,6 @@ const useStyles = makeStyles((theme) => ({
         borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.dark : theme.palette.primary.dark
     }
 }));
-
-//==============================|| UI TIMELINE - CUSTOMIZED ||==============================//
 
 export default function CustomizedTimeline( props ) {
     const { log } = props;
@@ -53,6 +38,12 @@ export default function CustomizedTimeline( props ) {
     } else if (log.logType == 'gameCreated') {
         color = colors.secondaryDark;
         icon = <IconActivity  />;
+    } else if (log.logType == 'winRecord') {
+        color = colors.orangeDark;
+        icon = <IconMoneybag  />;
+    } else if (log.logType == 'memberMilestone') {
+        color = colors.infoDark;
+        icon = <IconUserPlus  />;
     }
 
     return (    

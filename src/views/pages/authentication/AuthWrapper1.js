@@ -1,4 +1,3 @@
-// material-ui
 import { experimentalStyled as styled } from '@material-ui/core/styles';
 
 //-----------------------|| AUTHENTICATION 1 WRAPPER ||-----------------------//

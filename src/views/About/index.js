@@ -1,10 +1,6 @@
 import React from 'react';
-
-// material-ui
 import { Typography, Link } from '@material-ui/core';
 import { Helmet } from "react-helmet";
-
-// project imports
 import MainCard from '../../ui-component/cards/MainCard';
 
 //==============================|| SAMPLE PAGE ||==============================//

@@ -1,19 +1,7 @@
 import React, { useEffect } from 'react';
-import fct from '../../utils/fct.js';
 import GameContext from '../../contexts/GameContext';
-
-// material-ui
-import {
-    Grid,
-    Typography,
-    makeStyles
-} from '@material-ui/core';
-
-import useColors from '../../hooks/useColors.js';
+import { Grid, Typography, makeStyles} from '@material-ui/core';
 import BetStatusTab from '../../ui-component/game/BetStatusTab';
-// material-ui
-
-//-----------------------|| CUSTOM DATETIME ||-----------------------//
 
 const useStyles = makeStyles((theme) => ({
     successBadge: {

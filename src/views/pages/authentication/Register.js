@@ -1,11 +1,7 @@
 import React from 'react';
 import { Link as RouterLink, useLocation } from 'react-router-dom';
-
-// material-ui
 import { useTheme } from '@material-ui/core';
 import { Divider, Grid, Stack, Typography, useMediaQuery } from '@material-ui/core';
-
-// project imports
 import AuthWrapper1 from './AuthWrapper1';
 import AuthCardWrapper from './AuthCardWrapper';
 import Logo from './../../../ui-component/Logo';

@@ -37,7 +37,6 @@ const FirebaseForgotPassword = ({ ...others }) => {
 
         try {
             const response = await axios.post(config.apiHost + '/v1/auth/forgot-password', { email });
-            console.log(response);
 
             setIsLoading(false);
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully sent email to reset your password.', 

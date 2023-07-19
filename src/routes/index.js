@@ -1,16 +1,10 @@
-// project imports
-import config from './../config';
-
 import React, { lazy } from 'react';
 import { Route, Switch, useLocation } from 'react-router-dom';
-
-// project imports
 import MainLayout from './../layout/MainLayout';
 import Loadable from '../ui-component/Loadable';
 import AuthGuard from './../utils/route-guard/AuthGuard';
 import GuestGuard from './../utils/route-guard/GuestGuard';
 import MinimalLayout from './../layout/MinimalLayout';
-import NavMotion from './../layout/NavMotion';
 import { GameProvider } from '../contexts/GameContext';
 import GameLoadWrapper from '../views/game/LoadWrapper';
 

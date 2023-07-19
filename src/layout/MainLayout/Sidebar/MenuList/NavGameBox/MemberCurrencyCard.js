@@ -69,7 +69,7 @@ const MemberCurrencyCard = (props) => {
 
             const obj = { isFavoritedGame: !favorited };
             const response = await axios.patch(config.apiHost + '/v1/members/' + game.id + '/' + user.id, obj);
-            console.log(response);
+
             //dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully changed settings', 
             //    variant: 'alert', alertSeverity: 'success', close: true });
 

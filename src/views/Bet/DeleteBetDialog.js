@@ -1,18 +1,10 @@
 
-// material-ui
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slider, TextField, Typography, Grid, List, ListItem, ListItemIcon, ListItemText, CircularProgress } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Grid, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-import React, {useState, useEffect, useRef, useContext } from 'react';
-import GameContext from '../../contexts/GameContext';
-import fct from '../../utils/fct.js';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
-import { useDispatch, useSelector } from 'react-redux';
-// project imports
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
-
-import { gridSpacing } from '../../store/constant';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';

@@ -1,14 +1,7 @@
 import * as React from 'react';
-
-// material-ui
-import { InputAdornment, TextField } from '@material-ui/core';
+import { TextField } from '@material-ui/core';
 import { LocalizationProvider, DateTimePicker } from '@material-ui/lab';
 import AdapterDateFns from '@material-ui/lab/AdapterDateFns';
-
-// assets
-import DateRangeIcon from '@material-ui/icons/DateRange';
-
-//-----------------------|| CUSTOM DATETIME ||-----------------------//
 
 const CustomDateTime = ( { value, setValue } ) => {
     return (

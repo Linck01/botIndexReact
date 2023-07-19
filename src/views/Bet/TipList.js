@@ -1,9 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-
-// material-ui
-import { Avatar, Divider, Grid, makeStyles, Typography, Pagination, CircularProgress } from '@material-ui/core';
-import SubCard from '../../ui-component/cards/SubCard';
+import { useDispatch } from 'react-redux';
+import { Grid, Typography, Pagination, CircularProgress } from '@material-ui/core';
 import { gridSpacing } from '../../store/constant';
 import fct from '../../utils/fct.js';
 import config from '../../config';
@@ -11,9 +8,6 @@ import axios from '../../utils/axios';
 import TipListItem from './TipListItem';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import GameContext from '../../contexts/GameContext';
-//import fetch from 'node-fetch';
-
-//================================|| UI LIST - CUSTOM ||================================//
 
 export default function CustomList(props) {
     const dispatch = useDispatch();

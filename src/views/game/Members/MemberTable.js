@@ -1,28 +1,13 @@
 import React from 'react';
-
-// material-ui
 import { makeStyles } from '@material-ui/core/styles';
-import { Paper, Typography, Grid, Table,
-    TableBody,
-    TableCell,
-    TableContainer,
-    TableHead,
-    TableRow,  } from '@material-ui/core';
-
+import { Table, TableBody, TableCell, TableContainer,
+    TableHead, TableRow  } from '@material-ui/core';
 import GameContext from '../../../contexts/GameContext';
-//import useAuth from '../../../hooks/useAuth';
-// assets
-import fct from '../../../utils/fct.js';
 import MemberTableRow from './MemberTableRow';
 
-// style constant
 const useStyles = makeStyles((theme) => ({
-    aaa: {
-       
-    }
-}));
 
-//==============================|| UI TIMELINE - CUSTOMIZED ||==============================//
+}));
 
 export default function MemberTable( props ) {
     const { membersPage } = props;

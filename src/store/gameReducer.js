@@ -7,7 +7,6 @@ import {  SET_GAME, SET_SOCKET, SET_MEMBER, SET_CHAT,
 const gameReducer = (state, action) => {
     switch (action.type) {
         case SET_GAME: {
-            console.log('action.game',action.game);
             return {
                 ...state,
                 game: action.game

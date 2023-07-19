@@ -7,7 +7,13 @@ import { main } from './main';
 //-----------------------|| MENU ITEMS ||-----------------------//
 
 const menuItems = {
-    items: [game,userspace,main,publicGames,other]
+    items: [
+        game,
+        userspace,
+        //main,
+        publicGames,
+        other
+    ]
 };
 
 export default menuItems;

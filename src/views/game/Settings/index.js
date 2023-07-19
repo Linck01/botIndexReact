@@ -1,5 +1,4 @@
 import React from 'react';
-
 import AdvancedSettings from './AdvancedSettings';
 import MainSettings from './MainSettings';
 import DeleteGameDialog from './DeleteGameDialog';
@@ -7,11 +6,7 @@ import TopUpStartCurrencyDialog from './TopUpStartCurrencyDialog';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
 import { Helmet } from "react-helmet";
-
-// project imports
-import { gridSpacing } from '../../../store/constant';
 import GameContext from '../../../contexts/GameContext';
-import fct from '../../../utils/fct.js';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 import { Button, CircularProgress } from '@material-ui/core';

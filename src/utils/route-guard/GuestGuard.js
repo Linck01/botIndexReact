@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-
-// project imports
 import useAuth from '../../hooks/useAuth';
 import config from '../../config';
 

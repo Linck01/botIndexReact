@@ -1,20 +1,11 @@
 import React from 'react';
-
-// material-ui
 import { useTheme } from '@material-ui/core/styles';
-import { Grid, Typography, CircularProgress, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText,Divider,} from '@material-ui/core';
+import { Grid, Typography, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText,Divider,} from '@material-ui/core';
 import languages from '../../../utils/locales/languages.json';
 import fct from '../../../utils/fct.js';
-import { SNACKBAR_OPEN } from '../../../store/actions';
-
-
 import { gridSpacing } from '../../../store/constant';
-import { useDispatch } from 'react-redux';
-
 import GameContext from '../../../contexts/GameContext';
-// assets
-
-import { IconCrown, IconBan, IconLanguage, IconCalendar } from '@tabler/icons';
+import { IconCrown, IconLanguage, IconCalendar } from '@tabler/icons';
 
 //===========================|| WIDGET STATISTICS ||===========================//
 

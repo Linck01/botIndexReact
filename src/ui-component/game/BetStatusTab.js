@@ -2,19 +2,10 @@ import React from 'react';
 
 // material-ui
 import {
-    AvatarGroup,
-    Button,
     Grid,
     LinearProgress,
     makeStyles,
-    Table,
-    TableBody,
-    TableCell,
-    TableRow,
     Typography,
-    ListItem,
-    useMediaQuery,
-    Divider,
     Chip
 } from '@material-ui/core';
 

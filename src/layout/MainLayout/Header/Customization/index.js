@@ -7,12 +7,10 @@ import {
     Avatar,
     ButtonBase,
     Drawer,
-    Fab,
     FormControl,
     FormControlLabel,
     FormLabel,
     Grid,
-    IconButton,
     Radio,
     RadioGroup,
     Slider,
@@ -22,7 +20,7 @@ import {
     Tooltip,
     Typography,
     Box,
-    Link
+    Checkbox
 } from '@material-ui/core';
 
 // third-party
@@ -31,7 +29,7 @@ import PerfectScrollbar from 'react-perfect-scrollbar';
 // project imports
 import SubCard from '../../../../ui-component/cards/SubCard';
 import AnimateButton from '../../../../ui-component/extended/AnimateButton';
-import { MENU_TYPE, PRESET_COLORS, SET_BORDER_RADIUS, SET_FONT_FAMILY, SET_OUTLINED_FILLED, SET_CUSTOMIZATION } from '../../../../store/actions'; // THEME_RTL
+import { SET_CUSTOMIZATION } from '../../../../store/actions'; // THEME_RTL
 import { gridSpacing } from '../../../../store/constant';
 
 // color import
@@ -265,15 +263,14 @@ const Customization = () => {
                     sx: {
                         width: 280
                     }
-                }}
-            >
+                }}>
                 <PerfectScrollbar component="div">
                     <Grid container spacing={gridSpacing} sx={{ p: 3 }}>
                         <Grid item xs={12}>
-                            {/* layout type */}
-                            <SubCard title="Layout">
+                            <SubCard>
                                 <FormControl component="fieldset">
-                                    <FormLabel component="legend">Mode</FormLabel>
+                                    
+                                    <Typography variant="h4" color="textPrimary">Layout</Typography><br />
                                     <RadioGroup
                                         row
                                         aria-label="layout"
@@ -284,7 +281,7 @@ const Customization = () => {
                                         <FormControlLabel
                                             value="light"
                                             control={<Radio />}
-                                            label="Light"
+                                            label={<Typography variant="text">Light</Typography>}
                                             sx={{
                                                 '& .MuiSvgIcon-root': { fontSize: 28 },
                                                 '& .MuiFormControlLabel-label': { color: 'grey.900' }
@@ -293,7 +290,7 @@ const Customization = () => {
                                         <FormControlLabel
                                             value="dark"
                                             control={<Radio />}
-                                            label="Dark"
+                                            label={<Typography variant="text">Dark</Typography>}
                                             sx={{
                                                 '& .MuiSvgIcon-root': { fontSize: 28 },
                                                 '& .MuiFormControlLabel-label': { color: 'grey.900' }
@@ -318,7 +315,8 @@ const Customization = () => {
                         </Grid>
                         <Grid item xs={12}>
                             {/* Theme Preset Color */}
-                            <SubCard title="Preset Color">
+                            <SubCard >
+                                <Typography variant="h4" color="textPrimary">Color Preset</Typography><br />
                                 <Grid item container spacing={2} alignItems="center">
                                     {colorOptions.map((color, index) => {
                                         return (
@@ -334,8 +332,38 @@ const Customization = () => {
                             </SubCard>
                         </Grid>
                         <Grid item xs={12}>
+                            <SubCard >
+                                <Typography variant="h4" color="textPrimary">Bet Display Options</Typography><br />
+                                <FormControl>
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={customization.showSolvedBets}
+                                                onChange={(e) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, showSolvedBets: e.target.checked}} )}
+                                                name="checked"
+                                                color="primary"
+                                            />
+                                        }
+                                        label={<Typography variant="text">Solved Bets</Typography>}
+                                    />
+                                    <FormControlLabel
+                                        control={
+                                            <Checkbox
+                                                checked={customization.showAbortedBets}
+                                                onChange={(e) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, showAbortedBets: e.target.checked}} )}
+                                                name="checked"
+                                                color="primary"
+                                            />
+                                        }
+                                        label={<Typography variant="text">Aborted Bets</Typography>}
+                                    />
+                                </FormControl>
+                            </SubCard>
+                        </Grid>
+                        <Grid item xs={12}>
                             {/* font family */}
-                            <SubCard title="Font Family">
+                            <SubCard >
+                                <Typography variant="h4" color="textPrimary">Font Family</Typography><br />
                                 <FormControl>
                                     <RadioGroup
                                         aria-label="font-family"
@@ -346,7 +374,7 @@ const Customization = () => {
                                         <FormControlLabel
                                             value="Roboto"
                                             control={<Radio />}
-                                            label="Roboto"
+                                            label={<Typography variant="text">Roboto</Typography>}
                                             sx={{
                                                 '& .MuiSvgIcon-root': { fontSize: 28 },
                                                 '& .MuiFormControlLabel-label': { color: 'grey.900' }
@@ -355,7 +383,7 @@ const Customization = () => {
                                         <FormControlLabel
                                             value="Poppins"
                                             control={<Radio />}
-                                            label="Poppins"
+                                            label={<Typography variant="text">Poppins</Typography>}
                                             sx={{
                                                 '& .MuiSvgIcon-root': { fontSize: 28 },
                                                 '& .MuiFormControlLabel-label': { color: 'grey.900' }
@@ -364,7 +392,7 @@ const Customization = () => {
                                         <FormControlLabel
                                             value="Inter"
                                             control={<Radio />}
-                                            label="Inter"
+                                            label={<Typography variant="text">Inter</Typography>}
                                             sx={{
                                                 '& .MuiSvgIcon-root': { fontSize: 28 },
                                                 '& .MuiFormControlLabel-label': { color: 'grey.900' }
@@ -374,8 +402,9 @@ const Customization = () => {
                                 </FormControl>
                             </SubCard>
                         </Grid>
+                        
+                        {/*}
                         <Grid item xs={12}>
-                            {/* border radius */}
                             <SubCard title="Border Radius">
                                 <Grid item xs={12} container spacing={2} alignItems="center" sx={{ mt: 2.5 }}>
                                     <Grid item>
@@ -410,8 +439,9 @@ const Customization = () => {
                                 </Grid>
                             </SubCard>
                         </Grid>
+                        {*/}
+                        {/*}
                         <Grid item xs={12}>
-                            {/* filled with outline textfield */}
                             <SubCard title="Input Outlined With Filled">
                                 <Grid item xs={12} container spacing={2} alignItems="center">
                                     <Grid item>
@@ -431,6 +461,7 @@ const Customization = () => {
                                 </Grid>
                             </SubCard>
                         </Grid>
+                        {*/}
                     </Grid>
                 </PerfectScrollbar>
             </Drawer>

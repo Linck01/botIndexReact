@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-
-// project imports
 import Customization from './../MainLayout/Header/Customization';
 
 //-----------------------|| MINIMAL LAYOUT ||-----------------------//

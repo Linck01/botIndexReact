@@ -1,28 +1,15 @@
-
-// material-ui
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slider, TextField, Typography, Grid, Checkbox, List, ListItem, ListItemIcon, ListItemText, CircularProgress } from '@material-ui/core';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slider, Typography, Grid, ListItem, ListItemIcon, ListItemText, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import GameContext from '../../contexts/GameContext';
-import fct from '../../utils/fct.js';
-import AddCircleOutlineOutlinedIcon from '@material-ui/icons/AddCircleOutlineOutlined';
 import { useDispatch, useSelector } from 'react-redux';
-// project imports
 import { useTheme } from '@material-ui/core/styles';
-
 import { gridSpacing } from '../../store/constant';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
-import SubCard from '../../ui-component/cards/SubCard';
-import { IconSquare, IconSquareCheck, IconCheckbox, IconCheck, IconX } from '@tabler/icons';
-
-import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone';
-import DescriptionTwoToneIcon from '@material-ui/icons/DescriptionTwoTone';
-import ListAltTwoToneIcon from '@material-ui/icons/ListAltTwoTone';
-
+import { IconCheck, IconX } from '@tabler/icons';
 
 const useStyles = makeStyles((theme) => ({
     toggleButton: {

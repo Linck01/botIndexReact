@@ -1,18 +1,7 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
-
-// material-ui
 import { useTheme } from '@material-ui/core/styles';
-
-// third-party
 import ReactApexChart from 'react-apexcharts';
-
-// project imports
-import value from '../../assets/scss/_themes-vars.module.scss';
-
-
-
-//-----------------------|| AREA CHART ||-----------------------//
 
 const ApexAreaChart = (props) => {
     const theme = useTheme();

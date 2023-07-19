@@ -1,12 +1,8 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-
-// material-ui
 import { useTheme } from '@material-ui/core';
 import { Button, Divider, Grid, Stack, Typography, useMediaQuery } from '@material-ui/core';
 import { Helmet } from "react-helmet";
-
-// project imports
 import AuthWrapper1 from './AuthWrapper1';
 import AuthCardWrapper from './AuthCardWrapper';
 import Logo from './../../../ui-component/Logo';
@@ -14,10 +10,6 @@ import AnimateButton from './../../../ui-component/extended/AnimateButton';
 import FirebaseCodeVerification from './firebase-forms/FirebaseCodeVerification';
 import AuthFooter from './../../../ui-component/cards/AuthFooter';
 import useAuth from '../../../hooks/useAuth';
-
-// assets
-
-//===========================|| AUTH3 - CODE VERIFICATION ||===========================//
 
 const CodeVerification = () => {
     const theme = useTheme();

@@ -1,27 +1,13 @@
-import React, { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import GameContext from '../../contexts/GameContext';
-
-// material-ui
-import { Avatar, Divider, Grid, makeStyles, Typography, Pagination, CircularProgress } from '@material-ui/core';
-import SubCard from '../../ui-component/cards/SubCard';
+import { Grid, makeStyles, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
-import { gridSpacing } from '../../store/constant';
 import fct from '../../utils/fct.js';
-import config from '../../config';
-import axios from '../../utils/axios';
-import { SNACKBAR_OPEN } from '../../store/actions';
-
-// assets
-import KeyboardArrowUpOutlinedIcon from '@material-ui/icons/KeyboardArrowUpOutlined';
-import KeyboardArrowDownOutlinedIcon from '@material-ui/icons/KeyboardArrowDownOutlined';
-import Avatar1 from '../../assets/images/users/avatar-1.png';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import WatchLaterTwoToneIcon from '@material-ui/icons/WatchLaterTwoTone';
 import useColors from '../../hooks/useColors.js';
 
-
-// style constant
 const useStyles = makeStyles((theme) => ({
     root: {
         width: '100%',

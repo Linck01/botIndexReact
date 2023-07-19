@@ -179,7 +179,7 @@ export const GameProvider = ({ children }) => {
         });
     };
 
-     /*
+    /*
     *  Logs
     */
 
@@ -202,13 +202,29 @@ export const GameProvider = ({ children }) => {
     };
 
     /*
-    *  Socket events
+    *  Socket - Events
     */
+
+    // Update Game
+    useEffect(() => {
+        if (state.socket)
+            state.socket.on('updateGame', function(data) { 
+                console.log('Received socket message updateGame.'); 
+                setGame(data);
+            });
+
+        return function cleanup() {
+            if (state.socket)
+                state.socket.off('updateGame');
+        };
+
+    }, [state.socket, state.game]);
 
     // New Bet
     useEffect(() => {
         if (state.socket)
-            state.socket.on('newBet', function(data) { 
+            state.socket.on('newBet', function(data) {
+                console.log('Received socket message newBet.'); 
                 handleSocketNewBet(data);
             });
 
@@ -279,7 +295,6 @@ export const GameProvider = ({ children }) => {
         if (state.betPage.bet && state.betPage.bet.id == bet.id) {
             const newTipListItems = await updateTipListItemsWithNewTip(tip);
             const newMyTips = await updateMyTipsWithNewTip(tip);  
-            //console.log('newTipListItems',newTipListItems,'newMyTips',newMyTips);
             
             let maxIndex = state.betPage.tipListPage.maxIndex;
             if ((state.betPage.tipListPage.items.length+1) / config.tipListPageSize != 0 &&
@@ -379,7 +394,6 @@ export const GameProvider = ({ children }) => {
     useEffect(() => {
         const init = async () => {
             const game = await fetchGame(gameId);
-            console.log(game);
             if (!game)
                 return;
             

@@ -1,14 +1,10 @@
 import React from 'react';
-
-// material-ui
 import { makeStyles } from '@material-ui/core/styles';
 import { FormControlLabel, Grid, Switch, Typography, useTheme, TextField } from '@material-ui/core';
-
 import GameContext from '../../../contexts/GameContext';
 import CurrencyNameSelect from './CurrencyNameSelect';
 import { gridSpacing } from '../../../store/constant';
 
-// style constant
 const useStyles = makeStyles((theme) => ({
     temp: {
 
