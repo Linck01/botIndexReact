@@ -1,26 +1,19 @@
-import React, { useContext } from 'react';
-
-// material-ui
+import React from 'react';
 import { Typography } from '@material-ui/core';
-import { useLocation, useParams } from 'react-router-dom';
-
-// project imports
+import { useParams } from 'react-router-dom';
 import NavGroup from './NavGroup';
 import NavGameBox from './NavGameBox';
 import menuItem from './../../../../menu-items';
 import useAuth from '../../../../hooks/useAuth';
 
-//-----------------------|| SIDEBAR MENU LIST ||-----------------------//
-
 const MenuList = () => {
-    const location = useLocation();
     const { user } = useAuth();
     const { gameId } = useParams();
 
     const navItems = menuItem.items.map((item) => {
-        if (item.id == 'game') {
+        if (item.id === 'game') {
             if (!gameId) {
-                return;
+                return null;
             } else {
                 item.title = '';//'Game: ' + game.title;
                 for (let child of item.children)
@@ -31,7 +24,7 @@ const MenuList = () => {
         }
 
         if (item.requiresAuth && !user)
-            return;
+            return null;
 
         switch (item.type) {
             case 'group':

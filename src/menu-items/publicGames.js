@@ -2,12 +2,6 @@ import React from 'react';
 import { FormattedMessage } from 'react-intl';
 import { IconBrandAppleArcade, IconUsers } from '@tabler/icons';
 
-const tags = () => {
-    return 
-}
-
-//-----------------------|| APPLICATION MENU ITEMS ||-----------------------//
-
 export const publicGames = {
     id: 'publicGames',
     title: '', //<FormattedMessage id="publicGames" />,

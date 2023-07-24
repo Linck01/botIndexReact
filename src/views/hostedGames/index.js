@@ -83,7 +83,7 @@ const HostedGamesPage = () => {
                 : ''}
         
 
-            {!isLoading && hostedGames.length == 0 ? (
+            {!isLoading && hostedGames.length === 0 ? (
                 <><br /><br />
                     <Grid container direction="column" spacing={2} alignItems="center">
                         <Grid item xs={12}>

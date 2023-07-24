@@ -60,7 +60,7 @@ const GameSettings = () => {
         <br /><br />
         <AdvancedSettings currencyName={currencyName} setCurrencyName={setCurrencyName} startCurrency={startCurrency} setStartCurrency={setStartCurrency} password={password} setPassword={setPassword} isPublic={isPublic} setIsPublic={setIsPublic} isEnded={isEnded} setIsEnded={setIsEnded} />
         <br /><br />
-        <Button style={{width:'100%'}} variant="outlined" color="secondary" onClick={updateSettings}>
+        <Button style={{width:'100%'}} variant="contained" sx={{ boxShadow: 8 }} color="secondary" onClick={updateSettings}>
             { isLoading ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Update') }
         </Button>
         <br /><br />

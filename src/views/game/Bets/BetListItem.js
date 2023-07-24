@@ -1,11 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Button, Grid, makeStyles, Typography, Divider } from '@material-ui/core';
+import { Button, Grid, makeStyles, Typography, Divider, Card, CardContent } from '@material-ui/core';
 import { gridSpacing } from '../../../store/constant';
-import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
+import ForwardIcon from '@material-ui/icons/Forward';
 import GameContext from '../../../contexts/GameContext';
 import fct from '../../../utils/fct.js';
 import BetStatusTab from '../../../ui-component/game/BetStatusTab';
+import SubCard from './../../../ui-component/cards/SubCard';
 
 const useStyles = makeStyles((theme) => ({
     successBadge: {
@@ -35,11 +36,11 @@ const useStyles = makeStyles((theme) => ({
     },
     btnTable: {
         width: '100%',
-        '&:hover': {
+        /*'&:hover': {
             background: theme.palette.secondary.main,
             borderColor: theme.palette.secondary.main,
             color: '#fff'
-        }
+        }*/
     },
     tableSubContent: {
         whiteSpace: 'break-spaces'
@@ -47,14 +48,24 @@ const useStyles = makeStyles((theme) => ({
     divider: {
         opacity: 0.1,
         borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.light : theme.palette.primary.light 
+    },
+    card: {
+        background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
+        border: '1px solid',
+        borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[100],
+        marginBottom: '6px',
+    },
+    cardContent: {
+        
+    },
+    statDigit: {
+        fontSize: '1em'
     }
 }));
 
-
-
 const BetListItem = ({ bet }) => {
     const classes = useStyles();
-    const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
+    const { game } = React.useContext(GameContext);
     //const util = require('util');
     //console.log(util.inspect(bets));
 
@@ -67,66 +78,64 @@ const BetListItem = ({ bet }) => {
     
     return (
         <>
-         
-            <Grid container spacing={gridSpacing} alignItems="center">
-                <Grid item xs={12} md={6}>
-                    <BetStatusTab bet={bet} />
-                </Grid>
-                <Grid item xs={12} md={6}>
-                    <Grid container spacing={1}>
-                        <Grid item xs={4} md={4}>
-                            <Typography variant="caption">Members</Typography>
-                            <Typography variant="h6">{bet.memberCount}</Typography>
-                        </Grid>
-                            
-                        <Grid item xs={4} md={4}>
-                                <Typography variant="caption">In Pot</Typography>
-                                <Typography variant="h6">{+parseFloat(bet.inPot.$numberDecimal).toFixed(2)}</Typography>
+        <Card className={classes.card}>
+            <CardContent className={classes.cardContent} style={{paddingTop: '18px',paddingBottom: '18px'}}>
+                <Grid container spacing={gridSpacing} alignItems="center">
+                    <Grid item xs={12} md={6}>
+                        <BetStatusTab bet={bet} />
+                    </Grid>
+                    <Grid item xs={12} md={6}>
+                        <Grid container spacing={1}>
+                            <Grid item xs={4} md={4}>
+                                <Typography variant="h5">Members</Typography>
+                                <Typography variant="subtitle2" className={classes.statDigit}>{bet.memberCount}</Typography>
                             </Grid>
-
-                
-                        <Grid item xs={4} md={4}>
-                                <Typography variant="caption">Type</Typography>
-                                <Typography variant="h6">{fct.capitalizeFirstLetter(bet.betType)}</Typography>
-                        </Grid>
-                        
-                        <Grid item xs={12} md={12}> 
-                            <Link style={{ textDecoration: 'none' }} to={'/game/' + game.id + '/bet/' + bet.id}>
-                                <Button
-                                    variant="outlined"
-                                    color="primary"
-                                    size="small"
-                                    className={classes.btnTable}
-                                    startIcon={<ChatBubbleTwoToneIcon />}>
-                                    View Bet
-                                </Button>
-                            </Link>        
                                 
-                            
-                            {/*}
-                            <Grid item xs={6}>
-                                <Button
-                                    variant="outlined"
-                                    color="error"
-                                    size="small"
-                                    className={classes.btnTable}
-                                    startIcon={<BlockTwoToneIcon />}
-                                >
-                                    Block
-                                </Button>
-                            </Grid>
-                            {*/}
+                            <Grid item xs={4} md={4}>
+                                    <Typography variant="h5">In Pot</Typography>
+                                    <Typography variant="subtitle2" className={classes.statDigit}>{+parseFloat(bet.inPot.$numberDecimal).toFixed(2)}</Typography>
+                                </Grid>
+
                     
+                            <Grid item xs={4} md={4}>
+                                    <Typography variant="h5">Type</Typography>
+                                    <Typography variant="subtitle2" className={classes.statDigit}>{fct.capitalizeFirstLetter(bet.betType)}</Typography>
+                            </Grid>
+                            
+                            <Grid item xs={12} md={12}> 
+                                <Link style={{ textDecoration: 'none' }} to={'/game/' + fct.assembleGameOrBetUri(game) + '/bet/' + fct.assembleGameOrBetUri(bet)}>
+                                    <Button
+                                        sx={{ boxShadow: 4 }}
+                                        variant="contained"
+                                        color="primary"
+                                        size="small"
+                                        className={classes.btnTable}
+                                        startIcon={<ForwardIcon />}>
+                                        View Bet
+                                    </Button>
+                                </Link>        
+                                      
+                                {/*}
+                                <Grid item xs={6}>
+                                    <Button
+                                        variant="outlined"
+                                        color="error"
+                                        size="small"
+                                        className={classes.btnTable}
+                                        startIcon={<BlockTwoToneIcon />}
+                                    >
+                                        Block
+                                    </Button>
+                                </Grid>
+                                {*/}
+                            </Grid>
                         </Grid>
                     </Grid>
                 </Grid>
-            </Grid>
+            </CardContent>
+        </Card>
 
-            <br />
-            <Divider className={classes.divider} />
-            <br />
-          
-            
+    
         </>
     );
 };

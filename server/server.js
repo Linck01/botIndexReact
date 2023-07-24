@@ -5,12 +5,14 @@ const port = process.env.PORT || 3010;
 const path = require('path');
 const fs = require('fs');
 const html = fs.readFileSync(path.join(__dirname, './build', 'index.html'),'utf8');
+const apiUrl = 'https://api.betify.gg/v1/';
 
 const gameController = async function(req, res) {
   let game = null;
+  const gameId = disassembleGameOrBetUri(req.params.gameUri);
 
   try {
-    const apiResponse = await axios.get('https://api.betify.gg/v1/games/' + req.params.gameId);
+    const apiResponse = await axios.get(apiUrl + 'games/' + gameId);
     game = apiResponse.data;
   } catch (e) {
     console.log(e.response.statusText);
@@ -34,12 +36,14 @@ const gameController = async function(req, res) {
 
 const betController = async function(req, res) {
   let game = null, bet = null;
-  
+  const gameId = disassembleGameOrBetUri(req.params.gameUri);
+  const betId = disassembleGameOrBetUri(req.params.betUri);
+
   try {
-    const apiResponseGame = await axios.get('https://api.betify.gg/v1/games/' + req.params.gameId);
+    const apiResponseGame = await axios.get(apiUrl + 'games/' + gameId);
     game = apiResponseGame.data;
 
-    const apiResponseBet = await axios.get('https://api.betify.gg/v1/bets/' + req.params.betId);
+    const apiResponseBet = await axios.get(apiUrl + 'bets/' + betId);
     bet = apiResponseBet.data;
   } catch (e) {
     console.log(e.response.statusText);
@@ -61,10 +65,10 @@ const betController = async function(req, res) {
   return res.send(htmlCopy);
 }
 
-app.get('/game/:gameId/bet/:betId', betController);
+app.get('/game/:gameUri/bet/:betUri', betController);
 
-app.get('/game/:gameId/*', gameController);
-app.get('/game/:gameId', gameController);
+app.get('/game/:gameUri/*', gameController);
+app.get('/game/:gameUri', gameController);
 
 app.get('/games/*', function(req, res) {return res.send(html);});
 app.get('/user/*', function(req, res) { return res.send(html);});
@@ -81,6 +85,10 @@ app.get('/', function(req, res) { return res.send(html);});
 
 
 app.use(express.static(path.join(__dirname, './build')));
+
+const disassembleGameOrBetUri = (gameUri) => {
+  return gameUri.substr(gameUri.length - 24);
+}
 
   /*
   app.get('/about', function(req, res) {

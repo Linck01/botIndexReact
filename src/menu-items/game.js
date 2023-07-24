@@ -1,5 +1,5 @@
 import { FormattedMessage } from 'react-intl';
-import { IconMail, IconNotebook, IconInfoCircle, IconEdit, IconUser, IconTrophy, IconHistory } from '@tabler/icons';
+import { IconNotebook, IconInfoCircle, IconEdit, IconUser, IconTrophy, IconHistory } from '@tabler/icons';
 
 //-----------------------|| SAMPLE PAGE & DOCUMENTATION MENU ITEMS ||-----------------------//
 

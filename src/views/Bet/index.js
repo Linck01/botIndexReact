@@ -20,34 +20,17 @@ import DeleteBetDialog from './DeleteBetDialog';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { gridSpacing } from '../../store/constant';
 import { Helmet } from "react-helmet";
-import { Grid, makeStyles, CircularProgress} from '@material-ui/core';
+import { Grid, CircularProgress} from '@material-ui/core';
 import GameContext from '../../contexts/GameContext';
 import useAuth from '../../hooks/useAuth';
 
-const useStyles = makeStyles((theme) => ({
-    btnTable: {
-        borderRadius: '4px',
-        paddingLeft: '4px',
-        paddingRight: '4px',
-        width: '100%',
-        minWidth: '120px',
-        '&:hover': {
-            background: theme.palette.secondary.main,
-            borderColor: theme.palette.secondary.main,
-            color: '#fff'
-        }
-    }
-}));
-
 const BetDetails = () => {
-    const classes = useStyles();
     const dispatch = useDispatch();
-    const { game, socket, betPage, setBetPage, privileges } = React.useContext(GameContext);
-    const { betId } = useParams();
+    const { betPage, setBetPage, privileges } = React.useContext(GameContext);
+    const { betUri } = useParams();
+    const betId = fct.disassembleGameOrBetUri(betUri);
     const { user } = useAuth();
     const [ isLoading, setIsLoading ] = useState(false);
-    
-
 
     const getBetPage = async () => {
         try {
@@ -85,7 +68,7 @@ const BetDetails = () => {
 
     return (
         <>
-        
+       
         {betPage.bet ? (
             <Helmet>
                 <title>{betPage.bet.title}</title>
@@ -93,7 +76,7 @@ const BetDetails = () => {
                 <meta name='keywords' content={betPage.bet.title.split(' ').concat(config.genericKeywords).join(',')} />
             </Helmet>
         ) : ''}
-
+    
         {isLoading ? (
             <>
             <br /><br />
@@ -135,7 +118,7 @@ const BetDetails = () => {
                 <br />
                 </>
             ) : ''}
-
+             
             {!betPage.bet.isSolved && !betPage.bet.isAborted && (privileges.admin || privileges.mod) ? (
                 <>
                <Grid container spacing={gridSpacing} >  
@@ -143,7 +126,7 @@ const BetDetails = () => {
                 </Grid><br /> 
                 </>
             ) : ''}
-           
+         
             <Grid container spacing={gridSpacing} >
                 <Grid item xs={12} sm={12} md={5}>
                     <Grid container spacing={gridSpacing}>
@@ -152,9 +135,9 @@ const BetDetails = () => {
                         </Grid>
                        
                         <Grid item xs={12}>
-                            { betPage.bet.betType == 'catalogue' ? <CatalogueTipChart bet={betPage.bet} /> : '' }
-                            { betPage.bet.betType == 'scale' ? <ScaleTipChart bet={betPage.bet} /> : ''}
-
+                            { betPage.bet.betType === 'catalogue' ? <CatalogueTipChart bet={betPage.bet} /> : '' }
+                            { betPage.bet.betType === 'scale' ? <ScaleTipChart bet={betPage.bet} /> : ''}
+                           
                         </Grid>
                     </Grid>
                 </Grid>
@@ -164,11 +147,11 @@ const BetDetails = () => {
                 </Grid>
             </Grid>
             <br /><br />
-           
+       
             <Grid container spacing={gridSpacing} >
                 <Grid item xs={12}>
-                    { betPage.bet.betType == 'catalogue' ? <CatalogueAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''}
-                    { betPage.bet.betType == 'scale' ? <ScaleAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''} 
+                    { betPage.bet.betType === 'catalogue' ? <CatalogueAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''}
+                    { betPage.bet.betType === 'scale' ? <ScaleAnswerBox bet={betPage.bet} myTips={betPage.myTips} /> : ''} 
                 </Grid>
             </Grid>
             
@@ -188,16 +171,13 @@ const BetDetails = () => {
                 </>
             ) : ''}
             
-            <br /><br />
+            <br /><br /> 
             </>
         ) : ''}
 
         
-        
-        </>
-
-        
-               
+             
+        </>    
     );
 };
 

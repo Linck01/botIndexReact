@@ -1,7 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slider, Typography, Grid, ListItem, ListItemIcon, ListItemText, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import React, {useState, useContext} from 'react';
-import GameContext from '../../contexts/GameContext';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useTheme } from '@material-ui/core/styles';
 import { gridSpacing } from '../../store/constant';
@@ -11,11 +9,6 @@ import axios from '../../utils/axios';
 import config from '../../config';
 import { IconCheck, IconX } from '@tabler/icons';
 
-const useStyles = makeStyles((theme) => ({
-    toggleButton: {
-        color: theme.palette.background.paper
-    }
-}));
 
 const valueText = (value) => {
     return `${value}°C`;
@@ -25,17 +18,14 @@ const valueText = (value) => {
 
 export default function SolveBetDialog(props) {
     const theme = useTheme();
-    const classes = useStyles();
-    const { game, refreshMember } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
-    const { getBet, bet } = props;
-    const [amount, setAmount] = React.useState(0);
+    const { bet } = props;
     const [answerIds, setAnswerIds] = React.useState([]);
     const customization = useSelector((state) => state.customization);
     const { user } = useAuth();
-    const [ answerDecimal, setAnswerDecimal ] = useState(bet.betType == 'scale' ? bet.scale_options.min : 0);
+    const [ answerDecimal, setAnswerDecimal ] = useState(bet.betType === 'scale' ? bet.scale_options.min : 0);
    
 
     const handleClickOpen = () => {
@@ -44,10 +34,6 @@ export default function SolveBetDialog(props) {
 
     const handleClose = () => {
         setOpen(false);
-    };
-
-    const handleAmountChange = (event,) => {
-        setAmount(event.target.value);
     };
 
     const solveBet = async () => {  
@@ -61,10 +47,10 @@ export default function SolveBetDialog(props) {
         
         try {
             const req = {};
-            if (bet.betType == 'catalogue') req.answerIds = answerIds;
-            if (bet.betType == 'scale') req.answerDecimal = answerDecimal;
+            if (bet.betType === 'catalogue') req.answerIds = answerIds;
+            if (bet.betType === 'scale') req.answerDecimal = answerDecimal;
 
-            const response = await axios.patch(config.apiHost + '/v1/bets/' + bet.id + '/solve', req);
+            await axios.patch(config.apiHost + '/v1/bets/' + bet.id + '/solve', req);
             
         } catch (e) {
             setIsLoading(false);
@@ -91,7 +77,7 @@ export default function SolveBetDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="success" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} sx={{ boxShadow: 4 }} variant="contained" color="primary" onClick={handleClickOpen}>
                 Solve Bet
             </Button>
 
@@ -104,7 +90,7 @@ export default function SolveBetDialog(props) {
                         <Typography variant="body2">
                         </Typography>
                     </DialogContentText>{*/}
-                    { bet.betType == 'catalogue' ? 
+                    { bet.betType === 'catalogue' ? 
                         <Grid container spacing={1}>
                             <Grid item key={0} xs={12}><Typography variant="h3">Select correct answer(s)</Typography></Grid>
 
@@ -125,7 +111,7 @@ export default function SolveBetDialog(props) {
                         </Grid>
                     : '' }
                     
-                    { bet.betType == 'scale' ? 
+                    { bet.betType === 'scale' ? 
                         <Grid container spacing={gridSpacing}>
                             <Grid item xs={12}><Typography variant="h3">Select correct answer</Typography></Grid>
                             

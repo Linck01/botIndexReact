@@ -1,49 +1,26 @@
 import React, { useEffect } from 'react';
 import { Link, useHistory, useLocation } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-
-// material-ui
+import { useDispatch } from 'react-redux';
 import { makeStyles } from '@material-ui/core/styles';
-import {
-    Box,
-    Button,
-    Checkbox,
-    Divider,
-    FormControl,
-    FormControlLabel,
-    FormHelperText,
-    Grid,
-    IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput,
-    TextField,
-    Typography,
-    useMediaQuery
+import { Box, Button, Checkbox, FormControl, FormControlLabel, 
+    FormHelperText, Grid, IconButton, InputAdornment,
+    InputLabel, OutlinedInput, Typography
 } from '@material-ui/core';
-
-// third party
 import * as Yup from 'yup';
 import { Formik } from 'formik';
-
-// project imports
 import config from '../../../../config';
 import useAuth from '../../../../hooks/useAuth';
 import useColor from '../../../../hooks/useColors';
 import useScriptRef from '../../../../hooks/useScriptRef';
-import Google from './../../../../assets/images/icons/social-google.svg';
+//import Google from './../../../../assets/images/icons/social-google.svg';
 import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 import { strengthColor, strengthIndicator } from '../../../../utils/password-strength';
 import { SNACKBAR_OPEN } from '../../../../store/actions';
 import queryString from 'query-string';
-
-// assets
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 
-
-// style constant
 const useStyles = makeStyles((theme) => ({
     redButton: {
         fontSize: '1rem',
@@ -88,8 +65,6 @@ const useStyles = makeStyles((theme) => ({
 const JWTRegister = ({ ...others }) => {
     const classes = useStyles();
     const scriptedRef = useScriptRef();
-    const matchDownSM = useMediaQuery((theme) => theme.breakpoints.down('sm'));
-    const customization = useSelector((state) => state.customization);
     const [showPassword, setShowPassword] = React.useState(false);
     const [checked, setChecked] = React.useState(true);
     const { colors } = useColor();
@@ -97,7 +72,7 @@ const JWTRegister = ({ ...others }) => {
     const [level, setLevel] = React.useState('');
     const [passwordMatch, setPasswordMatch] = React.useState(0);
     const [ captchaToken, setCaptchaToken ] = React.useState('');
-    const { register, sendVerificationEmail } = useAuth();
+    const { register /*, sendVerificationEmail*/ } = useAuth();
     const dispatch = useDispatch();
     const history = useHistory();
     const location = useLocation();
@@ -122,7 +97,7 @@ const JWTRegister = ({ ...others }) => {
 
     const checkPasswordConfirm = (pass1, pass2) => {
         if (passwordMatch !== 0 || pass2.length >= pass1.length) {
-            if (pass1 == pass2)
+            if (pass1 === pass2)
                 setPasswordMatch(true);
             else 
                 setPasswordMatch(false);
@@ -202,7 +177,7 @@ const JWTRegister = ({ ...others }) => {
                             return dispatch({ type: SNACKBAR_OPEN, open: true, message:  'T&S need to be accepted.',
                                 variant: 'alert', alertSeverity: 'error', close: true });
 
-                        const newUserCredential = await register(values.username, values.email, values.password, captchaToken);
+                        /*const newUserCredential = */await register(values.username, values.email, values.password, captchaToken);
 
                         //await sendVerificationEmail(values.username, values.email);
                         //await newUserCredential.user.sendEmailVerification();
@@ -325,7 +300,7 @@ const JWTRegister = ({ ...others }) => {
                             )}
                         </FormControl>
                         
-                        {strength !== 0 && values.password != '' && (
+                        {strength !== 0 && values.password !== '' && (
                             <FormControl fullWidth>
                                 <Box mb={2}>
                                     <Grid container spacing={2} alignItems="center">

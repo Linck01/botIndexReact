@@ -29,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
         height: '8px'
     },
     listItem: {
-        marginBottom: '5px',
+        marginBottom: '4px', // MenuItem height (default 5px)
         alignItems: 'center'
     },
     listItemNoBack: {

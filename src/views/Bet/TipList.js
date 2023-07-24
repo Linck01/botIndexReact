@@ -11,7 +11,7 @@ import GameContext from '../../contexts/GameContext';
 
 export default function CustomList(props) {
     const dispatch = useDispatch();
-    const { game, setBetPage, betPage  } = useContext(GameContext);
+    const { setBetPage, betPage  } = useContext(GameContext);
     const [isLoading, setIsLoading] = useState(true);
 
     const handlePageChange = async (a,b,c) => {
@@ -57,16 +57,21 @@ export default function CustomList(props) {
                 {betPage.tipListPage.items.map((tip) => <TipListItem key={tip.id} tip={tip} bet={betPage.bet} />)}
             </Grid>
             <br />
+            </>
+        ) : ''}
+
+        {!isLoading && betPage.tipListPage.maxIndex > 1 ? (
+            <>
+            <br />
             <Grid container direction="column" spacing={2} alignItems="center">
                 <Grid item xs={12}>
                     <Pagination page={betPage.tipListPage.index} onChange={handlePageChange} count={betPage.tipListPage.maxIndex} color="primary" />
                 </Grid>
             </Grid>
-          
             </>
         ) : ''}
 
-        {!isLoading && betPage.tipListPage.items.length == 0 ? (
+        {!isLoading && betPage.tipListPage.items.length === 0 ? (
             <>
                 <Grid container direction="column" spacing={2} alignItems="center">
                     <Grid item xs={12}>

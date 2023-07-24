@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
 import { Grid, Typography, List, ListItem, ListItemIcon, ListItemSecondaryAction, ListItemText,Divider,} from '@material-ui/core';
 import languages from '../../../utils/locales/languages.json';
 import fct from '../../../utils/fct.js';
@@ -10,14 +9,13 @@ import { IconCrown, IconLanguage, IconCalendar } from '@tabler/icons';
 //===========================|| WIDGET STATISTICS ||===========================//
 
 const WidgetStatistics = (props) => {
-    const theme = useTheme();
     const { game } = React.useContext(GameContext);
     const { adminUsername } = props;
 
     return (
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12} lg={12}>
-                <Typography variant="h1">{game.title}</Typography>
+                <Typography variant="h2">{game.title}</Typography>
             </Grid>
             <Grid item xs={12} lg={12}>
                 {game.desc}

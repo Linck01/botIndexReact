@@ -4,7 +4,6 @@ import { Paper, Typography } from '@material-ui/core';
 import { TimelineItem, TimelineSeparator, TimelineConnector, TimelineContent,
     TimelineDot, TimelineOppositeContent } from '@material-ui/lab';
 import fct from '../../../utils/fct.js';
-import GameContext from '../../../contexts/GameContext';
 import useColors from '../../../hooks/useColors.js';
 import { IconCheck, IconTrash, IconPlus, IconActivity, IconMoneybag, IconUserPlus } from '@tabler/icons';
 
@@ -21,27 +20,26 @@ const useStyles = makeStyles((theme) => ({
 export default function CustomizedTimeline( props ) {
     const { log } = props;
     const classes = useStyles();
-    const { game } = React.useContext(GameContext);
     const { colors } = useColors();
 
 
     let color, icon;
-    if (log.logType == 'betCreated') {
+    if (log.logType === 'betCreated') {
         color = colors.warningDark;
         icon = <IconPlus  />;
-    } else if (log.logType == 'betSolved') {
+    } else if (log.logType === 'betSolved') {
         color = colors.successDark;
         icon = <IconCheck  />;
-    } else if (log.logType == 'betAborted') {
+    } else if (log.logType === 'betAborted') {
         color = colors.errorDark;
         icon = <IconTrash  />;
-    } else if (log.logType == 'gameCreated') {
+    } else if (log.logType === 'gameCreated') {
         color = colors.secondaryDark;
         icon = <IconActivity  />;
-    } else if (log.logType == 'winRecord') {
+    } else if (log.logType === 'winRecord') {
         color = colors.orangeDark;
         icon = <IconMoneybag  />;
-    } else if (log.logType == 'memberMilestone') {
+    } else if (log.logType === 'memberMilestone') {
         color = colors.infoDark;
         icon = <IconUserPlus  />;
     }
@@ -58,7 +56,7 @@ export default function CustomizedTimeline( props ) {
                 <TimelineDot style={{ backgroundColor: color }}>
                     {icon}
                 </TimelineDot>
-                {log.logType != 'gameCreated' ? <TimelineConnector /> : ''}
+                {log.logType !== 'gameCreated' ? <TimelineConnector /> : ''}
             </TimelineSeparator>
             <TimelineContent>
                 <Paper elevation={3} className={classes.paper}>

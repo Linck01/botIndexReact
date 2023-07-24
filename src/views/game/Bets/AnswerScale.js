@@ -20,8 +20,8 @@ export default function AnswerScale(props) {
 
         <Grid container spacing={gridSpacing}>
             <Grid item xs={12} sm={6}>
-                <TextField fullWidth id="outlined-basic-size-small" onChange={e => setScale_options({...scale_options, odds: parseFloat(e.target.value)})}
-                    label={'Odds'} type='number' size="small"  inputProps={{ maxLength: 16 }} defaultValue={scale_options.odds}/>
+                <TextField fullWidth id="outlined-basic-size-small" onChange={e => setScale_options({...scale_options, baseOdds: parseFloat(e.target.value)})}
+                    label={'Odds'} type='number' size="small"  inputProps={{ maxLength: 16 }} defaultValue={scale_options.baseOdds}/>
             </Grid>
             <Grid item xs={12} sm={6}>
                 <TextField fullWidth id="outlined-basic-size-small" onChange={e => setScale_options({...scale_options, winRate: parseInt(e.target.value)})}

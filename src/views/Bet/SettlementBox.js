@@ -1,35 +1,12 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import axios from '../../utils/axios';
 import config from '../../config';
-import { Button, Grid, Typography, makeStyles, CircularProgress,
+import { Button, Grid, Typography, CircularProgress,
     Dialog, DialogActions, DialogContent, DialogTitle } from '@material-ui/core';
 import { gridSpacing } from '../../store/constant';
 
-const useStyles = makeStyles((theme) => ({
-    btnTable: {
-        borderRadius: '4px',
-        paddingLeft: '4px',
-        paddingRight: '4px',
-        width: '100%',
-        minWidth: '120px',
-        
-        '&:hover': {
-            background: theme.palette.secondary.main,
-            borderColor: theme.palette.secondary.main,
-            color: '#fff'
-        }
-    },
-    ScrollHeight: {
-        maxHeight: '400px',
-    }
-}));
-
 const ScaleAnswerBox = ( props ) => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
-    const { bet, myTips } = props;
-    const [selectedIndex, setSelectedIndex] = React.useState(null);
+    const { bet } = props;
     const [isLoading, setIsLoading] = React.useState(false);
     const [open, setOpen] = React.useState(false);
     const [settlementTips, setSettlementTips] = React.useState(null);
@@ -52,7 +29,7 @@ const ScaleAnswerBox = ( props ) => {
    
     return (
     <Grid container justifyContent="center">
-        <Button style={{width:'100%'}} variant="outlined" color="warning" onClick={handleClickOpen}>
+        <Button style={{width:'100%'}} sx={{ boxShadow: 4 }} variant="contained" color="primary" onClick={handleClickOpen}>
             Show Settlement
         </Button>
 

@@ -5,14 +5,12 @@ import { Typography,Pagination, Grid, CircularProgress } from '@material-ui/core
 import { useDispatch, useSelector } from 'react-redux';
 import AddBetDialog from './AddBetDialog';
 import { SNACKBAR_OPEN } from '../../../store/actions';
-import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 import { Helmet } from "react-helmet";
 
 const Bets = () => {
-    const { game, socket, privileges, betsPage, setBetsPage  } = useContext(GameContext);
-    const { user } = useAuth();
+    const { game, privileges, betsPage, setBetsPage  } = useContext(GameContext);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
     const customization = useSelector((state) => state.customization);
@@ -86,7 +84,7 @@ const Bets = () => {
             </>
         ) : ''}
 
-        {!isLoading && betsPage.items.length == 0 ? (
+        {!isLoading && betsPage.items.length === 0 ? (
             <>  
                 <br />
                 <Grid container direction="column" spacing={2} alignItems="center">

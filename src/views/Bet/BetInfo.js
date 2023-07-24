@@ -1,5 +1,4 @@
 import React, { useEffect } from 'react';
-import GameContext from '../../contexts/GameContext';
 import { Grid, Typography, makeStyles} from '@material-ui/core';
 import BetStatusTab from '../../ui-component/game/BetStatusTab';
 
@@ -17,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
 
 const BetInfo = (props) => {
     const { bet } = props;
-    const { game } = React.useContext(GameContext);
     const classes = useStyles();
 
     useEffect(() => {

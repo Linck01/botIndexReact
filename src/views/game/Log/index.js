@@ -1,5 +1,4 @@
 import React, {useState, useEffect } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Typography, Grid, Pagination, CircularProgress } from '@material-ui/core';
 import { Timeline } from '@material-ui/lab';
 import GameContext from '../../../contexts/GameContext';
@@ -10,14 +9,8 @@ import { useDispatch } from 'react-redux';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { Helmet } from "react-helmet";
 
-const useStyles = makeStyles((theme) => ({
-
-}));
-
-const entriesPerPage = 12;
 
 export default function CustomizedTimeline() {
-    const classes = useStyles();
     const { game, logsPage, setLogsPage } = React.useContext(GameContext);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
@@ -83,7 +76,7 @@ export default function CustomizedTimeline() {
             </>
         ) : ''}
 
-        {!isLoading && logsPage.items.length == 0 ? (
+        {!isLoading && logsPage.items.length === 0 ? (
             <>  
                 <br />
                 <Grid container direction="column" spacing={2} alignItems="center">

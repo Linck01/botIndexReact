@@ -6,12 +6,14 @@ import { gridSpacing } from '../../../store/constant';
 import GameContext from '../../../contexts/GameContext';
 import AccountCircleTwoTone from '@material-ui/icons/AccountCircleTwoTone';
 import EmojiEventsTwoToneIcon from '@material-ui/icons/EmojiEventsTwoTone';
+import useColors from '../../../hooks/useColors';
 
 //===========================|| WIDGET STATISTICS ||===========================//
 
 const WidgetStatistics = (props) => {
     const theme = useTheme();
     const { game } = React.useContext(GameContext);
+    const { colors } = useColors();
 
     return (
         <Grid container spacing={gridSpacing}>
@@ -20,7 +22,7 @@ const WidgetStatistics = (props) => {
                     primary="Members"
                     secondary={game.memberCount.toString()}
                     iconPrimary={AccountCircleTwoTone}
-                    color={theme.palette.secondary.main}
+                    color={colors.info}
                 />
             </Grid>
             {/*}<Grid item xs={6} md={4}>
@@ -37,7 +39,7 @@ const WidgetStatistics = (props) => {
                     secondary={game.betCount.toString()}
                     
                     iconPrimary={EmojiEventsTwoToneIcon}
-                    color={theme.palette.success.dark}
+                    color={colors.info}
                 />
             </Grid>
 

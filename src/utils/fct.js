@@ -1,4 +1,4 @@
-import { DateTime, Duration } from 'luxon';
+import { DateTime } from 'luxon';
 import config from '../config';
 import axios from '../utils/axios';
 
@@ -7,6 +7,10 @@ const f = {};
 
 f.sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+f.cutString = (string,length) => {
+    return string.length < length ? string : string.substr(0,32) + '..';
 }
 
 f.getBetProgress = (bet) => {
@@ -68,15 +72,15 @@ f.secondsToMHD = (seconds) => {
     var numminutes = Math.floor((((seconds % 31536000) % 86400) % 3600) / 60);
     var numseconds = Math.floor((((seconds % 31536000) % 86400) % 3600) % 60);
 
-    if (numyears != 0)
+    if (numyears !== 0)
         return numyears + 'y';
-    if (numdays != 0)
+    if (numdays !== 0)
         return numdays + 'd ' + numhours + 'h';
-    if (numhours != 0)
+    if (numhours !== 0)
         return numhours + 'h ' + numminutes + 'm';
-    if (numminutes != 0)
+    if (numminutes !== 0)
         return numminutes + 'm ' + numseconds + 's';
-    if (numseconds != 0)
+    if (numseconds !== 0)
         return numseconds + 's';
 
     return '0s';
@@ -114,7 +118,7 @@ f.addUsernamesToArray = async (arr) => {
     const responseUsers = (await axios.get(config.apiHost + '/v1/users/', {params: { id: uniqueUserIds, limit: 10 }})).data.results;
     let usr;
     for (let a of arr) {
-        usr = responseUsers.find(u => a.userId == u.id);
+        usr = responseUsers.find(u => a.userId === u.id);
         a.username = usr ? usr.username : 'n/a';
     }
     return arr
@@ -128,7 +132,7 @@ f.getCorrectAnswerStrings = (bet, maxCharacters) => {
     let correctAnswerStrings = [], moreAnswersString = '';
 
     if (bet.isSolved) {
-        if (bet.betType == 'catalogue') {
+        if (bet.betType === 'catalogue') {
 
             let i = 0, chars = 0,title;
             for (i = 0; i < bet.correctAnswerIds.length; i++) {
@@ -143,19 +147,19 @@ f.getCorrectAnswerStrings = (bet, maxCharacters) => {
 
             if (bet.correctAnswerIds.length > i)
                 moreAnswersString = 'and ' + (bet.correctAnswerIds.length - i) + ' more'
-        } else if (bet.betType == 'scale') {
+        } else if (bet.betType === 'scale') {
             correctAnswerStrings.push(bet.correctAnswerDecimal.$numberDecimal);
         }
     }
 
     return {correctAnswerStrings, moreAnswersString}
 }
-
+/*
 f.getActualOdds = (bet) => {
     let answers;
-    if (bet.betType == 'catalogue')
+    if (bet.betType === 'catalogue')
         answers = bet.catalogue_answers;
-    else if (bet.betType == 'scale') 
+    else if (bet.betType === 'scale') 
         answers = bet.scale_answers;
 
     if (!bet.dynamicOdds)
@@ -176,6 +180,15 @@ f.getActualOdds = (bet) => {
     }
 
     return actualOdds;
+}
+*/
+
+f.assembleGameOrBetUri = (game) => {
+    return game.title.replaceAll(' ', '-') + '-' + game.id;
+}
+
+f.disassembleGameOrBetUri = (gameUri) => {
+    return gameUri.substr(gameUri.length - 24);
 }
 
 

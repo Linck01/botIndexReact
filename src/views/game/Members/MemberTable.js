@@ -1,17 +1,12 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer,
     TableHead, TableRow  } from '@material-ui/core';
 import GameContext from '../../../contexts/GameContext';
 import MemberTableRow from './MemberTableRow';
 
-const useStyles = makeStyles((theme) => ({
-
-}));
 
 export default function MemberTable( props ) {
     const { membersPage } = props;
-    const classes = useStyles();
     const { game, privileges } = React.useContext(GameContext);
     //const { user } = useAuth();
 

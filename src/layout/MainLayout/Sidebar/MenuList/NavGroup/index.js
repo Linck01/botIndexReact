@@ -20,8 +20,8 @@ const useStyles = makeStyles((theme) => ({
         ...theme.typography.subMenuCaption
     },
     menuDivider: {
-        marginTop: '2px',
-        marginBottom: '10px'
+        marginTop: '1px', // MenuItem height (default 2px)
+        marginBottom: '5px' // MenuItem height (default 10px)
     }
 }));
 
@@ -34,8 +34,8 @@ const NavGroup = ({ item }) => {
 
     // menu list collapse & items
     const items = item.children.map((menu) => {
-        if(menu.id == 'settings' && (!game || !user || user.id != game.userId))
-            return;
+        if(menu.id === 'settings' && (!game || !user || user.id !== game.userId))
+            return null;
 
         switch (menu.type) {
             case 'collapse':

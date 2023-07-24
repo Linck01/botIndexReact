@@ -1,43 +1,15 @@
 import React from 'react';
 import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-
-// material-ui
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-    Avatar,
-    Card,
-    CardContent,
-    Chip,
-    ClickAwayListener,
-    Divider,
-    Grid,
-    InputAdornment,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    OutlinedInput,
-    Paper,
-    Popper,
-    Switch,
-    Typography
-} from '@material-ui/core';
-
-// third-party
-import PerfectScrollbar from 'react-perfect-scrollbar';
-
-// project imports
+import { CardContent, Chip, ClickAwayListener, Divider, Grid,
+    List, ListItem, ListItemIcon, ListItemText,Paper, Popper,
+    Typography } from '@material-ui/core';
 import MainCard from '../../../../ui-component/cards/MainCard';
 import Transitions from '../../../../ui-component/extended/Transitions';
-import UpgradePlanCard from './UpgradePlanCard';
 import useAuth from '../../../../hooks/useAuth';
+import { IconLogout, IconSettings } from '@tabler/icons';
 
-// assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
-import User1 from './../../../../assets/images/users/user-round.svg';
-
-// style const
 const useStyles = makeStyles((theme) => ({
     navContainer: {
         width: '100%',
@@ -123,11 +95,9 @@ const ProfileSection = () => {
     const theme = useTheme();
     const customization = useSelector((state) => state.customization);
 
-    const [sdm, setSdm] = React.useState(true);
-    const [value, setValue] = React.useState('');
-    const [notification, setNotification] = React.useState(false);
+    //const [notification, setNotification] = React.useState(false);
     const [selectedIndex, setSelectedIndex] = React.useState(1);
-    const { logout, user, isLoggedIn } = useAuth();
+    const { logout, user } = useAuth();
     const [open, setOpen] = React.useState(false);
     const anchorRef = React.useRef(null);
     const handleLogout = async () => {
@@ -209,15 +179,15 @@ const ProfileSection = () => {
                             <ClickAwayListener onClickAway={handleClose}>
                                 <MainCard border={false} elevation={16} content={false} boxShadow shadow={theme.shadows[16]}>
                                     <CardContent className={classes.cardContent}>
-                                        <Grid container direction="column" spacing={0}>
+                                        <Grid container direction="column" spacing={1}>
                                             <Grid item className={classes.flex}>
-                                                <Typography variant="h4">Good day! </Typography>
-                                                <Typography component="span" variant="h5" className={classes.name}>
-                                                 
+                                                <Typography variant="h4">Logged in as: </Typography>
+                                                <Typography component="span" variant="h4" className={classes.name}>
+                                                    {user ? user.username : ''}
                                                 </Typography>
                                             </Grid>
                                             <Grid item>
-                                                <Typography variant="subtitle2">Logged in as: {user ? user.username : ''}</Typography>
+                                                {/*}<Typography variant="subtitle2">Logged in as: {user ? user.username : ''}</Typography>{*/}
                                             </Grid>
                                         </Grid>
                                         { /* }

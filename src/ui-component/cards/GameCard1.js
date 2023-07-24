@@ -1,23 +1,12 @@
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
-
-// material-ui
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Button, Card, CardContent, CardMedia, Chip, Grid, Typography, IconButton } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Button, Card, CardContent, CardMedia, Chip, Grid, Typography, Tooltip } from '@material-ui/core';
 import useColors from '../../hooks/useColors';
+import { IconUsers, IconCertificate } from '@tabler/icons';
+import PlayCircleIcon from '@material-ui/icons/PlayCircleOutline';
+import fct from '../../utils/fct.js';
 
-// project imports
-import Avatar from '../extended/Avatar';
-import { gridSpacing } from '../../store/constant';
-// assets
-import { IconCalendar, IconBrandAppleArcade, IconUsers, IconCertificate } from '@tabler/icons';
-
-import ChatBubbleTwoToneIcon from '@material-ui/icons/ChatBubbleTwoTone';
-
-const avatarImage = require.context('./../../assets/images/profile', true);
-
-// style constant
 const useStyles = makeStyles((theme) => ({
     followerBlock: {
         background: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.grey[50],
@@ -58,46 +47,45 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-//-----------------------|| USER PROFILE CARD ||-----------------------//
-
 const UserProfileCard = (props) => {
     const { game } = props;
-    const theme = useTheme();
     const { colors } = useColors();
     const classes = useStyles();
 
     return (
-        <Card className={classes.followerBlock}>
+        <Card className={classes.followerBlock} sx={{ boxShadow: 8 }}>
             <CardMedia component="img" image={ game.bannerUrl } title="banner" sx={{ height: '125px' }} />
             <CardContent sx={{ p: 2, pb: '16px !important' }}>
                 <Grid container spacing={1}>
                     <Grid item xs={12}>
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
-                                <Typography className={classes.profileAvatar} variant="h4">{game.title} </Typography>
+                                <Tooltip title={game.title.length >= 32 ? game.title : ''}>
+                                    <Typography className={classes.profileAvatar} variant="h4">{fct.cutString(game.title,32)}</Typography>
+                                </Tooltip>
                             </Grid>
                         </Grid>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={4} style={{paddingTop: '12px'}}>
                         {game.currencyName}
 
                         {!game.isEnded ? (
                             <Chip label="Active" size="small" className={classes.active} />
                         ) : (
-                            <Chip label="Solved" size="small" className={classes.reject} />
+                            <Chip label="Ended" size="small" className={classes.reject} />
                         )} 
                     </Grid>
-                    <Grid item xs={12} alignItems="center">  
+                    <Grid item xs={8} alignItems="center">  
                         <Grid container spacing={1}>
                             {/*}<Grid item xs={12} sm={12}>
                                 <Typography variant="body2">{game.desc}</Typography>
                             </Grid>{*/}
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={6}>
                                 <Typography variant="body2" style={{fontSize:'1.6em', color: colors.primaryMain}} className={classes.customerHeadDetails}>
                                     <IconUsers  style={{width: '1em',height: '1em', color: colors.infoDark}} /> {game.memberCount}
                                 </Typography>
                             </Grid>
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={6}>
                                 <Typography variant="body2" style={{fontSize:'1.6em', color: colors.primaryMain}} className={classes.customerHeadDetails}>
                                     <IconCertificate  style={{width: '1.1em',height: '1.1em', color: colors.warningDark}} /> {game.betCount}
                                 </Typography>
@@ -106,8 +94,8 @@ const UserProfileCard = (props) => {
                     </Grid>
                     
                     <Grid item xs={12}>
-                        <Link to={'/game/' + game.id}>
-                            <Button variant="outlined" color="secondary" className={classes.btnProfile} startIcon={<ChatBubbleTwoToneIcon />}>
+                        <Link to={'/game/' + fct.assembleGameOrBetUri(game)}>
+                            <Button variant="contained" color="primary" className={classes.btnProfile} sx={{ boxShadow: 4 }} startIcon={<PlayCircleIcon />}>
                                 Play
                             </Button>
                         </Link>

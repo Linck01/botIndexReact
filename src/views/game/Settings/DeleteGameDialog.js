@@ -1,31 +1,18 @@
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Slider, TextField, Typography, Grid, List, ListItem, ListItemIcon, ListItemText, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Grid, CircularProgress } from '@material-ui/core';
 import React, {useState, useContext} from 'react';
 import GameContext from '../../../contexts/GameContext';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { useTheme } from '@material-ui/core/styles';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 
-const useStyles = makeStyles((theme) => ({
-    toggleButton: {
-        backgroundColor: theme.palette.error.main
-    }
-}));
-
-const valueText = (value) => {
-    return `${value}°C`;
-}
 
 //===============================|| UI DIALOG - FORMS ||===============================//
 
 export default function DeleteGameDialog(props) {
-    const theme = useTheme();
-    const classes = useStyles();
     const { game } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
     const [isLoading, setIsLoading] = useState(false);
@@ -51,7 +38,7 @@ export default function DeleteGameDialog(props) {
         }
         
         try {
-            const response = await axios.delete(config.apiHost + '/v1/games/' + game.id, {});
+            await axios.delete(config.apiHost + '/v1/games/' + game.id, {});
             history.push('/games/hosted');
             //handleClose();
         } catch (e) {
@@ -68,7 +55,7 @@ export default function DeleteGameDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="error" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} variant="contained" sx={{ boxShadow: 4 }} color="error" onClick={handleClickOpen}>
                 Delete game
             </Button>
 

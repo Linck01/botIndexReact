@@ -2,7 +2,7 @@ import { other } from './other';
 import { publicGames } from './publicGames';
 import { userspace } from './userspace';
 import { game } from './game';
-import { main } from './main';
+//import { main } from './main';
 
 //-----------------------|| MENU ITEMS ||-----------------------//
 

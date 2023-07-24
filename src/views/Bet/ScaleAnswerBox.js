@@ -1,34 +1,10 @@
 import React, { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 import fct from '../../utils/fct.js';
-import { makeStyles, Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
-
-const useStyles = makeStyles((theme) => ({
-    btnTable: {
-        borderRadius: '4px',
-        paddingLeft: '4px',
-        paddingRight: '4px',
-        width: '100%',
-        minWidth: '120px',
-        
-        '&:hover': {
-            background: theme.palette.secondary.main,
-            borderColor: theme.palette.secondary.main,
-            color: '#fff'
-        }
-    },
-    ScrollHeight: {
-        maxHeight: '400px',
-    }
-}));
+import { Table, TableBody, TableCell, TableHead, TableRow } from '@material-ui/core';
 
 
 const ScaleAnswerBox = ( props ) => {
-    const classes = useStyles();
-    const dispatch = useDispatch();
     const { bet, myTips } = props;
-    const [selectedIndex, setSelectedIndex] = React.useState(null);
-    const [isLoadingSelectedIndex, setIsLoadingSelectedIndex] = React.useState(true);
     const [stakedIntervals, setStakedIntervals] = React.useState([]);
 
     useEffect(() => {
@@ -61,7 +37,8 @@ const ScaleAnswerBox = ( props ) => {
                     <TableHead>
                         <TableRow>
                             <TableCell align='center'>Interval</TableCell>
-                            <TableCell align='center'>Odds</TableCell>
+                            {bet.dynamicOdds ? <TableCell align='center'>Base Odds</TableCell> : <TableCell align='center'>Odds</TableCell>}
+                            {bet.dynamicOdds ? <TableCell align='center'>Dynamic Odds</TableCell> : ''}
                             <TableCell align='center'>Members</TableCell>
                             <TableCell align='center'>In pot</TableCell>
                             <TableCell align='center'>Staked</TableCell>
@@ -72,7 +49,9 @@ const ScaleAnswerBox = ( props ) => {
                         {bet.scale_answers.map((interval, index) => (
                             <TableRow hover key={interval._id}>
                                 <TableCell align='center'>{'>'} {interval.from.$numberDecimal}</TableCell>
-                                <TableCell align='center'>{+parseFloat(fct.getActualOdds(bet)[index]).toFixed(2)}</TableCell>
+                                
+                                <TableCell align='center'>{+parseFloat(interval.baseOdds.$numberDecimal).toFixed(2)}</TableCell>
+                                {bet.dynamicOdds ? <TableCell align='center'>{+parseFloat(interval.currentOdds.$numberDecimal).toFixed(2)}</TableCell> : ''}
                                 <TableCell align='center'>{interval.memberCount}</TableCell>
                                 <TableCell align='center'>{+parseFloat(interval.inPot.$numberDecimal).toFixed(2)}</TableCell>
                                 <TableCell align='center'> {+parseFloat(stakedIntervals[index]).toFixed(2)}</TableCell>

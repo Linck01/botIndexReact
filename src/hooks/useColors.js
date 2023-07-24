@@ -1,9 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { useTheme } from '@material-ui/core/styles';
 
 const useAnswerColors = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [data, setData] = useState([]);
     const theme = useTheme();
 
     const primaryLight = theme.palette.primary.light;
@@ -42,10 +40,10 @@ const useAnswerColors = () => {
     const warningMain = theme.palette.warning.main;
     const warningDark = theme.palette.warning.dark;
 
-    const success = theme.palette.mode === 'dark' ? successDark : successLight;
-    const warning = theme.palette.mode === 'dark' ? warningDark : warningLight;
-    const info = theme.palette.mode === 'dark' ? infoDark : infoLight;
-    const error = theme.palette.mode === 'dark' ? errorDark : errorLight;
+    const success = theme.palette.mode === 'dark' ? successLight : successDark;
+    const warning = theme.palette.mode === 'dark' ? warningLight : warningDark;
+    const info = theme.palette.mode === 'dark' ? infoLight : infoDark;
+    const error = theme.palette.mode === 'dark' ? errorLight : errorDark;
 
     const answerColors = [
         primaryDark, secondaryDark, successDark, orangeDark, infoDark, warningDark, errorDark, 
@@ -55,7 +53,7 @@ const useAnswerColors = () => {
 
     const colors = {
         success, warning, info, error,
-        primaryLight, secondaryLight, orangeLight, errorLight,
+        primaryLight, secondaryLight, orangeLight, errorLight, infoLight, warningLight, successLight,
         primaryDark, secondaryDark, successDark, orangeDark, infoDark, warningDark, errorDark, 
         primaryMain, secondaryMain, successMain, orangeMain, infoMain, warningMain, errorMain,
         primary200, secondary200, success200, darkLight, dark800, darkMain, darkDark

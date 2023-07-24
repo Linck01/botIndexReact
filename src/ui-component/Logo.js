@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-// material-ui
 import { useTheme } from '@material-ui/core/styles';
-import config from '../config';
 /**
  * if you want to use image instead of <svg> uncomment following.
  *
@@ -11,8 +9,7 @@ import config from '../config';
  *
  */
  import logoDark from '../assets/images/mini.png';
- import logo from '../assets/images/mini.png';
-//-----------------------|| LOGO SVG ||-----------------------//
+ //import logo from '../assets/images/mini.png';
 
 const Logo = () => {
     const theme = useTheme();

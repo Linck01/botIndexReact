@@ -1,24 +1,21 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import useColors from '../../../../../hooks/useColors';
-import fct from '../../../../../utils/fct.js';
 import axios from '../../../../../utils/axios';
 import config from '../../../../../config';
 import { SNACKBAR_OPEN } from '../../../../../store/actions';
 import { useDispatch } from 'react-redux';
-
-// material-ui
-import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Card, CardContent, Grid, Typography, CardHeader } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { Card, CardContent, Grid, Typography } from '@material-ui/core';
 import { IconHeart } from '@tabler/icons';
 import GameContext from '../../../../../contexts/GameContext';
 import useAuth from '../../../../../hooks/useAuth';
-
+import fct from '../../../../../utils/fct.js';
 
 const useStyles = makeStyles((theme) => ({
     socialHoverCard: {
         position: 'relative',
-        background: theme.palette.mode === 'dark' ? theme.palette.secondary.main : theme.palette.secondary.main,
+        background: theme.palette.mode === 'dark' ? theme.palette.primary.main : theme.palette.primary.main,
         color: '#fff',
         '&:hover svg': {
             opacity: '1',
@@ -27,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     },
     socialHoverCardHeader: {
         position: 'relative',
-        background: theme.palette.mode === 'dark' ? theme.palette.primary.dark.main : theme.palette.primary.light,
+        background: theme.palette.mode === 'dark' ? theme.palette.secondary.dark.main : theme.palette.secondary.light,
         color: '#fff',
         '&:hover svg': {
             opacity: '1',
@@ -36,15 +33,12 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-//===========================|| HOVER SOCIAL CARD ||===========================//
-
 const MemberCurrencyCard = (props) => {
     const classes = useStyles();
     const { game, member } = React.useContext(GameContext);
     const { user } = useAuth();
-
     const { colors } = useColors();
-    const theme = useTheme();
+
     const [ favorited, setFavorited ] = React.useState(member ? member.isFavoritedGame : false);
     const dispatch = useDispatch();
 
@@ -68,7 +62,7 @@ const MemberCurrencyCard = (props) => {
                     variant: 'alert', alertSeverity: 'error', close: true });
 
             const obj = { isFavoritedGame: !favorited };
-            const response = await axios.patch(config.apiHost + '/v1/members/' + game.id + '/' + user.id, obj);
+            await axios.patch(config.apiHost + '/v1/members/' + game.id + '/' + user.id, obj);
 
             //dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully changed settings', 
             //    variant: 'alert', alertSeverity: 'success', close: true });
@@ -82,12 +76,12 @@ const MemberCurrencyCard = (props) => {
     };
 
     return (
-        <Card className={classes.socialHoverCard}>
+        <Card className={classes.socialHoverCard} sx={{ boxShadow: 8 }}>
             <CardContent>
                 <Grid container spacing={1}>
                     <Grid item xs={10}>
                         <Typography variant="subtitle1" color="inherit">
-                            {game.title}
+                            {fct.cutString(game.title,32)}
                         </Typography>  
                     </Grid>
                     <Grid item xs={2}>

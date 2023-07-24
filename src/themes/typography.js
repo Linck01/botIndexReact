@@ -85,10 +85,10 @@ export function themeTypography(theme) {
         mainContent: {
             backgroundColor: theme.background,
             width: '100%',
-            minHeight: 'calc(100vh - 88px)',
+            minHeight: 'calc(100vh - 56px)', // HeaderHeight (default 88px)
             flexGrow: 1,
             padding: '20px',
-            marginTop: '88px',
+            marginTop: '56px',  // HeaderHeight (default 88px)
             marginRight: '20px',
             borderRadius: theme.customization.borderRadius + 'px'
         },

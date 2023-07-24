@@ -6,14 +6,12 @@ import MemberTable from './MemberTable';
 import { Typography, Pagination, Grid, CircularProgress } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { SNACKBAR_OPEN } from '../../../store/actions';
-import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 import { Helmet } from "react-helmet";
 
 const Members = () => {
-    const { game, socket, privileges, membersPage, setMembersPage  } = useContext(GameContext);
-    const { user } = useAuth();
+    const { game, membersPage, setMembersPage  } = useContext(GameContext);
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
 
@@ -75,7 +73,7 @@ const Members = () => {
             </>
         ) : ''}
 
-        {!isLoading && membersPage.items.length == 0 ? (
+        {!isLoading && membersPage.items.length === 0 ? (
             <>  
                 <br />
                 <Grid container direction="column" spacing={2} alignItems="center">

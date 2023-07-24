@@ -12,7 +12,7 @@ export default function AnswerCatalogue({...props}) {
             return;
 
         let tmp = [...catalogue_answers];
-        tmp.push({title:'',odds:2});
+        tmp.push({title:'',baseOdds:2});
         
         setCatalogue_answers(tmp);
     };
@@ -46,7 +46,7 @@ export default function AnswerCatalogue({...props}) {
                     <TextField onChange={e => updateAnswer(e,'title', i)} fullWidth id="outlined-basic-size-small" label={'Answer  ' + (i + 1)} size="small" defaultValue="" inputProps={{ maxLength: 64 }}/>     
                 </Grid>
                 <Grid item xs={4} lg={2} >         
-                    <TextField onChange={e => updateAnswer(e,'odds', i)} fullWidth id="outlined-basic-size-small" label={'Odds  ' + (i + 1)} type='number' size="small" defaultValue="2" inputProps={{ maxLength: 10 }}/>          
+                    <TextField onChange={e => updateAnswer(e,'baseOdds', i)} fullWidth id="outlined-basic-size-small" label={'Odds  ' + (i + 1)} type='number' size="small" defaultValue="2" inputProps={{ maxLength: 10 }}/>          
                 </Grid>
                 </React.Fragment>)
             )}

@@ -1,36 +1,18 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Grid, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import React, {useState, useContext} from 'react';
 import GameContext from '../../../contexts/GameContext';
 import { useDispatch } from 'react-redux';
-import { useHistory } from 'react-router-dom';
-import { useTheme } from '@material-ui/core/styles';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import useAuth from '../../../hooks/useAuth';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 
-const useStyles = makeStyles((theme) => ({
-    toggleButton: {
-        backgroundColor: theme.palette.error.main
-    }
-}));
-
-const valueText = (value) => {
-    return `${value}°C`;
-}
-
-//===============================|| UI DIALOG - FORMS ||===============================//
-
 export default function DeleteGameDialog(props) {
-    const theme = useTheme();
-    const classes = useStyles();
     const { game } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
     const { user } = useAuth();
-    const history = useHistory();
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -50,7 +32,7 @@ export default function DeleteGameDialog(props) {
         }
         
         try {
-            const response = await axios.patch(config.apiHost + '/v1/members/topUpStartCurrency', {gameId: game.id});
+            await axios.patch(config.apiHost + '/v1/members/topUpStartCurrency', {gameId: game.id});
             handleClose();
         } catch (e) {
             setIsLoading(false);
@@ -66,7 +48,7 @@ export default function DeleteGameDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="warning" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} variant="contained" sx={{ boxShadow: 4 }} color="primary" onClick={handleClickOpen}>
                 Top-up currency of broke members
             </Button>
 

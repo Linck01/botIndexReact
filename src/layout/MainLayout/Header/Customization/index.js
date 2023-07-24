@@ -1,38 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-
-// material-ui
 import { useTheme, makeStyles } from '@material-ui/core/styles';
-import {
-    Avatar,
-    ButtonBase,
-    Drawer,
-    FormControl,
-    FormControlLabel,
-    FormLabel,
-    Grid,
-    Radio,
-    RadioGroup,
-    Slider,
-    Stack,
-    Switch,
-    TextField,
-    Tooltip,
-    Typography,
-    Box,
-    Checkbox
-} from '@material-ui/core';
-
-// third-party
+import { Avatar, ButtonBase, Drawer, FormControl, FormControlLabel,
+    Grid, Radio, RadioGroup, Tooltip, Typography, Box,
+    Checkbox } from '@material-ui/core';
 import PerfectScrollbar from 'react-perfect-scrollbar';
-
-// project imports
 import SubCard from '../../../../ui-component/cards/SubCard';
-import AnimateButton from '../../../../ui-component/extended/AnimateButton';
 import { SET_CUSTOMIZATION } from '../../../../store/actions'; // THEME_RTL
 import { gridSpacing } from '../../../../store/constant';
-
-// color import
 import colors from '../../../../assets/scss/_themes-vars.module.scss';
 import theme1 from '../../../../assets/scss/_theme1.module.scss';
 import theme2 from '../../../../assets/scss/_theme2.module.scss';
@@ -40,16 +15,8 @@ import theme3 from '../../../../assets/scss/_theme3.module.scss';
 import theme4 from '../../../../assets/scss/_theme4.module.scss';
 import theme5 from '../../../../assets/scss/_theme5.module.scss';
 import theme6 from '../../../../assets/scss/_theme6.module.scss';
+import { IconChecks, IconMoon2 } from '@tabler/icons';
 
-// assets
-import { IconChecks, IconMoon2, IconSettings } from '@tabler/icons';
-
-// concat 'px'
-function valueText(value) {
-    return `${value}px`;
-}
-
-// style constant
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1

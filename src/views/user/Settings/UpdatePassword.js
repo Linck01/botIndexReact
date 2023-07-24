@@ -1,23 +1,11 @@
 import React from 'react';
-
-// material-ui
-import { useTheme } from '@material-ui/core/styles';
-import { Grid, Typography, TextField,IconButton,
-    InputAdornment,
-    InputLabel,
-    OutlinedInput, } from '@material-ui/core';
-
+import { Grid, Typography, TextField,IconButton } from '@material-ui/core';
 import { gridSpacing } from '../../../store/constant';
-
-// assets
 import Visibility from '@material-ui/icons/Visibility';
 import VisibilityOff from '@material-ui/icons/VisibilityOff';
-import { strengthColor, strengthIndicator } from '../../../utils/password-strength';
+//import { strengthColor, strengthIndicator } from '../../../utils/password-strength';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import { useDispatch } from 'react-redux';
-
-// project imports
-import fct from '../../../utils/fct.js';
 import axios from '../../../utils/axios';
 import config from '../../../config';
 import useAuth from '../../../hooks/useAuth';
@@ -26,11 +14,10 @@ import { Button, CircularProgress } from '@material-ui/core';
 //===========================|| WIDGET STATISTICS ||===========================//
 
 const WidgetStatistics = (props) => {
-    const theme = useTheme();
-    const [showPassword, setShowPassword] = React.useState(false);
-    const [passwordMatch, setPasswordMatch] = React.useState(0);
-    const [strength, setStrength] = React.useState(0);
-    const [level, setLevel] = React.useState('');
+    const [ showPassword, setShowPassword ] = React.useState(false);
+    //const [ passwordMatch, setPasswordMatch ] = React.useState(0);
+    //const [strength, setStrength] = React.useState(0);
+    //const [level, setLevel] = React.useState('');
     const [ password, setPassword ] = React.useState('');
     const [ newPassword, setNewPassword ] = React.useState('');
     const [ newPasswordConfirm, setNewPasswordConfirm ] = React.useState('');
@@ -43,8 +30,11 @@ const WidgetStatistics = (props) => {
         setIsLoading(true);
 
         try {
+            if (newPassword !== newPasswordConfirm)
+                throw Error('Passwords and password confirmation do not match');
+
             const obj = { password, newPassword };
-            const response = await axios.patch(config.apiHost + '/v1/users/' + user.id, obj);
+            await axios.patch(config.apiHost + '/v1/users/' + user.id, obj);
             
             //setPassword('');
             //setNewPassword('');
@@ -62,14 +52,7 @@ const WidgetStatistics = (props) => {
 
     };
 
-    const checkPasswordConfirm = (pass1, pass2) => {
-        if (passwordMatch !== 0 || pass2.length >= pass1.length) {
-            if (pass1 == pass2)
-                setPasswordMatch(true);
-            else 
-                setPasswordMatch(false);
-        }   
-    };
+    
 
     const handleClickShowPassword = () => {
         setShowPassword(!showPassword);
@@ -79,11 +62,23 @@ const WidgetStatistics = (props) => {
         event.preventDefault();
     };
 
+    
+    /*
+    const checkPasswordConfirm = (pass1, pass2) => {
+        if (passwordMatch !== 0 || pass2.length >= pass1.length) {
+            if (pass1 == pass2)
+                setPasswordMatch(true);
+            else 
+                setPasswordMatch(false);
+        }   
+    };
+    
     const changePassword = (value) => {
         const temp = strengthIndicator(value);
         setStrength(temp);
         setLevel(strengthColor(temp));
     };
+    */
 
     return (
         <>
@@ -137,7 +132,7 @@ const WidgetStatistics = (props) => {
                 </Grid>       
             </Grid>
             <br /><br />
-            <Button style={{width:'100%'}} variant="outlined" color="secondary" onClick={updateSettings}>
+            <Button style={{width:'100%'}} variant="contained" sx={{ boxShadow: 8 }} color="secondary" onClick={updateSettings}>
                 { isLoading ? (<> <CircularProgress color="secondary"  size="1.7em" /></>) : ('Change Password') }
             </Button>
             {/*}

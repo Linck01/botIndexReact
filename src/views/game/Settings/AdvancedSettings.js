@@ -1,21 +1,10 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import { FormControlLabel, Grid, Switch, Typography, useTheme, TextField } from '@material-ui/core';
-import GameContext from '../../../contexts/GameContext';
+import { FormControlLabel, Grid, Switch, Typography, TextField } from '@material-ui/core';
 import CurrencyNameSelect from './CurrencyNameSelect';
 import { gridSpacing } from '../../../store/constant';
 
-const useStyles = makeStyles((theme) => ({
-    temp: {
-
-    }
-}));
-
 const Settings = (props) => {
-    const classes = useStyles();
-    const theme = useTheme();
-    const { game } = React.useContext(GameContext);
-    const { startCurrency, setStartCurrency, password, setPassword, isPublic, setIsPublic, currencyName, setCurrencyName, isEnded, setIsEnded} = props;
+    const { startCurrency, setStartCurrency, isPublic, setIsPublic, currencyName, setCurrencyName, isEnded, setIsEnded} = props;
 
     return (
         <>

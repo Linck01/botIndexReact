@@ -3,7 +3,7 @@ import UpdatePassword from './UpdatePassword';
 
 const GameSettings = () => {
 
-    const [ isLoading, setIsLoading ] = React.useState(false);
+    //const [ isLoading, setIsLoading ] = React.useState(false);
 
    
     return (

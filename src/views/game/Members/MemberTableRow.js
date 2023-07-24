@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { useTheme } from '@material-ui/core/styles';
 import { TableCell, TableRow,  } from '@material-ui/core';
 import axios from '../../../utils/axios';
 import config from '../../../config';
@@ -10,13 +10,9 @@ import useAuth from '../../../hooks/useAuth';
 import fct from '../../../utils/fct.js';
 import { IconCrown, IconBan } from '@tabler/icons';
 
-const useStyles = makeStyles((theme) => ({
-
-}));
 
 export default function MemberTableRow( props ) {
     const { member } = props;
-    const classes = useStyles();
     const { game, privileges } = React.useContext(GameContext);
     const theme = useTheme();
     const { user } = useAuth();
@@ -38,7 +34,7 @@ export default function MemberTableRow( props ) {
         //setIsLoading(true);
 
         try {
-            const response = await axios.patch(config.apiHost + '/v1/members/' + game.id + '/' + member.userId, obj);
+            await axios.patch(config.apiHost + '/v1/members/' + game.id + '/' + member.userId, obj);
             //dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully changed settings', 
             //    variant: 'alert', alertSeverity: 'success', close: true });
 
@@ -53,7 +49,7 @@ export default function MemberTableRow( props ) {
     return (
         <TableRow hover key={member.id}>
             <TableCell align='center'>
-                {member.isModerator || (user && game.userId == member.userId) ? <><IconCrown stroke={1.5} size="0.8rem" color={theme.palette.warning.main}/>&nbsp;</> : ''}
+                {member.isModerator || (user && game.userId === member.userId) ? <><IconCrown stroke={1.5} size="0.8rem" color={theme.palette.warning.main}/>&nbsp;</> : ''}
                 {member.isBanned ? <><IconBan stroke={1.5} size="0.8rem" color={theme.palette.error.main}/>&nbsp;</> : ''}
                 {member.username}
                 </TableCell>

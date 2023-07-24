@@ -22,7 +22,7 @@ const BigGamesPage = () => {
 
         try {
             const memberResponse = await axios.get(config.apiHost + '/v1/members/', {params: {userId: user.id, isFavoritedGame: true, sortBy: 'createdAt', limit: 9 , page: page.index } });
-            if (memberResponse.data.results.length == 0) {
+            if (memberResponse.data.results.length === 0) {
                 setGames([]);
                 setIsLoading(false);
                 return 
@@ -85,7 +85,7 @@ const BigGamesPage = () => {
             </>
         ) : ''}
 
-        {!isLoading && games.length == 0 ? (
+        {!isLoading && games.length === 0 ? (
             <><br />
             <Grid container direction="column" spacing={2} alignItems="center">
                 <Grid item xs={12}>

@@ -46,7 +46,7 @@ export function theme(customization) {
     }
 
     for (let c in color)
-        if (color[c].length == 4)
+        if (color[c].length === 4)
             color[c] = color[c][0] + color[c][1] + color[c][1] + color[c][2] + color[c][2] + color[c][3] + color[c][3];
 
     let themeOption = {
@@ -97,10 +97,10 @@ export function theme(customization) {
         palette: themePalette(themeOption),
         mixins: {
             toolbar: {
-                minHeight: '48px',
-                padding: '16px',
+                minHeight: '32px', // HeaderHeight (default 48px)
+                padding: '4px',  // HeaderHeight (default 16px)
                 '@media (min-width: 600px)': {
-                    minHeight: '48px'
+                    minHeight: '32px'  // HeaderHeight (default 48px)
                 }
             }
         },

@@ -1,10 +1,10 @@
 import React, { useState, useContext, useRef, useEffect } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import config from '../../../config.js';
 import { Helmet } from "react-helmet";
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { CardContent, ClickAwayListener, Grid, IconButton, Popper,
-    TextField, useMediaQuery, CircularProgress } from '@material-ui/core';
+    TextField, CircularProgress } from '@material-ui/core';
 import { SNACKBAR_OPEN } from '../../../store/actions';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import Picker, { SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react';
@@ -17,12 +17,10 @@ import AttachmentTwoToneIcon from '@material-ui/icons/AttachmentTwoTone';
 import SendTwoToneIcon from '@material-ui/icons/SendTwoTone';
 import MoodTwoToneIcon from '@material-ui/icons/MoodTwoTone';
 
-const avatarImage = require.context('../../../assets/images/users', true);
-
 const useStyles = makeStyles((theme) => ({
     ScrollHeight: {
         width: '100%',
-        height: 'calc(100vh - 250px)',
+        height: 'calc(100vh - 220px)', // HeaderTry 250px
         overflowX: 'hidden',
         minHeight: '10px'
     }
@@ -33,11 +31,9 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
     const theme = useTheme();
     const dispatch = useDispatch();
     const { user } = useAuth();
-    const { game, socket, chatHistory, chat, setChat} = useContext(GameContext);
+    const { game, socket, chat, setChat} = useContext(GameContext);
     const messageInputRef = useRef();
     const scrollBarRef = useRef();
-    const customization = useSelector((state) => state.customization);
-    const matchDownSM = useMediaQuery(theme.breakpoints.down('md'));
     const [isLoading, setIsLoading] = useState(true);
     const [isLoadingSend, setIsLoadingSend] = useState(false);
 
@@ -89,7 +85,7 @@ const GameChat = ( { openChatDrawer, handleChatDrawerOpen } ) => {
 
         setIsLoadingSend(true);
         try {
-            const res = await axios.post(config.gameHosts[game.serverId] + '/v1/messages/', {
+            await axios.post(config.gameHosts[game.serverId] + '/v1/messages/', {
                 userId: user.id,
                 gameId: game.id,
                 message: messageInputRef.current.querySelectorAll('input[type=text]')[0].value

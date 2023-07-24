@@ -1,43 +1,9 @@
 import React from 'react';
-import { Link as RouterLink, useHistory, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-
-// material-ui
+import { useLocation } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {
-    Avatar,
-    Card,
-    CardContent,
-    Chip,
-    ClickAwayListener,
-    Divider,
-    Grid,
-    InputAdornment,
-    List,
-    ListItem,
-    ListItemIcon,
-    ListItemText,
-    OutlinedInput,
-    Paper,
-    Popper,
-    Switch,
-    Typography,
-    Link
-} from '@material-ui/core';
+import { Chip, Link } from '@material-ui/core';
+import { IconUser } from '@tabler/icons';
 
-// third-party
-import PerfectScrollbar from 'react-perfect-scrollbar';
-
-// project imports
-import MainCard from '../../../../ui-component/cards/MainCard';
-import Transitions from '../../../../ui-component/extended/Transitions';
-import useAuth from '../../../../hooks/useAuth';
-
-// assets
-import { IconLogout, IconSearch, IconSettings, IconUser } from '@tabler/icons';
-import User1 from './../../../../assets/images/users/user-round.svg';
-
-// style const
 const useStyles = makeStyles((theme) => ({
     navContainer: {
         width: '100%',
@@ -118,49 +84,10 @@ const useStyles = makeStyles((theme) => ({
 //-----------------------|| PROFILE MENU ||-----------------------//
 
 const LoginSection = () => {
-    const history = useHistory();
     const classes = useStyles();
     const theme = useTheme();
-    const customization = useSelector((state) => state.customization);
     const lastLocation = useLocation();
-
-    const [sdm, setSdm] = React.useState(true);
-    const [value, setValue] = React.useState('');
-    const [notification, setNotification] = React.useState(false);
-    const [selectedIndex, setSelectedIndex] = React.useState(1);
-    const { logout, user, isLoggedIn } = useAuth();
-    const [open, setOpen] = React.useState(false);
-    const anchorRef = React.useRef(null);
-    const handleLogout = async () => {
-        try {
-            await logout();
-            history.push('/');
-        } catch (err) {
-            console.error(err);
-        }
-    };
-    const handleListItemClick = (event, index) => {
-        setSelectedIndex(index);
-        handleClose(event);
-    };
-    const handleToggle = () => {
-        setOpen((prevOpen) => !prevOpen);
-    };
-    const handleClose = (event) => {
-        if (anchorRef.current && anchorRef.current.contains(event.target)) {
-            return;
-        }
-
-        setOpen(false);
-    };
-    const prevOpen = React.useRef(open);
-    React.useEffect(() => {
-        if (prevOpen.current === true && open === false) {
-            anchorRef.current.focus();
-        }
-
-        prevOpen.current = open;
-    }, [open]);
+    
     return (
         <React.Fragment>
             <Link href={'/login?fromLocation=' + lastLocation.pathname}>
@@ -179,7 +106,6 @@ const LoginSection = () => {
                 }
                 label={<IconUser stroke={1.5} size="1.5rem" color={theme.palette.primary.main} />}
                 variant="outlined"
-                aria-controls={open ? 'menu-list-grow' : undefined}
                 aria-haspopup="true"
                 onClick={() => {}}
                 color="primary"

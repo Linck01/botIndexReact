@@ -10,7 +10,7 @@ const SamplePage = () => { return (
     </Helmet>
         <MainCard title="Privacy Policy for BetifyGG">
             <Typography variant="body2">
-            <h1></h1>
+
 
 <p>At BetifyGG, accessible from betify.gg, one of our main priorities is the privacy of our visitors. This Privacy Policy document contains types of information that is collected and recorded by BetifyGG and how we use it.</p>
 

@@ -1,33 +1,24 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-//import { useSearchParams } from 'react-router-dom';
-
-// material-ui
-import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button, FormControl, FormHelperText, InputLabel, OutlinedInput, CircularProgress, Typography, Grid } from '@material-ui/core';
-
-// project imports
-import AnimateButton from '../../../../ui-component/extended/AnimateButton';
-import useAuth from '../../../../hooks/useAuth';
-import useScriptRef from '../../../../hooks/useScriptRef';
+//import { makeStyles } from '@material-ui/core/styles';
+import { CircularProgress, Typography, Grid } from '@material-ui/core';
+//import useScriptRef from '../../../../hooks/useScriptRef';
 import config from '../../../../config';
 import axios from '../../../../utils/axios';
 import { SNACKBAR_OPEN } from '../../../../store/actions';
-import fct from '../../../../utils/fct.js';
 
-// style constant
-const useStyles = makeStyles((theme) => ({
+/*const useStyles = makeStyles((theme) => ({
     loginInput: {
         ...theme.typography.customInput
     }
-}));
+}));*/
 
 //========================|| FIREBASE - FORGOT PASSWORD ||========================//
 
 const FirebaseForgotPassword = ({ ...others }) => {
-    const classes = useStyles();
-    const scriptedRef = useScriptRef();
-    const [email,setEmail] = React.useState('');
+    //const classes = useStyles();
+    //const scriptedRef = useScriptRef();
+    //const [email,setEmail] = React.useState('');
     const [errorMessage,setErrorMessage] = React.useState('');
     const [isLoading,setIsLoading] = React.useState(false);
     const [successfullReset,setSuccessfullReset] = React.useState(false);
@@ -39,7 +30,7 @@ const FirebaseForgotPassword = ({ ...others }) => {
         setIsLoading(true);
 
         try {
-            const response = await axios.post(config.apiHost + '/v1/auth/reset-password', { userId, code });
+            await axios.post(config.apiHost + '/v1/auth/reset-password', { userId, code });
 
             setIsLoading(false);
             setSuccessfullReset(true);
@@ -73,7 +64,7 @@ const FirebaseForgotPassword = ({ ...others }) => {
         {!isLoading && successfullReset ? 
             <Typography align="center" color="secondary" variant="h3">Successfully sent you a new password.</Typography> : ''}
 
-        {!isLoading && errorMessage != '' ? 
+        {!isLoading && errorMessage !== '' ? 
             <Typography align="center" color="error" variant="h3">{errorMessage}</Typography> : ''}
         
         <br />

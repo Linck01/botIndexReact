@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, 
     DialogTitle, TextField, Typography, FormControl, FormControlLabel, 
-    Grid, Radio, RadioGroup, CircularProgress, Checkbox } from '@material-ui/core';
+    Grid, Radio, RadioGroup, CircularProgress, Checkbox, Tooltip,Fab } from '@material-ui/core';
 import React, {useState, useEffect, useContext} from 'react';
 import GameContext from '../../../contexts/GameContext';
 import { useDispatch } from 'react-redux';
@@ -10,25 +10,48 @@ import config from '../../../config';
 import CustomDateTime from './CustomDateTime';
 import AnswerCatalogue from './AnswerCatalogue';
 import AnswerScale from './AnswerScale';
+import { makeStyles } from '@material-ui/core/styles';
+import HelpIcon from '@material-ui/icons/Help';
 
-//===============================|| UI DIALOG - FORMS ||===============================//
+const useStyles = makeStyles((theme) => ({
+    fab: {
+        margin: theme.spacing(2)
+    },
+    absolute: {
+        position: 'absolute',
+        bottom: theme.spacing(2),
+        right: theme.spacing(3)
+    },
+    button: {
+        margin: theme.spacing(1)
+    },
+    customWidth: {
+        maxWidth: 500
+    },
+    noMaxWidth: {
+        maxWidth: 'none'
+    }
+}));
+
+const dynamicOddsTooltip = 'Automatically adjust odds depending on an answers pot size. Use the "Dynamic Odds Power" value (1-10) to increase or decrease the magnitude of change.';
 
 export default function AddBetDialog({...props}) {
     const { game } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
+    const classes = useStyles();
 
     const [desc, setDesc] = React.useState('');
     const [title, setTitle] = React.useState('');
     const [dynamicOdds, setDynamicOdds] = React.useState(false);
-    const [dynamicOddsPower, setDynamicOddsPower] = React.useState(parseFloat(game.startCurrency.$numberDecimal) / 2);
+    const [dynamicOddsPower, setDynamicOddsPower] = React.useState(5);
 
     const [timeLimit, setTimeLimit] = React.useState(new Date());
     const [betType, setBetType] = React.useState('catalogue');
 
-    const [catalogue_answers, setCatalogue_answers] = React.useState([{title:'',odds:2},{title:'',odds:2}]);
-    const [scale_options, setScale_options] = React.useState({step: 1, min: 2, max: 10, odds: 2, winRate: 50});
+    const [catalogue_answers, setCatalogue_answers] = React.useState([{title:'',baseOdds:2},{title:'',baseOdds:2}]);
+    const [scale_options, setScale_options] = React.useState({step: 1, min: 2, max: 10, baseOdds: 2, winRate: 50});
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -47,11 +70,14 @@ export default function AddBetDialog({...props}) {
         try {
             const tempDate = new Date(timeLimit);
             tempDate.setSeconds(0);
-            const obj = {gameId: game.id, betType, title, desc, timeLimit: tempDate, dynamicOdds, dynamicOddsPower};
-            if (betType == 'catalogue') obj.catalogue_answers = catalogue_answers;
-            if (betType == 'scale') obj.scale_options = scale_options;
+            let obj = {gameId: game.id, betType, title, desc, timeLimit: tempDate, dynamicOdds};
+            if (dynamicOdds) 
+                obj = {...obj, dynamicOddsPower};
 
-            const response = await axios.post(config.gameHosts[game.serverId] + '/v1/bets/', obj);
+            if (betType === 'catalogue') obj.catalogue_answers = catalogue_answers;
+            if (betType === 'scale') obj.scale_options = scale_options;
+
+            await axios.post(config.gameHosts[game.serverId] + '/v1/bets/', obj);
             
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Bet', 
                 variant: 'alert', alertSeverity: 'success', close: true });
@@ -87,7 +113,7 @@ export default function AddBetDialog({...props}) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="secondary" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} variant="contained" color="secondary" sx={{ boxShadow: 8 }} onClick={handleClickOpen}>
                 Create A New Bet
             </Button>
 
@@ -120,7 +146,7 @@ export default function AddBetDialog({...props}) {
                                     rows={3}
                                 />
                         </Grid>
-                        <Grid item xs={6}>
+                        <Grid item xs={7}>
                             <FormControlLabel
                                 control={
                                     <Checkbox
@@ -130,13 +156,19 @@ export default function AddBetDialog({...props}) {
                                         color="primary"
                                     />
                                 }
-                                label={
-                                    <Typography variant="subtitle2">Dynamic Odds</Typography>
+                                label={<>
+                                    <Typography variant="subtitle2">Dynamic Odds <Tooltip title={dynamicOddsTooltip} aria-label="add"><HelpIcon style={{fontSize: '1.3em', marginBottom: '-3px'}}/></Tooltip></Typography>
+                                    
+                                    </>
                                 }
                             />
                         </Grid>
-                        {dynamicOdds ? (<Grid item xs={6}><TextField value={dynamicOddsPower} fullWidth onChange={e => setDynamicOddsPower(e.target.value)}
-                                label={'Average estimated tip'} type='number' size="small" inputProps={{ maxLength: 10 }} /></Grid>) : ''}
+                        {dynamicOdds ? (
+                            <Grid item xs={5}>
+                                <TextField value={dynamicOddsPower} fullWidth onChange={e => setDynamicOddsPower(e.target.value)}
+                                    label={'Dynamic Odds Power'} type='number' size="small" inputProps={{ maxLength: 10 }} />
+                            </Grid>
+                        ) : ''}
                         <Grid item xs={12}>
                             <FormControl>
                                 <RadioGroup
@@ -155,8 +187,8 @@ export default function AddBetDialog({...props}) {
 
                     <br />
                     
-                    { betType == 'catalogue' ? <AnswerCatalogue catalogue_answers={catalogue_answers} setCatalogue_answers={setCatalogue_answers}/> : ''}
-                    { betType == 'scale' ? <AnswerScale scale_options={scale_options} setScale_options={setScale_options}/> : ''}
+                    { betType === 'catalogue' ? <AnswerCatalogue catalogue_answers={catalogue_answers} setCatalogue_answers={setCatalogue_answers}/> : ''}
+                    { betType === 'scale' ? <AnswerScale scale_options={scale_options} setScale_options={setScale_options}/> : ''}
                     
                 </DialogContent>
                 <DialogActions sx={{ pr: 2.5 }}>

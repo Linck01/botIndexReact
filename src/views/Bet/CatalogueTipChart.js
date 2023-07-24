@@ -57,21 +57,19 @@ const ApexPolarChart = (props) => {
     const { answerColors } = useColors();
     const { navType } = customization;
     const { bet } = props;
-    const primary = theme.palette.text.primary;
-    const darkLight = theme.palette.dark.light;
-    const grey200 = theme.palette.grey[200];
-    const backColor = theme.palette.background.paper;
-
-
     const [series, setSeries] = useState([]);
     const [options, setOptions] = useState(polarChartOptions);
 
     
-
     React.useEffect(() => {
+        const primary = theme.palette.text.primary;
+        const darkLight = theme.palette.dark.light;
+        const grey200 = theme.palette.grey[200];
+        const backColor = theme.palette.background.paper;
+
         let values = [];
         //console.log('AAAAA', bet.catalogue_answers.reduce((prev, a) => prev + parseFloat(a.inPot.$numberDecimal),0));
-        if (bet.catalogue_answers.reduce((prev, a) => prev + parseFloat(a.inPot.$numberDecimal),0) == 0)
+        if (bet.catalogue_answers.reduce((prev, a) => prev + parseFloat(a.inPot.$numberDecimal),0) === 0)
             values = new Array(bet.catalogue_answers.length).fill(1);
         else
             values = bet.catalogue_answers.map((a) => a.inPot.$numberDecimal);
@@ -86,18 +84,19 @@ const ApexPolarChart = (props) => {
                     style: {
                         colors: [primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary, primary]
                     }
-                }
+                },
             },
             yaxis: {
                 labels: {
                     style: {
                         colors: [primary]
                     }
-                }
+                },
+                show: false
             },
             grid: {
                 borderColor: navType === 'dark' ? darkLight + 20 : grey200
-            },
+            },            
             legend: {
                 show: false,
                 labels: {
@@ -112,9 +111,11 @@ const ApexPolarChart = (props) => {
             plotOptions: {
                 polarArea: {
                     rings: {
+                        strokeWidth: 0,
                         strokeColor: navType === 'dark' ? darkLight + 20 : grey200
                     },
                     spokes: {
+                        strokeWidth: 0,
                         connectorColors: navType === 'dark' ? darkLight + 20 : grey200
                     }
                 }

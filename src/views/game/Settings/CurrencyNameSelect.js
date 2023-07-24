@@ -1,5 +1,4 @@
 import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
 import Picker, { SKIN_TONE_MEDIUM_DARK } from 'emoji-picker-react';
 import { ClickAwayListener, Grid, IconButton, Popper, TextField } from '@material-ui/core';
 import { gridSpacing } from '../../../store/constant';
@@ -7,7 +6,6 @@ import MoodTwoToneIcon from '@material-ui/icons/MoodTwoTone';
 import MainCard from './../../../ui-component/cards/MainCard';
 
 const CurrencyNameSelect = (props) => {
-    const theme = useTheme();
     const { currencyName, setCurrencyName } = props;
     
     // handle emoji

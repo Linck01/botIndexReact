@@ -1,6 +1,5 @@
 import * as PropTypes from 'prop-types';
 import React, { useCallback, useEffect, useRef } from 'react';
-import useAuth from '../../../hooks/useAuth';
 import { Grid, Typography } from '@material-ui/core';
 import { gridSpacing } from '../../../store/constant';
 
@@ -8,7 +7,6 @@ const ChartHistory = ({ theme, data, scrollBarEl }) => {
     // scroll to bottom when new message is sent or received
     const wrapper = useRef(document.createElement('div'));
     const el = wrapper.current;
-    const { user } = useAuth();
 
     const scrollToBottom = useCallback(() => {
         if (scrollBarEl) scrollBarEl.scrollTop = scrollBarEl.scrollHeight;

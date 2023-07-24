@@ -1,8 +1,7 @@
 
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Slider, TextField, Typography, Grid, List, ListItem, ListItemIcon, ListItemText, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import React, {useState, useContext} from 'react';
-import GameContext from '../../contexts/GameContext';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import HCaptcha from '@hcaptcha/react-hcaptcha';
 import { gridSpacing } from '../../store/constant';
@@ -11,6 +10,7 @@ import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
 import HomeTwoToneIcon from '@material-ui/icons/HomeTwoTone';
+import useColors from '../../hooks/useColors';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -27,18 +27,19 @@ const valueText = (value) => {
 //===============================|| UI DIALOG - FORMS ||===============================//
 
 export default function AddTipDialog(props) {
+    
     const classes = useStyles();
-    const { game, refreshMember } = useContext(GameContext);
-    const [open, setOpen] = React.useState(false);
+    const [open, setOpen] = useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
-    const { getBet, bet } = props;
-    const [amount, setAmount] = React.useState(0);
-    const [answerId, setAnswerId] = React.useState(-1);
+    const { bet } = props;
+    const [amount, setAmount] = useState(0);
+    const [answerId, setAnswerId] = useState(-1);
     const customization = useSelector((state) => state.customization);
     const { user, incrementCaptchaTicker } = useAuth();
-    const [answerDecimal, setAnswerDecimal] = useState(bet.betType == 'scale' ? bet.scale_options.min : 0);
-    const [captchaToken, setCaptchaToken] = React.useState('');
+    const [answerDecimal, setAnswerDecimal] = useState(bet.betType === 'scale' ? bet.scale_options.min : 0);
+    const [captchaToken, setCaptchaToken] = useState('');
+    const { colors } = useColors();
 
     const handleCaptchaVerificationSuccess = (token, ekey) => {
         setCaptchaToken(token);
@@ -85,13 +86,13 @@ export default function AddTipDialog(props) {
         
         try {
             const req = { betId: bet.id, userId: user.id, gameId: bet.gameId, currency: amount};
-            if (captchaToken != '')
+            if (captchaToken !== '')
                 req.captchaToken = captchaToken;
 
-            if (bet.betType == 'catalogue') req.answerId = answerId;
-            if (bet.betType == 'scale') req.answerDecimal = answerDecimal;
+            if (bet.betType === 'catalogue') req.answerId = answerId;
+            if (bet.betType === 'scale') req.answerDecimal = answerDecimal;
 
-            const response = await axios.post(config.apiHost + '/v1/tips/', req);
+            await axios.post(config.apiHost + '/v1/tips/', req);
             incrementCaptchaTicker();
 
         } catch (e) {
@@ -109,7 +110,7 @@ export default function AddTipDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="warning" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} sx={{ boxShadow: 8 }} color="secondary" variant="contained" onClick={handleClickOpen}>
                 Create A New Tip
             </Button>
 
@@ -130,7 +131,7 @@ export default function AddTipDialog(props) {
                         </Grid>
                         
                         <Grid item xs={12} lg={12}>
-                            { bet.betType == 'catalogue' ? 
+                            { bet.betType === 'catalogue' ? 
                                 <Grid item xs={12} lg={12}>
                                     <div className={classes.root}>
                                         <List component="nav" aria-label="main mailbox folders">
@@ -148,7 +149,7 @@ export default function AddTipDialog(props) {
                                 </Grid>
                             : ''}
                             
-                            { bet.betType == 'scale' ? 
+                            { bet.betType === 'scale' ? 
                                 <><Typography variant="h3">Answer</Typography>
                                 <Grid container spacing={gridSpacing}>
                                     
@@ -177,7 +178,7 @@ export default function AddTipDialog(props) {
                         </Grid>
                     </Grid>
                     
-                    { user && user.premium < 1 && user.captchaTicker % config.captchaTickerInterval == 0 ? (
+                    { user && user.premium < 1 && user.captchaTicker % config.captchaTickerInterval === 0 ? (
                         <Grid container spacing={gridSpacing} justifyContent="center">
                             <Grid item>                         
                                 <HCaptcha

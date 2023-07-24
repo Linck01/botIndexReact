@@ -1,21 +1,13 @@
 import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import { useParams } from 'react-router-dom';
-
-// material-ui
+//import { useParams } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
-import { Box, Button, FormControl, FormHelperText, InputLabel, OutlinedInput, CircularProgress, Typography } from '@material-ui/core';
-
-// project imports
-import AnimateButton from '../../../../ui-component/extended/AnimateButton';
-import useAuth from '../../../../hooks/useAuth';
-import useScriptRef from '../../../../hooks/useScriptRef';
+import { Button, FormControl, InputLabel, OutlinedInput, CircularProgress } from '@material-ui/core';
+//import useScriptRef from '../../../../hooks/useScriptRef';
 import config from '../../../../config';
 import axios from '../../../../utils/axios';
 import { SNACKBAR_OPEN } from '../../../../store/actions';
-import fct from '../../../../utils/fct.js';
 
-// style constant
 const useStyles = makeStyles((theme) => ({
     loginInput: {
         ...theme.typography.customInput
@@ -26,17 +18,17 @@ const useStyles = makeStyles((theme) => ({
 
 const FirebaseForgotPassword = ({ ...others }) => {
     const classes = useStyles();
-    const scriptedRef = useScriptRef();
+    //const scriptedRef = useScriptRef();
     const [email,setEmail] = React.useState('');
     const [isLoading,setIsLoading] = React.useState(false);
     const dispatch = useDispatch();
-    const { paramUserId, paramCode } = useParams();
+    //const { paramUserId, paramCode } = useParams();
 
     const sendForgotPassword = async () => {  
         setIsLoading(true);
 
         try {
-            const response = await axios.post(config.apiHost + '/v1/auth/forgot-password', { email });
+            await axios.post(config.apiHost + '/v1/auth/forgot-password', { email });
 
             setIsLoading(false);
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully sent email to reset your password.', 

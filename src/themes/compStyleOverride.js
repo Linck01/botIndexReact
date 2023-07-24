@@ -66,8 +66,8 @@ export function componentStyleOverrides(theme) {
                 root: {
                     '&.MuiListItem-root': {
                         color: theme.darkTextPrimary,
-                        paddingTop: '10px',
-                        paddingBottom: '10px',
+                        paddingTop: '8px', // MenuItem height (default 10px)
+                        paddingBottom: '8px', // MenuItem height (default 10px)
                         '&.Mui-selected': {
                             color: theme.menuSelected,
                             backgroundColor: theme.menuSelectedBack,

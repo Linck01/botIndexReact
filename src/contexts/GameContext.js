@@ -2,24 +2,13 @@ import React, { createContext, useEffect, useReducer } from 'react';
 import { useParams } from 'react-router-dom';
 import io from 'socket.io-client';
 import useAuth from '../hooks/useAuth';
-
-// third-party
-import jwtDecode from 'jwt-decode';
-
-// reducer - state management
-import { GAME_INITIALIZE, INIT_CHAT, NEW_MESSAGES, SET_BETPAGEINDEX, 
-    SET_MEMBERPAGEINDEX, SET_MEMBER, SET_HANDLENEWTIP, SET_BET, SET_MYTIPS, 
-    SET_GAME, SET_SOCKET, SET_BETSPAGE, SET_BETPAGE, SET_CHAT, SET_PRIVILEGES, SET_LOGSPAGE, SET_MEMBERSPAGE } from '../store/actions';
+import {  SET_MEMBER, SET_GAME, SET_SOCKET, SET_BETSPAGE, SET_BETPAGE, 
+    SET_CHAT, SET_PRIVILEGES, SET_LOGSPAGE, SET_MEMBERSPAGE } from '../store/actions';
 import gameReducer from '../store/gameReducer';
-
-// project imports
 import axios from '../utils/axios';
-import Loader from '../ui-component/Loader';
 import config from '../config';
 import fct from '../utils/fct.js';
-import { id } from 'date-fns/locale';
 
-// constant
 const initialState = {
     game: null,
     socket: null,
@@ -57,8 +46,6 @@ const initialState = {
     },
 };
 
-//-----------------------|| JWT CONTEXT & PROVIDER ||-----------------------//
-
 const GameContext = createContext({
     ...initialState,
     setBetPage: () => Promise.resolve(),
@@ -67,14 +54,14 @@ const GameContext = createContext({
     setLogsPage: () => Promise.resolve(),
     setMembersPage: () => Promise.resolve(),
     setGame: () => Promise.resolve(),
-    
 });
 
 export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
-    let { gameId } = useParams();
+    let { gameUri } = useParams();
     const { user } = useAuth();
-
+    const gameId = fct.disassembleGameOrBetUri(gameUri);
+    
     /*
     *  Game
     */
@@ -282,23 +269,23 @@ export const GameProvider = ({ children }) => {
         setBetPage({...state.betPage, bet, tipListPage: {...state.betPage.tipListPage, items: newTipListItems}});
 
         if (bet.isPaid && state.member) {
-            const memberTips = tips.filter(t => t.userId == state.member.userId);
+            const memberTips = tips.filter(t => t.userId === state.member.userId);
             let memberInc = 0;
             for(let tip of memberTips)
                 memberInc += parseFloat(tip.currency.$numberDecimal) + parseFloat(tip.diff.$numberDecimal);
             
-            if (memberInc != 0) setMember({...state.member, currency: {$numberDecimal: (parseFloat(state.member.currency.$numberDecimal) + memberInc).toString()}});
+            if (memberInc !== 0) setMember({...state.member, currency: {$numberDecimal: (parseFloat(state.member.currency.$numberDecimal) + memberInc).toString()}});
         }
     }
 
     const handleSocketNewTip = async (member,bet,tip) => {
-        if (state.betPage.bet && state.betPage.bet.id == bet.id) {
+        if (state.betPage.bet && state.betPage.bet.id === bet.id) {
             const newTipListItems = await updateTipListItemsWithNewTip(tip);
             const newMyTips = await updateMyTipsWithNewTip(tip);  
             
             let maxIndex = state.betPage.tipListPage.maxIndex;
-            if ((state.betPage.tipListPage.items.length+1) / config.tipListPageSize != 0 &&
-                    (state.betPage.tipListPage.items.length+1) % config.tipListPageSize == 1)
+            if ((state.betPage.tipListPage.items.length+1) / config.tipListPageSize !== 0 &&
+                    (state.betPage.tipListPage.items.length+1) % config.tipListPageSize === 1)
                 maxIndex++;
 
             setBetPage({...state.betPage, bet, myTips: newMyTips, tipListPage: {...state.betPage.tipListPage, items: newTipListItems, maxIndex: maxIndex}});
@@ -306,22 +293,22 @@ export const GameProvider = ({ children }) => {
 
         await updateBetsPageWithBet(bet); 
         
-        if (user && user.id == member.userId) 
+        if (user && user.id === member.userId) 
             setMember(member);
     }
 
     const handleSocketNewBet = async (bet) => {
         let maxIndex = state.betsPage.maxIndex;
 
-        if ((state.betsPage.items.length+1) / config.betsPageSize != 0 &&
-                (state.betsPage.items.length+1) % config.betsPageSize == 1)
+        if ((state.betsPage.items.length+1) / config.betsPageSize !== 0 &&
+                (state.betsPage.items.length+1) % config.betsPageSize === 1)
             maxIndex++;
 
         setBetsPage({...state.betsPage,items:[bet,...state.betsPage.items],maxIndex: maxIndex})
     }
 
     const handleSocketUpdateBet = async (bet) => {
-        if (state.betPage.bet && state.betPage.bet.id == bet.id)
+        if (state.betPage.bet && state.betPage.bet.id === bet.id)
             setBetPage({...state.betPage, bet});
 
         await updateBetsPageWithBet(bet);
@@ -333,7 +320,7 @@ export const GameProvider = ({ children }) => {
         let newItems = [], foundTip;
 
         for (let oldTip of state.betPage.tipListPage.items) {
-            foundTip = tips.find(t => t._id == oldTip.id);
+            foundTip = tips.find(t => t._id === oldTip.id);
             if (foundTip)
                 newItems.push(foundTip);
         }
@@ -347,7 +334,7 @@ export const GameProvider = ({ children }) => {
         let newBets = [], replaced = false;
 
         for (let bet of state.betsPage.items) {
-            if (bet.id == newBet.id) {
+            if (bet.id === newBet.id) {
                 newBets.push(newBet);
                 replaced = true;
             } else
@@ -363,7 +350,7 @@ export const GameProvider = ({ children }) => {
         for (let tip of state.betPage.tipListPage.items)
             newItems.push(tip);
         
-        if (state.betPage.tipListPage.index == 1) {
+        if (state.betPage.tipListPage.index === 1) {
             newItems.unshift(newTip);
 
             if (state.betPage.tipListPage.items.length >= config.tipListPageSize) 
@@ -381,7 +368,7 @@ export const GameProvider = ({ children }) => {
         for (let tip of state.betPage.myTips)
                 newMyTips.push(tip);
         
-        if (user && user.id == newTip.userId)
+        if (user && user.id === newTip.userId)
             newMyTips.push(newTip);
         
         return newMyTips; 
@@ -407,7 +394,7 @@ export const GameProvider = ({ children }) => {
                 member = await fetchMember(game,user.id);
                 setMember(member);
 
-                if (game.userId == user.id)
+                if (game.userId === user.id)
                     admin = true;
                 if (member && member.isModerator)
                     mod = true;

@@ -1,21 +1,10 @@
 import React from 'react';
-
-// material-ui
-import {
-    Grid,
-    LinearProgress,
-    makeStyles,
-    Typography,
-    Chip
-} from '@material-ui/core';
-
+import { Grid, LinearProgress, makeStyles, Typography, 
+    Chip } from '@material-ui/core';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
-import { IconCalendarStats, IconCalendarOff, IconCheck, IconBell, IconBellOff, IconTrash } from '@tabler/icons';
-
-import GameContext from '../../contexts/GameContext';
+import { IconCalendarStats, IconCalendarOff, IconCheck, IconTrash } from '@tabler/icons';
 import fct from '../../utils/fct.js';
 import useColors from '../../hooks/useColors.js';
-
 
 const useStyles = makeStyles((theme) => ({
     successBadge: {
@@ -109,10 +98,8 @@ const getStatus = (bet) => {
 
 const BetStatusTab = ({ bet }) => {
     const classes = useStyles();
-    const { game, socket, amIAdmin, amIMod } = React.useContext(GameContext);
     const { colors } = useColors();
-    const [status,setStatus] = React.useState(getStatus(bet));
-    const [loop,setLoop] = React.useState(0);
+    const [ status,setStatus ] = React.useState(getStatus(bet));
 
     React.useEffect(() => {
         setStatus(getStatus(bet));
@@ -128,44 +115,40 @@ const BetStatusTab = ({ bet }) => {
     }, [bet]);
 
     return (
-
         <Grid container spacing={1}>
             <Grid item xs={3} textAlign="center">
-                {<status.icon style={{color: colors[status.color], width: '5em', height: '5em',}}/>} 
+                {<status.icon style={{color: colors[status.color], width: '5em', height: '4em',}}/>} 
                 <br/>
                 <Typography variant="caption" style={{paddingLeft:'5%'}}>{status.title}</Typography>
             </Grid>
             <Grid item xs={9} align="left">
-                <Typography align="left" style={{fontSize:'1.6em'}} variant="subtitle1">
-                    {bet.title}
-                    {bet.badgeStatus === 'active' && <CheckCircleIcon className={classes.successBadge} />}
-                </Typography>
-                <Typography align="left" variant="subtitle2" className={classes.tableSubContent}>
+                <Typography align="left"  variant="h3" style={{marginBottom: '6px', marginTop: '5px'}}> {bet.title} </Typography>
+                <Typography align="left" variant="subtitle2" className={classes.tableSubContent} style={{fontSize:'1em'}}>
                     {fct.formatDateTime(bet._createdAt)} - {fct.formatDateTime(bet.timeLimit)}
                 </Typography>
                 
-                {bet.isSolved || bet.isAborted ? fct.getCorrectAnswerStrings(bet, 40).correctAnswerStrings.map(a => (
+                {bet.isSolved ? fct.getCorrectAnswerStrings(bet, 15).correctAnswerStrings.map(a => (
                     <React.Fragment key={a}>
-                        <Chip label={a} variant="outlined" style={{color: colors.successDark, borderColor: colors.successDark, marginTop: '5px'}} /> 
-                        <Typography align="left" variant="caption" color="primary" className={classes.tableSubContent}>
-                            {fct.getCorrectAnswerStrings(bet, 40).moreAnswersString}
-                        </Typography>
+                        <Chip label={a} variant="outlined" style={{color: colors.successDark, borderColor: colors.successDark, marginTop: '2px', fontSize: '1.1em', height:'22px'}} /> 
                     </React.Fragment>
                 )) : (
-
                     <Grid container spacing={0}>
                         <Grid item xs={10}>
-                            <br />
                             <LinearProgress variant="determinate" value={status.progress} color="primary" style={{width: '90%'}} />
-                            <Typography align="left" variant="subtitle1">
+                            <Typography align="left" variant="subtitle2" style={{fontSize: '1.1em' }}>
                                 {!fct.hasBetEnded(bet) ? fct.timeLeftString(bet.timeLimit) : ''}
                             </Typography>
                         </Grid>
-                        <Grid item xs={2}>
-                            
-                        </Grid>
+                      
                     </Grid>
                 )}
+                
+                {bet.isSolved ? (
+                    <Typography align="left" variant="caption" color="primary" className={classes.tableSubContent}>
+                        &nbsp; {fct.getCorrectAnswerStrings(bet, 15).moreAnswersString}
+                    </Typography>
+                ) : ''}
+
             </Grid>
         </Grid>
     );

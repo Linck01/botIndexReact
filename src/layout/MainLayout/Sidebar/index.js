@@ -28,15 +28,15 @@ const useStyles = makeStyles((theme) => ({
         color: theme.palette.text.primary,
         borderRight: 'none',
         [theme.breakpoints.up('md')]: {
-            top: '88px'
+            top: '56px' // HeaderHeight (default 88px)
         }
     },
     ScrollHeight: {
-        height: 'calc(100vh - 88px)',
+        height: 'calc(100vh - 64px)', // HeaderHeight (default 88px). Default scrollbar dis-/appearance
         paddingLeft: '16px',
         paddingRight: '16px',
         [theme.breakpoints.down('sm')]: {
-            height: 'calc(100vh - 56px)'
+            height: 'calc(100vh - 200px)' // HeaderHeight (default 56px). Default scrollbar dis-/appearance
         }
     },
     boxContainer: {

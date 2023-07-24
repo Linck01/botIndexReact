@@ -1,26 +1,14 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-// material-ui
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Box, ButtonBase, Typography } from '@material-ui/core';
-
-// project imports
 import LogoSection from '../LogoSection';
-import SearchSection from './SearchSection';
-import LocalizationSection from './LocalizationSection';
-import MobileSection from './MobileSection';
 import LoginSection from './LoginSection';
 import Customization from './Customization';
 import ProfileSection from './ProfileSection';
-import NotificationSection from './NotificationSection';
 import useAuth from '../../../hooks/useAuth';
+import { IconMenu2, IconBrandDiscord, IconPlus } from '@tabler/icons';
 
-// assets
-import { IconMenu2, IconSettings, IconLogin, IconBrandDiscord, IconPlus } from '@tabler/icons';
-
-// style constant
 const useStyles = makeStyles((theme) => ({
     grow: {
         flexGrow: 1

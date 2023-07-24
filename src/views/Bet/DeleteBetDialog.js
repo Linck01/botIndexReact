@@ -1,24 +1,14 @@
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Grid, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
 import React, { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useTheme } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
 
-const useStyles = makeStyles((theme) => ({
-    
-}));
-
-//===============================|| UI DIALOG - FORMS ||===============================//
-
 export default function DeleteBetDialog(props) {
-    const theme = useTheme();
-    const classes = useStyles();
     const [open, setOpen] = React.useState(false);
     const [isLoading, setIsLoading] = useState(false);
     const dispatch = useDispatch();
@@ -44,7 +34,7 @@ export default function DeleteBetDialog(props) {
         }
         
         try {
-            const response = await axios.delete(config.apiHost + '/v1/bets/' + bet.id, {});
+            await axios.delete(config.apiHost + '/v1/bets/' + bet.id, {});
             history.push('/game/' + bet.gameId);
             //handleClose();
         } catch (e) {
@@ -61,7 +51,7 @@ export default function DeleteBetDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="error" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} sx={{ boxShadow: 4 }} variant="contained" color="error" onClick={handleClickOpen}>
                 Delete bet
             </Button>
 

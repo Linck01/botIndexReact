@@ -1,12 +1,10 @@
 import React from 'react';
-import { useTheme } from '@material-ui/core/styles';
 import { Table, Typography, TableBody, TableCell, TableContainer,
     TableHead, TableRow } from '@material-ui/core';
 import fct from '../../../utils/fct.js';
 import GameContext from '../../../contexts/GameContext';
 
 const WidgetStatistics = (props) => {
-    const theme = useTheme();
     const { game } = React.useContext(GameContext);
     const { topMembers } = props;
 
@@ -14,7 +12,7 @@ const WidgetStatistics = (props) => {
         <>
         {topMembers.length > 0 ? (
             <>
-            <Typography variant="h3">Top Members.</Typography><br />
+            <Typography variant="h3">Top Members</Typography><br />
             <TableContainer>
                 <Table stickyHeader>
                     <TableHead>

@@ -1,41 +1,18 @@
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Typography, Grid, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
-import React, {useState, useContext} from 'react';
-import GameContext from '../../contexts/GameContext';
-import { useDispatch, useSelector } from 'react-redux';
-import { useTheme } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
 
-const useStyles = makeStyles((theme) => ({
-    toggleButton: {
-        backgroundColor: theme.palette.error.main
-    }
-}));
-
-const valueText = (value) => {
-    return `${value}°C`;
-}
-
-//===============================|| UI DIALOG - FORMS ||===============================//
-
 export default function AbortBetDialog(props) {
-    const theme = useTheme();
-    const classes = useStyles();
-    const { game, refreshMember } = useContext(GameContext);
     const [open, setOpen] = React.useState(false);
     const [isLoadingAddTip, setIsLoadingAddTip] = useState(false);
     const dispatch = useDispatch();
-    const { getBet, bet } = props;
-    const [amount, setAmount] = React.useState(0);
-    const [answerId, setAnswerId] = React.useState(-1);
-    const customization = useSelector((state) => state.customization);
+    const { bet } = props;
     const { user } = useAuth();
-    const [ answerDecimal, setAnswerDecimal ] = useState(bet.betType == 'scale' ? bet.scale_options.min : 0);
-   
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -45,13 +22,8 @@ export default function AbortBetDialog(props) {
         setOpen(false);
     };
 
-    const handleAmountChange = (event,) => {
-        setAmount(event.target.value);
-    };
-
     const abortBet = async () => {  
         setIsLoadingAddTip(true);
-        let err = null;
 
         if (!user) {
             setIsLoadingAddTip(false);
@@ -60,9 +32,7 @@ export default function AbortBetDialog(props) {
         }
         
         try {
-            const req = {};
-
-            const response = await axios.patch(config.apiHost + '/v1/bets/' + bet.id + '/abort', req);
+            await axios.patch(config.apiHost + '/v1/bets/' + bet.id + '/abort', {});
             
         } catch (e) {
             setIsLoadingAddTip(false);
@@ -78,7 +48,7 @@ export default function AbortBetDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="outlined" color="error" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} sx={{ boxShadow: 4 }} variant="contained" color="primary" onClick={handleClickOpen}>
                 Abort bet
             </Button>
 

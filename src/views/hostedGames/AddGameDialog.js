@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import axios from '../../utils/axios';
 import config from '../../config';
+import AddCircleIcon from '@material-ui/icons/AddCircleOutline';
 
 export default function FormDialog({...props}) {
     const [open, setOpen] = React.useState(false);
@@ -33,7 +34,7 @@ export default function FormDialog({...props}) {
         const title = addGameTitleRef.current.querySelectorAll('input')[0].value;
         
         try {
-            const response = await axios.post(config.apiHost + '/v1/games/', { title });
+            await axios.post(config.apiHost + '/v1/games/', { title });
             setIsLoading(true);
 
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully added Game', 
@@ -67,7 +68,7 @@ export default function FormDialog({...props}) {
     return (
         <Grid container justifyContent="center">
         
-            <Button style={{width:'100%'}} variant="outlined" color="secondary" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} variant="contained" color="secondary" sx={{ boxShadow: 8 }} startIcon={<AddCircleIcon />} onClick={handleClickOpen}>
                 Create A New Game
             </Button>
                

@@ -1,12 +1,10 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
 import GameContext from '../../contexts/GameContext';
 import { Grid, makeStyles, Typography } from '@material-ui/core';
 import { useTheme } from '@material-ui/core/styles';
 import fct from '../../utils/fct.js';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 import WatchLaterTwoToneIcon from '@material-ui/icons/WatchLaterTwoTone';
-import useColors from '../../hooks/useColors.js';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -55,12 +53,10 @@ const useStyles = makeStyles((theme) => ({
 //================================|| UI LIST - CUSTOM ||================================//
 
 export default function CustomList(props) {
-    const dispatch = useDispatch();
     const classes = useStyles();
     const theme = useTheme();
     const { tip, bet } = props;
     const { game } = React.useContext(GameContext);
-    const { colors } = useColors();
     const [currencyDiffString, setCurrencyDiffString] = React.useState('');
 
     React.useEffect(() => {
@@ -91,8 +87,8 @@ export default function CustomList(props) {
                     </Typography>
                     <Typography align="left" component="div" variant="subtitle2">
                         <FiberManualRecordIcon className={classes.textActive} /> &nbsp;
-                        {bet.betType == 'catalogue' ? bet.catalogue_answers[tip.answerId].title : ''}
-                        {bet.betType == 'scale' ? tip.answerDecimal.$numberDecimal : ''}
+                        {bet.betType === 'catalogue' ? bet.catalogue_answers[tip.answerId].title : ''}
+                        {bet.betType === 'scale' ? tip.answerDecimal.$numberDecimal : ''}
                         <small>&nbsp;(x{+parseFloat(tip.odds.$numberDecimal).toFixed(2)})</small>
                     </Typography> 
                 </Grid>

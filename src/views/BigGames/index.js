@@ -4,7 +4,6 @@ import GameCard1 from '../../ui-component/cards/GameCard1';
 import { gridSpacing } from '../../store/constant';
 import { SNACKBAR_OPEN } from '../../store/actions';
 import { useDispatch } from 'react-redux';
-import useAuth from '../../hooks/useAuth';
 import axios from '../../utils/axios';
 import config from '../../config';
 import { Helmet } from "react-helmet";
@@ -12,7 +11,6 @@ import { Helmet } from "react-helmet";
 const BigGamesPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [games, setGames] = useState([]);
-    const auth = useAuth();
     const [page, setPage] = useState({index: 1, maxIndex: 1});
 
     const dispatch = useDispatch();
@@ -78,7 +76,7 @@ const BigGamesPage = () => {
             </>
         ) : ''}
 
-        {!isLoading && games.length == 0 ? (
+        {!isLoading && games.length === 0 ? (
             <><br />
             <Grid container direction="column" spacing={2} alignItems="center">
                 <Grid item xs={12}>
