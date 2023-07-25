@@ -1,19 +1,19 @@
 const config = {
     basename: '/',
     defaultPath: '/',
-    fontFamily: `'Roboto', sans-serif`,
+    fontFamily: 'Roboto',
     borderRadius: 12,
     outlinedFilled: true,
-    theme: 'dark',
+    theme: 'light',
     genericKeywords: ['bet', 'wager'],
-    presetColor: 'theme1', // default, theme1, theme2, theme3, theme4, theme5, theme6
+    presetColor: 'theme4', // default, theme1, theme2, theme3, theme4, theme5, theme6
     // 'en' - English, 'fr' - French, 'ro' - Romanian, 'zh' - Chinese
     i18n: 'en',
     rtlLayout: false,
-    jwt: {
+    /*jwt: {
         secret: '',
         timeout: '1 days'
-    },
+    },*/
     apiHost: 'http://localhost:3005',
     gameHosts: ['http://localhost:3005'],
     authHost: 'http://localhost:3005',
@@ -25,9 +25,9 @@ const config = {
 };
 
 if (process.env.NODE_ENV == 'production') {
-    config.apiHost = 'https://api.betify.gg';
-    config.gameHosts = ['https://api.betify.gg'];
-    config.authHost = 'https://api.betify.gg';
+    config.apiHost = '';
+    config.gameHosts = [''];
+    config.authHost = '';
 }
 
 export default config;

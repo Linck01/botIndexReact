@@ -24,8 +24,8 @@ const Bets = () => {
                 sortBy: '-_createdAt', 
                 limit: 5 , 
                 page: betsPage.index, 
-                aborted: customization.showAbortedBets,  
-                solved: customization.showSolvedBets 
+                isAborted: customization.showAbortedBets,  
+                isSolved: customization.showSolvedBets 
             }});
 
             setBetsPage({...betsPage, items: response.data.results,maxIndex: response.data.totalPages});
