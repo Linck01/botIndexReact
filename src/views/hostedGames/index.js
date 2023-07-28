@@ -61,7 +61,6 @@ const HostedGamesPage = () => {
                 </>
             ) : ''}
             
-            
             {!isLoading && hostedGames.length > 0 ? (
                 <><br />
                 <Grid container spacing={gridSpacing}>
@@ -73,16 +72,20 @@ const HostedGamesPage = () => {
                         );
                     })}
                 </Grid>
+                </>
+            ) : ''}
+
+            {!isLoading && page.maxIndex > 1 ? (
+                <>
                 <br />
                 <Grid container direction="column" spacing={2} alignItems="center">
                     <Grid item xs={12}>
                         <Pagination page={page.index} onChange={handlePageChange} count={page.maxIndex} color="primary" />
                     </Grid>
                 </Grid>
-                </>)
-                : ''}
+                </>
+            ) : ''}
         
-
             {!isLoading && hostedGames.length === 0 ? (
                 <><br /><br />
                     <Grid container direction="column" spacing={2} alignItems="center">

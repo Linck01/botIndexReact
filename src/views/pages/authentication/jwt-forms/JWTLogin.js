@@ -192,7 +192,7 @@ const JWTLogin = (props, { ...others }) => {
                     )}
                     <Box mt={2}>
                         <AnimateButton>
-                            <Button color="secondary" disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained">
+                            <Button color="secondary" sx={{ boxShadow: 4 }} disabled={isSubmitting} fullWidth size="large" type="submit" variant="contained">
                                 Sign In
                             </Button>
                         </AnimateButton>

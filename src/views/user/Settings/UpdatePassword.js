@@ -35,10 +35,10 @@ const WidgetStatistics = (props) => {
 
             const obj = { password, newPassword };
             await axios.patch(config.apiHost + '/v1/users/' + user.id, obj);
-            
-            //setPassword('');
-            //setNewPassword('');
-            //setNewPasswordConfirm('');
+
+            setPassword('');
+            setNewPassword('');
+            setNewPasswordConfirm('');
 
             dispatch({ type: SNACKBAR_OPEN, open: true, message: 'Successfully changed settings', 
                 variant: 'alert', alertSeverity: 'success', close: true });
@@ -85,7 +85,7 @@ const WidgetStatistics = (props) => {
             <Grid container spacing={gridSpacing}>
                 <Grid item xs={12}>
                     <Typography variant="h3">
-                        Change password 
+                        Password
                         <IconButton
                             aria-label="toggle password visibility"
                             onClick={handleClickShowPassword}

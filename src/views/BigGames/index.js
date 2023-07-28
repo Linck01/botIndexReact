@@ -67,6 +67,11 @@ const BigGamesPage = () => {
                     );
                 })}
             </Grid>
+            </>
+        ) : ''}
+
+        {!isLoading && page.maxIndex > 1 ? (
+            <>
             <br />
             <Grid container direction="column" spacing={2} alignItems="center">
                 <Grid item xs={12}>

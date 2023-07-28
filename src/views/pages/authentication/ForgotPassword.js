@@ -40,9 +40,9 @@ const ForgotPassword = () => {
                                                 </Typography>
                                             </Grid>
                                             <Grid item xs={12}>
-                                                <Typography variant="caption" fontSize="16px" textAlign="center">
-                                                    Enter your email address below and we'll send you a password reset.
-                                                </Typography>
+                                                <Typography variant="caption1" fontSize="1.2em" textAlign="center">
+                                                    Enter your email address below and we'll send you a password reset. 
+                                                </Typography><br /><br /><Typography variant="caption2" fontSize="1.5em" textAlign="center"> This may take a few minutes!</Typography>
                                             </Grid>
                                         </Grid>
                                     </Grid>

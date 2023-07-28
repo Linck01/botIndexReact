@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useContext } from 'react';
 import GameContext from '../../../contexts/GameContext';
 import fct from '../../../utils/fct.js';
 import MemberTable from './MemberTable';
@@ -15,29 +15,31 @@ const Members = () => {
     const dispatch = useDispatch();
     const [isLoading, setIsLoading] = useState(false);
 
-    const getMembersPage = async () => {
-        setIsLoading(true);
-
-        try {
-            const response = await axios.get(config.gameHosts[game.serverId] + '/v1/members/', { params: { gameId: game.id, sortBy: '-currency', limit: 10 , page: membersPage.index } });
-            await fct.addUsernamesToArray(response.data.results);
-
-            setMembersPage({...membersPage, items: response.data.results,maxIndex: response.data.totalPages});
-
-            setIsLoading(false);
-        } catch (e) {
-            setIsLoading(false);
-            console.log(e);
-            return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
-                variant: 'alert', alertSeverity: 'error', close: true });
-        }
-    }
+    
 
     const handlePageChange = async (a,b,c) => {
         setMembersPage({...membersPage, index: b});
     }
 
     useEffect(() => {
+        const getMembersPage = async () => {
+            setIsLoading(true);
+    
+            try {
+                const response = await axios.get(config.gameHosts[game.serverId] + '/v1/members/', { params: { gameId: game.id, sortBy: '-currency', limit: 10 , page: membersPage.index } });
+                await fct.addUsernamesToArray(response.data.results);
+    
+                setMembersPage({...membersPage, items: response.data.results,maxIndex: response.data.totalPages});
+    
+                setIsLoading(false);
+            } catch (e) {
+                setIsLoading(false);
+                console.log(e);
+                return dispatch({ type: SNACKBAR_OPEN, open: true, message:  e.response ? e.response.data.message : e.toString(),
+                    variant: 'alert', alertSeverity: 'error', close: true });
+            }
+        };
+
         getMembersPage();
     }, [membersPage.index]);
 

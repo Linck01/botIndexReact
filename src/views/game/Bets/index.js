@@ -22,7 +22,7 @@ const Bets = () => {
             const response = await axios.get(config.apiHost + '/v1/bets/', { params: {
                 gameId: game.id, 
                 sortBy: '-_createdAt', 
-                limit: 5 , 
+                limit: 8 , 
                 page: betsPage.index, 
                 isAborted: customization.showAbortedBets,  
                 isSolved: customization.showSolvedBets 
@@ -72,15 +72,20 @@ const Bets = () => {
         
         {!isLoading && betsPage.items.length > 0 ? (
             <>              
-                {betsPage.items.map((bet) => (
-                    <BetListItem key={bet.id} bet={bet} />  
-                ))}
-                <br />
-                <Grid container direction="column" spacing={2} alignItems="center">
-                    <Grid item xs={12}>
-                        <Pagination page={betsPage.index} onChange={handlePageChange} count={betsPage.maxIndex} color="primary" />
-                    </Grid>
+            {betsPage.items.map((bet) => (
+                <BetListItem key={bet.id} bet={bet} />  
+            ))}
+            </>
+        ) : ''}
+
+        {!isLoading && betsPage.maxIndex > 1 ? (
+            <>
+            <br />
+            <Grid container direction="column" spacing={2} alignItems="center">
+                <Grid item xs={12}>
+                    <Pagination page={betsPage.index} onChange={handlePageChange} count={betsPage.maxIndex} color="primary" />
                 </Grid>
+            </Grid>
             </>
         ) : ''}
 
@@ -94,10 +99,6 @@ const Bets = () => {
                 </Grid>
             </>
         ) : ''}
-
-  
-        
-
         </>
     );
 };

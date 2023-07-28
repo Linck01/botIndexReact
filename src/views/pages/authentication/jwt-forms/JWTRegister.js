@@ -423,6 +423,7 @@ const JWTRegister = ({ ...others }) => {
                                     type="submit"
                                     variant="contained"
                                     color="secondary"
+                                    sx={{ boxShadow: 4 }}
                                 >
                                     Sign up
                                 </Button>
