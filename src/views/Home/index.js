@@ -181,8 +181,9 @@ const Price1 = () => {
             })}
         </Grid>
         <br />
+        
+        {/* } 
         <br />
-
         <Grid container spacing={gridSpacing} justifyContent={"center"}>
             <Grid item xs={12} sm={12} md={12}>
                 <Typography variant="h1" align="center" color="secondary">
@@ -207,7 +208,7 @@ const Price1 = () => {
             <br />
             </>
         ) : ''}
-
+        { */} 
         </>
     );
 };

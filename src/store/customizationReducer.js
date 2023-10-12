@@ -13,7 +13,7 @@ export const initialState = {
     presetColor: config.presetColor,
     locale: config.i18n,
     rtlLayout: config.rtlLayout,
-    opened: true,
+    opened: false,
     showSolvedBets: true,
     showAbortedBets: true,
 };

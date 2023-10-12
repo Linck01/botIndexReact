@@ -11,6 +11,8 @@ import Sidebar from './Sidebar';
 import { drawerWidth } from '../../store/constant';
 import { SET_MENU } from './../../store/actions';
 import useColors from './../../hooks/useColors';
+import GameContext from '../../contexts/GameContext';
+
 //import Breadcrumbs from './../../ui-component/extended/Breadcrumbs';
 
 const useStyles = makeStyles((theme) => ({
@@ -70,8 +72,10 @@ const useStyles = makeStyles((theme) => ({
 const MainLayout = ({ children }) => {
     const classes = useStyles();
     const theme = useTheme();
-    const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
+    //const matchUpMd = useMediaQuery(theme.breakpoints.up('md'));
     const { colors } = useColors();
+    const { game } = React.useContext(GameContext);
+    
     // Handle left drawer
     const leftDrawerOpened = useSelector((state) => state.customization.opened);
     const dispatch = useDispatch();
@@ -83,8 +87,13 @@ const MainLayout = ({ children }) => {
         const openLeftDrawerState = (val) => {
             dispatch({ type: SET_MENU, opened: val });
         };
-        openLeftDrawerState(matchUpMd);
-    }, [dispatch, matchUpMd]);
+        //openLeftDrawerState(matchUpMd);
+
+        if (game)
+            openLeftDrawerState(true);
+        else
+            openLeftDrawerState(false);
+    }, [dispatch, /*matchUpMd,*/ game]);
 
     return (
         <div className={classes.root}>

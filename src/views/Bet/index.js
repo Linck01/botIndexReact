@@ -23,6 +23,7 @@ import { Helmet } from "react-helmet";
 import { Grid, CircularProgress} from '@material-ui/core';
 import GameContext from '../../contexts/GameContext';
 import useAuth from '../../hooks/useAuth';
+import SocialMediaShareButtons from './SocialMediaShareButtons';
 
 const BetDetails = () => {
     const dispatch = useDispatch();
@@ -89,7 +90,7 @@ const BetDetails = () => {
         
         {!isLoading && betPage.bet ? (
             <> 
-            
+
             <TipStatsCards bet={betPage.bet} myTips={betPage.myTips}/>
             <br /> 
             
@@ -118,22 +119,14 @@ const BetDetails = () => {
                 <br />
                 </>
             ) : ''}
-             
-            {!betPage.bet.isSolved && !betPage.bet.isAborted && (privileges.admin || privileges.mod) ? (
-                <>
-               <Grid container spacing={gridSpacing} >  
-                       
-                </Grid><br /> 
-                </>
-            ) : ''}
-         
+            
+            <SocialMediaShareButtons />            
             <Grid container spacing={gridSpacing} >
                 <Grid item xs={12} sm={12} md={5}>
                     <Grid container spacing={gridSpacing}>
                         <Grid item xs={12}>
                             <BetInfo bet={betPage.bet}></BetInfo>
                         </Grid>
-                       
                         <Grid item xs={12}>
                             { betPage.bet.betType === 'catalogue' ? <CatalogueTipChart bet={betPage.bet} /> : '' }
                             { betPage.bet.betType === 'scale' ? <ScaleTipChart bet={betPage.bet} /> : ''}
