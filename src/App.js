@@ -33,7 +33,9 @@ const App = () => {
 
     React.useEffect(() => {
         ReactGA.initialize(TRACKING_ID);
+        console.log('SENDING GA');
         ReactGA.send({ hitType: "pageview", page: "/my-path", title: "Custom Title" });
+        console.log('SENT GA');
     }, [window.location.pathname]);
 
     return (
