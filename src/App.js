@@ -22,19 +22,20 @@ import {JWTProvider} from './contexts/JWTContext';
 
 // google analytics
 import ReactGA from 'react-ga4';
-const TRACKING_ID = "G-051Z8ZHRFT"; // OUR_TRACKING_ID
+const TRACKING_ID = 'G-051Z8ZHRFT'; // OUR_TRACKING_ID
 
-
+ReactGA.initialize(TRACKING_ID);
 
 //-----------------------|| APP ||-----------------------//
 
 const App = () => {
     const customization = useSelector((state) => state.customization);
+    
 
     React.useEffect(() => {
-        ReactGA.initialize(TRACKING_ID);
+        
         console.log('SENDING GA');
-        ReactGA.send({ hitType: "pageview", page: "/my-path", title: "Custom Title" });
+        ReactGA.send('pageview');
         console.log('SENT GA');
     }, [window.location.pathname]);
 
