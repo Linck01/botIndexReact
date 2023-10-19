@@ -40,6 +40,8 @@ const AuthCodeVerification = Loadable(lazy(() => import('../views/pages/authenti
 
 
 const Routes = () => {
+    
+
     //const location = useLocation();
     return (
         
