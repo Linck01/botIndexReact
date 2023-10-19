@@ -21,9 +21,9 @@ import Snackbar from './ui-component/extended/Snackbar';
 import {JWTProvider} from './contexts/JWTContext';
 
 // google analytics
-import ReactGA from 'react-ga';
+import ReactGA from 'react-ga4';
 const TRACKING_ID = "G-051Z8ZHRFT"; // OUR_TRACKING_ID
-ReactGA.initialize(TRACKING_ID);
+
 
 
 //-----------------------|| APP ||-----------------------//
@@ -32,7 +32,8 @@ const App = () => {
     const customization = useSelector((state) => state.customization);
 
     React.useEffect(() => {
-        ReactGA.pageview(window.location.pathname + window.location.search);
+        ReactGA.initialize(TRACKING_ID);
+        ReactGA.send({ hitType: "pageview", page: "/my-path", title: "Custom Title" });
     }, [window.location.pathname]);
 
     return (
