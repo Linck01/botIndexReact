@@ -33,7 +33,7 @@ const App = () => {
 
     React.useEffect(() => {
         console.log('SENDING GA');
-        ReactGA.send({ hitType: "pageview", page: "/my-path", title: "Custom Title" });
+        ReactGA.send({ hitType: "pageview", page: window.location.pathname + window.location.search});
         console.log('SENDING GA');
     }, []);
 
