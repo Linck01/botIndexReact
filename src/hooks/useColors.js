@@ -40,10 +40,15 @@ const useAnswerColors = () => {
     const warningMain = theme.palette.warning.main;
     const warningDark = theme.palette.warning.dark;
 
-    const success = theme.palette.mode === 'dark' ? successLight : successDark;
-    const warning = theme.palette.mode === 'dark' ? warningLight : warningDark;
-    const info = theme.palette.mode === 'dark' ? infoLight : infoDark;
-    const error = theme.palette.mode === 'dark' ? errorLight : errorDark;
+    const success = theme.palette.mode === 'dark' ?  successDark : successLight;
+    const warning = theme.palette.mode === 'dark' ?  warningDark : warningLight;
+    const info = theme.palette.mode === 'dark' ?  infoDark : infoLight;
+    const error = theme.palette.mode === 'dark' ?  errorDark : errorLight;
+    const primary = theme.palette.mode === 'dark' ? primaryDark : primaryLight;
+    const secondary = theme.palette.mode === 'dark' ? secondaryDark : secondaryLight;
+
+    const primaryInvert = theme.palette.mode === 'dark' ? primaryLight : primaryDark;
+    const secondaryInvert = theme.palette.mode === 'dark' ? secondaryLight : secondaryDark;
 
     const answerColors = [
         primaryDark, secondaryDark, successDark, orangeDark, infoDark, warningDark, errorDark, 
@@ -52,7 +57,7 @@ const useAnswerColors = () => {
     ]
 
     const colors = {
-        success, warning, info, error,
+        success, warning, info, error, primary, secondary, primaryInvert, secondaryInvert,
         primaryLight, secondaryLight, orangeLight, errorLight, infoLight, warningLight, successLight,
         primaryDark, secondaryDark, successDark, orangeDark, infoDark, warningDark, errorDark, 
         primaryMain, secondaryMain, successMain, orangeMain, infoMain, warningMain, errorMain,

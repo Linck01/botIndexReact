@@ -120,7 +120,7 @@ const BetDetails = () => {
                 </>
             ) : ''}
             
-            <SocialMediaShareButtons />            
+                      
             <Grid container spacing={gridSpacing} >
                 <Grid item xs={12} sm={12} md={5}>
                     <Grid container spacing={gridSpacing}>
@@ -139,7 +139,9 @@ const BetDetails = () => {
                     <TipList />              
                 </Grid>
             </Grid>
-            <br /><br />
+            <br />
+            <SocialMediaShareButtons />  
+            <br />
        
             <Grid container spacing={gridSpacing} >
                 <Grid item xs={12}>

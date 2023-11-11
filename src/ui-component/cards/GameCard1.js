@@ -95,7 +95,7 @@ const UserProfileCard = (props) => {
                     
                     <Grid item xs={12}>
                         <Link to={'/game/' + fct.assembleGameOrBetUri(game)}>
-                            <Button variant="contained" color="primary" className={classes.btnProfile} sx={{ boxShadow: 4 }} startIcon={<PlayCircleIcon />}>
+                            <Button variant="contained" color="secondary" className={classes.btnProfile} sx={{ boxShadow: 4 }} startIcon={<PlayCircleIcon />}>
                                 Play
                             </Button>
                         </Link>

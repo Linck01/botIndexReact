@@ -32,11 +32,14 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
         borderRadius: '27px',
         transition: 'all .2s ease-in-out',
-        borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.primary.light,
-        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.primary.light,
+        '& svg': {
+            stroke: theme.palette.secondary.dark
+        },
+        borderColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.secondary.light,
+        backgroundColor: theme.palette.mode === 'dark' ? theme.palette.dark.main : theme.palette.secondary.light,
         '&[aria-controls="menu-list-grow"], &:hover': {
-            borderColor: theme.palette.primary.main,
-            background: theme.palette.primary.main + '!important',
+            borderColor: theme.palette.secondary.main,
+            background: theme.palette.secondary.main + '!important',
             color: theme.palette.primary.light,
             '& svg': {
                 stroke: theme.palette.primary.light

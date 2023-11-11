@@ -3,7 +3,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { AppBar, CssBaseline, Toolbar, useMediaQuery } from '@material-ui/core';
+import { AppBar, CssBaseline, Toolbar, Typography, useMediaQuery } from '@material-ui/core';
 import CookieConsent /*, { Cookies, getCookieConsentValue }*/ from "react-cookie-consent";
 import clsx from 'clsx';
 import Header from './Header';
@@ -12,6 +12,7 @@ import { drawerWidth } from '../../store/constant';
 import { SET_MENU } from './../../store/actions';
 import useColors from './../../hooks/useColors';
 import GameContext from '../../contexts/GameContext';
+import MuiTypography from '@material-ui/core/Typography';
 
 //import Breadcrumbs from './../../ui-component/extended/Breadcrumbs';
 
@@ -129,9 +130,9 @@ const MainLayout = ({ children }) => {
                 location="bottom"
                 buttonText="Accept"
                 cookieName="cookieConsentOne"
-                style={{ background: colors.warning, zIndex: '10000000', fontSize: "1.2em" }}
-                buttonStyle={{ background: colors.secondary, fontSize: "0.9em" }}
-                declineButtonStyle={{ background: colors.error, fontSize: "0.9em" }}
+                style={{ background: colors.secondary, zIndex: '10000000', fontSize: "1em" }}
+                buttonStyle={{ background: colors.success, fontSize: "1em" }}
+                declineButtonStyle={{ background: colors.error, fontSize: "1em" }}
                 declineButtonText="Decline"
                 setDeclineCookie={false}
                 expires={150}
@@ -140,7 +141,11 @@ const MainLayout = ({ children }) => {
                     window.location.replace("https://google.com");
                 }}
                 >
-                This website uses cookies to enhance user experience. By using this website you agree to our <Link to="/termsAndService"></Link> <Link to="/termsAndServices">Terms and Conditions</Link> and <Link to="/privacyPolicy">Privacy Policy</Link>{" "}
+                <Typography variant="body2"> 
+                    This website uses cookies to enhance user experience. By using this website you agree to our&nbsp;
+                    <Link style={{ color: colors.secondaryInvert, fontSize: "1em" }} to="/termsAndConditions">Terms and Conditions</Link> and&nbsp;
+                    <Link style={{ color: colors.secondaryInvert, fontSize: "1em" }} to="/privacyPolicy">Privacy Policy</Link>.
+                </Typography>
                 {/*}<span style={{ fontSize: "10px" }}>This bit of text is smaller :O</span>{*/}
             </CookieConsent>
         </div>

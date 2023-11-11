@@ -17,10 +17,10 @@ export const other = {
             breadcrumbs: false
         },*/
         {
-            id: 'termsAndService',
-            title: <FormattedMessage id="termsAndService" />,
+            id: 'termsAndConditions',
+            title: <FormattedMessage id="termsOfService" />,
             type: 'item',
-            url: '/termsAndService',
+            url: '/termsAndConditions',
             icon: IconNotebook,
         },
         {

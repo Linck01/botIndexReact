@@ -308,7 +308,7 @@ const Customization = () => {
                                                 checked={customization.showSolvedBets}
                                                 onChange={(e) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, showSolvedBets: e.target.checked}} )}
                                                 name="checked"
-                                                color="primary"
+                                                color="secondary"
                                             />
                                         }
                                         label={<Typography variant="text">Solved Bets</Typography>}
@@ -319,7 +319,7 @@ const Customization = () => {
                                                 checked={customization.showAbortedBets}
                                                 onChange={(e) => dispatch({ type: SET_CUSTOMIZATION, customization: {...customization, showAbortedBets: e.target.checked}} )}
                                                 name="checked"
-                                                color="primary"
+                                                color="secondary"
                                             />
                                         }
                                         label={<Typography variant="text">Aborted Bets</Typography>}

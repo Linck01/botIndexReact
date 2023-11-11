@@ -48,7 +48,7 @@ export default function AbortBetDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} sx={{ boxShadow: 4 }} variant="contained" color="primary" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} sx={{ boxShadow: 4 }} variant="contained" color="secondary" onClick={handleClickOpen}>
                 Abort bet
             </Button>
 

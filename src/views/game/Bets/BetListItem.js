@@ -107,7 +107,7 @@ const BetListItem = ({ bet }) => {
                                     <Button
                                         sx={{ boxShadow: 4 }}
                                         variant="contained"
-                                        color="primary"
+                                        color="secondary"
                                         size="small"
                                         className={classes.btnTable}
                                         startIcon={<ForwardIcon />}>

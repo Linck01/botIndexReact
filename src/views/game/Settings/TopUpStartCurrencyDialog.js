@@ -48,7 +48,7 @@ export default function DeleteGameDialog(props) {
 
     return (
         <Grid container justifyContent="center">
-            <Button style={{width:'100%'}} variant="contained" sx={{ boxShadow: 4 }} color="primary" onClick={handleClickOpen}>
+            <Button style={{width:'100%'}} variant="contained" sx={{ boxShadow: 4 }} color="secondary" onClick={handleClickOpen}>
                 Top-up currency of broke members
             </Button>
 

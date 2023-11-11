@@ -6,12 +6,11 @@ import { gridSpacing } from '../../store/constant';
 import AccountCircleTwoTone from '@material-ui/icons/AccountCircleTwoTone';
 import DescriptionTwoToneIcon from '@material-ui/icons/DescriptionTwoTone';
 import EmojiEventsTwoToneIcon from '@material-ui/icons/EmojiEventsTwoTone';
-import useColors from '../../hooks/useColors';
 
 const WidgetStatistics = (props) => {
     const theme = useTheme();
     const { bet, myTips } = props;
-    const { colors } = useColors();
+
 
     let staked = 0;
     for (let tip of myTips)
@@ -24,7 +23,7 @@ const WidgetStatistics = (props) => {
                     primary="Participants"
                     secondary={bet.memberCount.toString()}
                     iconPrimary={AccountCircleTwoTone}
-                    color={colors.info}
+                    color={theme.palette.primary.main}
                 />
             </Grid>
             <Grid item xs={6} md={4}>
@@ -32,7 +31,7 @@ const WidgetStatistics = (props) => {
                     primary="Staked"
                     secondary={staked.toString()}
                     iconPrimary={DescriptionTwoToneIcon}
-                    color={colors.info}
+                    color={theme.palette.primary.main}
                 />
             </Grid>
             <Grid item xs={6} md={4}>
@@ -40,7 +39,7 @@ const WidgetStatistics = (props) => {
                     primary="In Pot"
                     secondary={bet.inPot.$numberDecimal}
                     iconPrimary={EmojiEventsTwoToneIcon}
-                    color={colors.info}
+                    color={theme.palette.primary.main}
                 />
             </Grid>
         </Grid>

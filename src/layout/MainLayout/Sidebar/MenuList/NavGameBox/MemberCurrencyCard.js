@@ -22,15 +22,6 @@ const useStyles = makeStyles((theme) => ({
             transform: 'scale(1.1)'
         }
     },
-    socialHoverCardHeader: {
-        position: 'relative',
-        background: theme.palette.mode === 'dark' ? theme.palette.secondary.dark.main : theme.palette.secondary.light,
-        color: '#fff',
-        '&:hover svg': {
-            opacity: '1',
-            transform: 'scale(1.1)'
-        }
-    },
 }));
 
 const MemberCurrencyCard = (props) => {

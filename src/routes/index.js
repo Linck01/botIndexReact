@@ -66,7 +66,7 @@ const Routes = () => {
                 </GameProvider> 
             </Route>
 
-            <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/favorite/','/info/','/termsAndService/','/privacyPolicy/','/about/','/user/settings']}>
+            <Route exact path={['/','/games/big/','/games/new/','/games/old/','/games/hosted/','/games/favorite/','/info/','/termsAndConditions/','/privacyPolicy/','/about/','/user/settings']}>
                 <MainLayout>
                     <Switch>
                         <Route exact path="/" component={HomePage} />
@@ -74,7 +74,7 @@ const Routes = () => {
                         <Route exact path={'/games/big/'} component={bigGamesPage} />
                         <Route exact path={'/games/new/'} component={newGamesPage} />
 
-                        <Route exact path={'/termsAndService/'} component={termsAndConditions} />
+                        <Route exact path={'/termsAndConditions/'} component={termsAndConditions} />
                         <Route exact path={'/privacyPolicy/'} component={privacyPolicy} />
                         <Route exact path={'/about/'} component={aboutPage}  />
 
