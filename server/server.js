@@ -78,7 +78,7 @@ app.get('/register', function(req, res) { return res.send(html);});
 app.get('/forgot-password', function(req, res) { return res.send(html);});
 app.get('/reset-password', function(req, res) { return res.send(html);});
 
-app.get('/termsAndService', function(req, res) { return res.send(html);});
+app.get('/termsAndConditions', function(req, res) { return res.send(html);});
 app.get('/privacyPolicy', function(req, res) { return res.send(html);});
 app.get('/about', function(req, res) { return res.send(html);});
 app.get('/', function(req, res) { return res.send(html);});
