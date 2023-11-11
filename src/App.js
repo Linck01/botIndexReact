@@ -40,10 +40,10 @@ const App = () => {
     return (
         <>
         <Helmet>
-            <title>Betify.gg - Bet anything</title>
-            <meta name="title" content="Betify.gg - Bet anything" />
-            <meta name="description" content="Bet and wager for fun about anything with anyone."/>
-            <meta name="keywords" content="bet, wager, anything, friends, custom bet, custom"/>
+            <title>Betify.gg - Bet for fun</title>
+            <meta name="title" content="Betify.gg - Bet for fun" />
+            <meta name="description" content="Bet for fun about anything with anyone. Make predictions, wager for outcomes, gamble play money, create custom bets online for your peers, friends and community."/>
+            <meta name="keywords" content="bet, wager, bet for fun, play money, gamble, custom bet, predictions, friends, friend bet, peer bet, handshake bet, community, community bet, custom, online"/>
         </Helmet>
         <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme(customization)}>
