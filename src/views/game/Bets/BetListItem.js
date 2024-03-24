@@ -103,7 +103,7 @@ const BetListItem = ({ bet }) => {
                             </Grid>
                             
                             <Grid item xs={12} md={12}> 
-                                <Link style={{ textDecoration: 'none' }} to={'/game/' + fct.assembleGameOrBetUri(game) + '/bet/' + fct.assembleGameOrBetUri(bet)}>
+                                <Link style={{ textDecoration: 'none' }} to={'/game/' + fct.assembleGameOrBetSlug(game) + '/' + game.id + '/bet/' + fct.assembleGameOrBetSlug(bet) + '/' + bet.id}>
                                     <Button
                                         sx={{ boxShadow: 4 }}
                                         variant="contained"

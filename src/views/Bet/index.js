@@ -28,8 +28,7 @@ import SocialMediaShareButtons from './SocialMediaShareButtons';
 const BetDetails = () => {
     const dispatch = useDispatch();
     const { betPage, setBetPage, privileges } = React.useContext(GameContext);
-    const { betUri } = useParams();
-    const betId = fct.disassembleGameOrBetUri(betUri);
+    const { betId } = useParams();
     const { user } = useAuth();
     const [ isLoading, setIsLoading ] = useState(false);
 

@@ -20,7 +20,7 @@ const MenuList = () => {
 
                 item.title = '';//'Game: ' + game.title;
                 for (let child of item.children)
-                    child.url = '/game/' + fct.assembleGameOrBetUri(game) + '/' + child.id 
+                    child.url = '/game/' + fct.assembleGameOrBetSlug(game) + '/' + game.id + '/' + child.id 
                 
                 return <React.Fragment key={item.id}><NavGameBox game={game}/><NavGroup item={item} /></React.Fragment>
             }  

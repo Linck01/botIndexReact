@@ -9,7 +9,7 @@ const apiUrl = 'https://api.betify.gg/v1/';
 
 const gameController = async function(req, res) {
   let game = null;
-  const gameId = disassembleGameOrBetUri(req.params.gameUri);
+  const gameId = req.params.gameId;
 
   try {
     const apiResponse = await axios.get(apiUrl + 'games/' + gameId);
@@ -36,8 +36,8 @@ const gameController = async function(req, res) {
 
 const betController = async function(req, res) {
   let game = null, bet = null;
-  const gameId = disassembleGameOrBetUri(req.params.gameUri);
-  const betId = disassembleGameOrBetUri(req.params.betUri);
+  const gameId = req.params.gameId;
+  const betId = req.params.betId;
 
   try {
     const apiResponseGame = await axios.get(apiUrl + 'games/' + gameId);
@@ -65,10 +65,10 @@ const betController = async function(req, res) {
   return res.send(htmlCopy);
 }
 
-app.get('/game/:gameUri/bet/:betUri', betController);
+app.get('/game/:gameSlug/:gameId/bet/:betSlug/:betId', betController);
 
-app.get('/game/:gameUri/*', gameController);
-app.get('/game/:gameUri', gameController);
+app.get('/game/:gameSlug/:gameId/*', gameController);
+app.get('/game/:gameSlug/:gameId', gameController);
 
 app.get('/games/*', function(req, res) {return res.send(html);});
 app.get('/user/*', function(req, res) { return res.send(html);});
@@ -86,9 +86,9 @@ app.get('/', function(req, res) { return res.send(html);});
 
 app.use(express.static(path.join(__dirname, './build')));
 
-const disassembleGameOrBetUri = (gameUri) => {
+/* const disassembleGameOrBetUri = (gameUri) => {
   return gameUri.substr(gameUri.length - 24);
-}
+} */
 
   /*
   app.get('/about', function(req, res) {

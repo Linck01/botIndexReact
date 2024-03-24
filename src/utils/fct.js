@@ -183,12 +183,9 @@ f.getActualOdds = (bet) => {
 }
 */
 
-f.assembleGameOrBetUri = (game) => {
-    return game.title.replaceAll(' ', '-') + '-' + game.id;
-}
-
-f.disassembleGameOrBetUri = (gameUri) => {
-    return gameUri.substr(gameUri.length - 24);
+f.assembleGameOrBetSlug = (game) => {
+    return encodeURIComponent(game.title.replaceAll(' ', '-'));
+    
 }
 
 

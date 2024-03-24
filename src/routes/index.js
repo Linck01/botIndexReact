@@ -47,19 +47,19 @@ const Routes = () => {
         
         <Switch>
             {/* MainLayout routes */}
-            <Route exact path={['/game/:gameUri/', '/game/:gameUri/bets', '/game/:gameUri/members', '/game/:gameUri/settings', '/game/:gameUri/log', '/game/:gameUri/info', '/game/:gameUri/chat', '/game/:gameUri/bet/:betUri']}>
+            <Route exact path={['/game/:gameSlug/:gameId', '/game/:gameSlug/:gameId/bets', '/game/:gameSlug/:gameId/members', '/game/:gameSlug/:gameId/settings', '/game/:gameSlug/:gameId/log', '/game/:gameSlug/:gameId/info', '/game/:gameSlug/:gameId/chat', '/game/:gameSlug/:gameId/bet/:betSlug/:betId']}>
                 <GameProvider>
                     <MainLayout>
                         <GameLoadWrapper>
                             <Switch>
-                                <Route exact path={'/game/:gameUri/bets'} component={gameBetsPage} />
-                                <Route exact path={'/game/:gameUri/members'} component={gameMembersPage} />
-                                <Route exact path={'/game/:gameUri/log'} component={gameLogPage} />
-                                <Route exact path={'/game/:gameUri/info'} component={gameInfoPage} />
-                                <Route exact path={'/game/:gameUri/chat'} component={gameChatPage} />
-                                <Route exact path={'/game/:gameUri/settings'} component={gameSettingsPage} />
-                                <Route exact path={'/game/:gameUri/'} component={gameBetsPage} />
-                                <Route exact path={'/game/:gameUri/bet/:betUri'} component={gameBetPage} />
+                                <Route exact path={'/game/:gameSlug/:gameId/bets'} component={gameBetsPage} />
+                                <Route exact path={'/game/:gameSlug/:gameId/members'} component={gameMembersPage} />
+                                <Route exact path={'/game/:gameSlug/:gameId/log'} component={gameLogPage} />
+                                <Route exact path={'/game/:gameSlug/:gameId/info'} component={gameInfoPage} />
+                                <Route exact path={'/game/:gameSlug/:gameId/chat'} component={gameChatPage} />
+                                <Route exact path={'/game/:gameSlug/:gameId/settings'} component={gameSettingsPage} />
+                                <Route exact path={'/game/:gameSlug/:gameId'} component={gameBetsPage} />
+                                <Route exact path={'/game/:gameSlug/:gameId/bet/:betSlug/:betId'} component={gameBetPage} />
                             </Switch> 
                         </GameLoadWrapper>
                     </MainLayout>

@@ -58,9 +58,8 @@ const GameContext = createContext({
 
 export const GameProvider = ({ children }) => {
     const [state, dispatch] = useReducer(gameReducer, initialState);
-    let { gameUri } = useParams();
+    let { gameId  } = useParams();
     const { user } = useAuth();
-    const gameId = fct.disassembleGameOrBetUri(gameUri);
     
     /*
     *  Game
